@@ -6,35 +6,113 @@
 }
 
 @theme {
-  /* Font Families */
-  --font-display: "Poppins", sans-serif; /* Modern and friendly */
+  /* Font Families — ADDies Brand: Poppins for display + body */
+  --font-display: "Poppins", sans-serif;
   --font-body: "Poppins", sans-serif;
 
-  /* Brand Colors (Food Delivery Theme) */
-  --color-background: #fff3d4; /* Warm and inviting */
-  --color-background-section: #FFFFFF; /* Pure white */
+  /* ════════ ADDies BRAND PALETTE (same as web / super-admin / vendor) ════════
+     primary #AE2012 · secondary #2D241E · accent #E9C46A · fresh #0C831F · mehndi #4A5D23 */
 
-  --color-primary: #FF4500; /* Vibrant Orange (Call-to-action) */
-  --color-primary-muted: #FF6F3C; /* Softer Orange (Hover/Muted) */
-  --color-background-muted: #d1d5dc; /* Muted grey text for hints */
+  /* Primary — brand red */
+  --color-primary-50: #fbebe9;
+  --color-primary-100: #f6d4ce;
+  --color-primary-200: #eda79c;
+  --color-primary-300: #de7768;
+  --color-primary-400: #c84f3d;
+  --color-primary-500: #b9321f;
+  --color-primary-600: #ae2012;
+  --color-primary-700: #8b150e;
+  --color-primary-800: #691009;
+  --color-primary-900: #4c0c07;
+  --color-primary-950: #320804;
 
-  --color-secondary: #32CD32; /* Fresh Green (Healthy Vibes) */
-  --color-accent: #840320; /* Golden Yellow (Highlights) */
-  --color-accent-muted: #f7e5e7; /* Golden Yellow (Highlights) */
-  --color-dark: #2D2D2D; /* Deep Grey (Text and Dark Mode) */
+  /* Secondary — espresso neutrals */
+  --color-secondary-50: #fdfbf7;
+  --color-secondary-100: #fffcf7;
+  --color-secondary-200: #f5ebe0;
+  --color-secondary-300: #e9d8bf;
+  --color-secondary-400: #d2b48c;
+  --color-secondary-500: #a68b66;
+  --color-secondary-600: #7d6b5d;
+  --color-secondary-700: #4a3f35;
+  --color-secondary-800: #372e27;
+  --color-secondary-900: #2d241e;
+  --color-secondary-950: #1c1611;
+
+  /* Accent — gold */
+  --color-accent-50: #fdf6e4;
+  --color-accent-100: #faedcc;
+  --color-accent-200: #f5dfa6;
+  --color-accent-300: #f0cf7d;
+  --color-accent-400: #e9c46a;
+  --color-accent-500: #d2a036;
+  --color-accent-600: #a67a22;
+  --color-accent-700: #8a6420;
+  --color-accent-800: #6b4d18;
+
+  /* Fresh — green (success / in-stock bright) */
+  --color-fresh-50: #eaf6ed;
+  --color-fresh-100: #d3ebd8;
+  --color-fresh-200: #bfe6c7;
+  --color-fresh-300: #93d3a0;
+  --color-fresh-400: #4fbf6e;
+  --color-fresh-500: #18a058;
+  --color-fresh-600: #0c831f;
+  --color-fresh-700: #0a671a;
+  --color-fresh-800: #085a16;
+
+  /* Mehndi — Indian muddy desi green */
+  --color-mehndi-50: #f4f6e9;
+  --color-mehndi-100: #e5eacd;
+  --color-mehndi-200: #cbd5a3;
+  --color-mehndi-300: #acbc77;
+  --color-mehndi-400: #8a9a52;
+  --color-mehndi-500: #6b7a39;
+  --color-mehndi-600: #4a5d23;
+  --color-mehndi-700: #3d4c1e;
+  --color-mehndi-800: #323e1a;
+  --color-mehndi-900: #2a3418;
+  --color-mehndi-950: #151b0b;
+
+  /* Brand DEFAULT aliases */
+  --color-background: #fff3d4; /* Warm cream */
+  --color-background-section: #ffffff;
+  --color-primary: #ae2012;
+  --color-primary-muted: #c84f3d;
+  --color-background-muted: #f5ebe0;
+  --color-secondary: #2d241e;
+  --color-accent: #e9c46a;
+  --color-accent-muted: #faedcc;
+  --color-fresh: #0c831f;
+  --color-mehndi: #4a5d23;
+  --color-dark: #2d2d2d;
+
+  /* Surfaces */
+  --color-app: #fdfbf7;
+  --color-surface: #ffffff;
+  --color-border: #e9d8bf;
+  --color-ink: #1c1611;
 
   /* Text Colors */
-  --color-primary-text: #3E2723; /* Dark Grey (Readable Body) */
-  --color-secondary-text: #5D4037; /* Light Grey (Subtext) */
-
-  --color-primary-text-inverse: #FFFFFF; /* For dark backgrounds */
-  --color-text-muted: #9E9E9E; /* Muted grey text for hints */
+  --color-primary-text: #3e2723;
+  --color-secondary-text: #5d4037;
+  --color-primary-text-inverse: #ffffff;
+  --color-text-muted: #9e9e9e;
+  --color-strong: #2d241e;
+  --color-soft: #5d4037;
+  --color-faint: #a68b66;
 
   /* Status Colors */
-  --color-success: #00C853; /* Bright Green (Order Success) */
-  --color-error: #D32F2F; /* Red (Order Failure/Error) */
-  --color-warning: #FF9800; /* Orange (Caution) */
-  --color-info: #2196F3; /* Blue (Information) */
+  --color-success: #0c831f;
+  --color-error: #d32f2f;
+  --color-warning: #ff9800;
+  --color-info: #2196f3;
+
+  /* Legacy aliases used by the shell */
+  --color-borderColor: #a67a22;
+  --color-inputBorder: #a67a22;
+  --color-borderFocus: #a67a22;
+  --color-textDark: #382723;
 
   /* Font Sizes */
   --text-xs: 0.75rem; /* 12px */
@@ -74,7 +152,7 @@
 
 
 body {
-  font-family: var(--font-body);
+  font-family: var(--font-poppins, "Poppins"), ui-sans-serif, system-ui, sans-serif;
 }
 
 
@@ -141,5 +219,29 @@ body {
 
   .animate-slide-down {
     animation: slide-down .51s ease-out;
+  }
+}
+/* -------- ADDies brand helpers (same pattern as vendor / super-admin) -------- */
+@layer components {
+  .brand-page {
+    background: var(--color-app);
+    min-height: 100%;
+  }
+  .brand-h-display {
+    font-family: var(--font-display);
+    color: var(--color-secondary-900);
+    font-weight: 800;
+    letter-spacing: -0.02em;
+  }
+  .brand-table-head {
+    background: var(--color-secondary-900);
+    color: var(--color-accent-300);
+    font-size: 11px;
+    font-weight: 800;
+    text-transform: uppercase;
+    letter-spacing: 0.12em;
+  }
+  .brand-row-hover:hover {
+    background: var(--color-secondary-100);
   }
 }

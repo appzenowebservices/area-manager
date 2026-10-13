@@ -27,8 +27,8 @@ export default function VendorStatusBadge({ status, size = "md" }) {
 }
 
 const statusMap = {
-  "Active":      { bg: "#d1fae5", color: "#065f46", dot: "#10b981" },
-  "Inactive":    { bg: "#fee2e2", color: "#b91c1c", dot: "#ef4444" },
-  "Pending KYC": { bg: "#fef3c7", color: "#d97706", dot: "#f59e0b" },
-  "default":     { bg: "#f1f5f9", color: "#475569", dot: "#94a3b8" },
+  "Active":      { bg: "#d3ebd8", color: "#0a671a", dot: "#0c831f" },
+  "Inactive":    { bg: "#fbebe9", color: "#8b150e", dot: "#d32f2f" },
+  "Pending KYC": { bg: "#faedcc", color: "#a67a22", dot: "#e9c46a" },
+  "default":     { bg: "#f5ebe0", color: "#5d4037", dot: "#a68b66" },
 };

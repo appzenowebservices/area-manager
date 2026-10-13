@@ -184,7 +184,7 @@ export default function LoginPage() {
               type="checkbox"
               checked={remember}
               onChange={(e) => setRemember(e.target.checked)}
-              style={{ accentColor: "#1a73e8", width: 15, height: 15 }}
+              style={{ accentColor: "#ae2012", width: 15, height: 15 }}
             />
             Remember me
           </label>
@@ -202,7 +202,7 @@ export default function LoginPage() {
           fullWidth
           loading={loading}
           onClick={handleSubmit}
-          style={{ borderRadius: 12, marginTop: 4, boxShadow: "0 6px 20px rgba(26,115,232,0.38)" }}
+          style={{ borderRadius: 12, marginTop: 4, boxShadow: "0 6px 20px rgba(12, 131, 31,0.38)" }}
         >
           {loading
             ? "Verifying..."
@@ -234,7 +234,7 @@ const styles: Record<string, React.CSSProperties> = {
   eyebrow: {
     fontSize: "0.72rem",
     fontWeight: 700,
-    color: "#1a73e8",
+    color: "#ae2012",
     letterSpacing: "0.14em",
     textTransform: "uppercase",
     marginBottom: "0.4rem",
@@ -242,14 +242,14 @@ const styles: Record<string, React.CSSProperties> = {
   title: {
     fontSize: "1.9rem",
     fontWeight: 700,
-    color: "#0f172a",
+    color: "#2d241e",
     letterSpacing: "-0.02em",
     lineHeight: 1.15,
   },
   subtitle: {
     marginTop: "0.45rem",
     fontSize: "0.88rem",
-    color: "#64748b",
+    color: "#7d6b5d",
   },
   section: {
     marginBottom: "1.1rem",
@@ -258,21 +258,21 @@ const styles: Record<string, React.CSSProperties> = {
     display: "flex",
     alignItems: "center",
     gap: 8,
-    background: "#fee2e2",
-    border: "1px solid #fecaca",
+    background: "#fbebe9",
+    border: "1px solid #f6d4ce",
     borderRadius: 10,
     padding: "0.65rem 1rem",
     fontSize: "0.84rem",
-    color: "#dc2626",
+    color: "#b71c1c",
     marginBottom: "1rem",
   },
   hintBox: {
-    background: "#f0f7ff",
-    border: "1px solid #bfdbfe",
+    background: "#eaf6ed",
+    border: "1px solid #e9d8bf",
     borderRadius: 8,
     padding: "0.55rem 0.9rem",
     fontSize: "0.78rem",
-    color: "#1e40af",
+    color: "#8b150e",
     marginBottom: "1rem",
   },
   rememberRow: {
@@ -286,14 +286,14 @@ const styles: Record<string, React.CSSProperties> = {
     alignItems: "center",
     gap: 7,
     fontSize: "0.84rem",
-    color: "#475569",
+    color: "#5d4037",
     cursor: "pointer",
   },
   forgotBtn: {
     background: "none",
     border: "none",
     fontSize: "0.84rem",
-    color: "#1a73e8",
+    color: "#ae2012",
     fontWeight: 600,
     cursor: "pointer",
     padding: 0,
@@ -302,6 +302,6 @@ const styles: Record<string, React.CSSProperties> = {
     marginTop: "1.5rem",
     textAlign: "center",
     fontSize: "0.73rem",
-    color: "#94a3b8",
+    color: "#a68b66",
   },
 };

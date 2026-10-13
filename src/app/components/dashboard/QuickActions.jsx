@@ -10,12 +10,12 @@ import QuickActionItem from "./QuickActionItem";
  */
 
 const ACTIONS = [
-  { label: "Assign Vendor",   desc: "Pending orders",      emoji: "🏪", bg: "#e8f0fe", color: "#1a73e8", link: "/orders"     },
-  { label: "Assign Delivery", desc: "Ready to dispatch",   emoji: "🚴", bg: "#d1fae5", color: "#10b981", link: "/orders"     },
-  { label: "Add Vendor",      desc: "Onboard new vendor",  emoji: "➕", bg: "#ede9fe", color: "#7c3aed", link: "/vendors"    },
-  { label: "Add Lead",        desc: "Track prospect",      emoji: "👤", bg: "#fef3c7", color: "#d97706", link: "/leads"      },
-  { label: "View Reports",    desc: "Performance data",    emoji: "📊", bg: "#e0f2fe", color: "#0284c7", link: "/reports"    },
-  { label: "Complaints",      desc: "Resolve issues",      emoji: "⚠️", bg: "#fee2e2", color: "#ef4444", link: "/complaints" },
+  { label: "Assign Vendor",   desc: "Pending orders",      emoji: "🏪", bg: "#fdfbf7", color: "#ae2012", link: "/orders"     },
+  { label: "Assign Delivery", desc: "Ready to dispatch",   emoji: "🚴", bg: "#d3ebd8", color: "#0c831f", link: "/orders"     },
+  { label: "Add Vendor",      desc: "Onboard new vendor",  emoji: "➕", bg: "#f5ebe0", color: "#4a5d23", link: "/vendors"    },
+  { label: "Add Lead",        desc: "Track prospect",      emoji: "👤", bg: "#faedcc", color: "#a67a22", link: "/leads"      },
+  { label: "View Reports",    desc: "Performance data",    emoji: "📊", bg: "#eaf6ed", color: "#2196f3", link: "/reports"    },
+  { label: "Complaints",      desc: "Resolve issues",      emoji: "⚠️", bg: "#fbebe9", color: "#d32f2f", link: "/complaints" },
 ];
 
 export default function QuickActions() {
@@ -50,10 +50,10 @@ export default function QuickActions() {
 const css = `
   .qa-card {
     background: #fff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e9d8bf;
     border-radius: 16px;
     padding: 1.1rem;
-    box-shadow: 0 1px 4px rgba(15,23,42,0.05);
+    box-shadow: 0 1px 4px rgba(45, 36, 30,0.05);
     min-width: 0;
     width: 100%;
     box-sizing: border-box;
@@ -63,10 +63,10 @@ const css = `
     font-family: 'Sora', sans-serif;
     font-size: 0.92rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #2d241e;
     margin: 0;
   }
-  .qa-sub { font-size: 0.72rem; color: #94a3b8; margin: 3px 0 0; }
+  .qa-sub { font-size: 0.72rem; color: #a68b66; margin: 3px 0 0; }
   .qa-grid {
     display: grid;
     grid-template-columns: repeat(3, minmax(0, 1fr));

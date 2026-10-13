@@ -32,7 +32,7 @@ export default function MethodToggle({ method, onChange }) {
 const styles = {
   wrap: {
     display: "flex",
-    background: "#e8f0fe",
+    background: "#fdfbf7",
     borderRadius: 10,
     padding: 3,
     gap: 3,
@@ -51,11 +51,11 @@ const styles = {
   },
   active: {
     background: "#fff",
-    color: "#1a73e8",
-    boxShadow: "0 2px 8px rgba(26,115,232,0.15)",
+    color: "#ae2012",
+    boxShadow: "0 2px 8px rgba(12, 131, 31,0.15)",
   },
   inactive: {
     background: "transparent",
-    color: "#94a3b8",
+    color: "#a68b66",
   },
 };

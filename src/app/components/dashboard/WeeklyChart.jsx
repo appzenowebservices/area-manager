@@ -124,7 +124,7 @@ function BarChart({ data, metric, maxVal, hovered, onHover }) {
                 width={BAR_W}
                 height={CHART_H}
                 rx={10}
-                fill={isHov ? "#f0f5ff" : "#f8faff"}
+                fill={isHov ? "#fdfbf7" : "#fdfbf7"}
               />
               {/* Bar */}
               <rect
@@ -133,7 +133,7 @@ function BarChart({ data, metric, maxVal, hovered, onHover }) {
                 width={BAR_W}
                 height={barH}
                 rx={10}
-                fill={isPeak ? "#0d47a1" : isHov ? "#1a73e8" : "#93c5fd"}
+                fill={isPeak ? "#2d241e" : isHov ? "#ae2012" : "#f5dfa6"}
                 style={{ transition: "fill 0.18s" }}
               />
               {/* Tooltip */}
@@ -145,7 +145,7 @@ function BarChart({ data, metric, maxVal, hovered, onHover }) {
                     width={BAR_W + 12}
                     height={26}
                     rx={7}
-                    fill="#0f172a"
+                    fill="#2d241e"
                   />
                   <text
                     x={x + BAR_W / 2}
@@ -167,7 +167,7 @@ function BarChart({ data, metric, maxVal, hovered, onHover }) {
                 x={x + BAR_W / 2}
                 y={CHART_H + 20}
                 textAnchor="middle"
-                fill={isPeak ? "#1a73e8" : "#94a3b8"}
+                fill={isPeak ? "#ae2012" : "#a68b66"}
                 fontSize="11"
                 fontWeight={isPeak ? "700" : "500"}
                 fontFamily="'Plus Jakarta Sans', sans-serif"
@@ -180,7 +180,7 @@ function BarChart({ data, metric, maxVal, hovered, onHover }) {
                   x={x + BAR_W / 2}
                   y={CHART_H + 34}
                   textAnchor="middle"
-                  fill="#1a73e8"
+                  fill="#ae2012"
                   fontSize="9"
                   fontWeight="700"
                 >
@@ -200,8 +200,8 @@ const css = `
     background: #fff;
     border-radius: 16px;
     padding: 1.3rem;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 4px rgba(15,23,42,0.05);
+    border: 1px solid #e9d8bf;
+    box-shadow: 0 1px 4px rgba(45, 36, 30,0.05);
     height: 100%;
   }
   .wc-header {
@@ -216,16 +216,16 @@ const css = `
     font-family: 'Sora', sans-serif;
     font-size: 0.95rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #2d241e;
   }
   .wc-sub {
     font-size: 0.73rem;
-    color: #94a3b8;
+    color: #a68b66;
     margin-top: 2px;
   }
   .wc-toggle {
     display: flex;
-    background: #f0f5ff;
+    background: #fdfbf7;
     border-radius: 9px;
     padding: 3px;
     gap: 2px;
@@ -235,7 +235,7 @@ const css = `
     border: none;
     border-radius: 7px;
     background: transparent;
-    color: #64748b;
+    color: #7d6b5d;
     font-size: 0.78rem;
     font-weight: 600;
     cursor: pointer;
@@ -245,8 +245,8 @@ const css = `
   }
   .wc-toggle-active {
     background: #fff;
-    color: #1a73e8;
-    box-shadow: 0 1px 4px rgba(15,23,42,0.1);
+    color: #ae2012;
+    box-shadow: 0 1px 4px rgba(45, 36, 30,0.1);
   }
   .wc-chips {
     display: flex;
@@ -257,8 +257,8 @@ const css = `
   .wc-chip {
     flex: 1;
     min-width: 80px;
-    background: #f8faff;
-    border: 1px solid #e2e8f0;
+    background: #fdfbf7;
+    border: 1px solid #e9d8bf;
     border-radius: 10px;
     padding: 0.55rem 0.85rem;
     display: flex;
@@ -266,19 +266,19 @@ const css = `
     gap: 2px;
   }
   .wc-chip-peak {
-    background: #eff6ff;
-    border-color: #bfdbfe;
+    background: #eaf6ed;
+    border-color: #e9d8bf;
   }
   .wc-chip-val {
     font-family: 'Sora', sans-serif;
     font-size: 1.05rem;
     font-weight: 800;
-    color: #0f172a;
+    color: #2d241e;
     letter-spacing: -0.02em;
   }
   .wc-chip-label {
     font-size: 0.7rem;
-    color: #94a3b8;
+    color: #a68b66;
     font-weight: 500;
   }
   .wc-chart-wrap {

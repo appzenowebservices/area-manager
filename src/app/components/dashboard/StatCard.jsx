@@ -19,8 +19,8 @@ export default function StatCard({
   label,
   value,
   icon,
-  iconBg = "#e8f0fe",
-  iconColor = "#1a73e8",
+  iconBg = "#fdfbf7",
+  iconColor = "#ae2012",
   trend,
   trendLabel = "vs last week",
   prefix = "",
@@ -59,8 +59,8 @@ export default function StatCard({
             <span
               className="sc-trend"
               style={{
-                color: isUp ? "#10b981" : isDown ? "#ef4444" : "#94a3b8",
-                background: isUp ? "#d1fae5" : isDown ? "#fee2e2" : "#f1f5f9",
+                color: isUp ? "#0c831f" : isDown ? "#d32f2f" : "#a68b66",
+                background: isUp ? "#d3ebd8" : isDown ? "#fbebe9" : "#f5ebe0",
               }}
             >
               {isUp   && <ArrowUpIcon />}
@@ -78,18 +78,18 @@ export default function StatCard({
 const css = `
   .sc-card {
     background: #fff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e9d8bf;
     border-radius: 16px;
     padding: 1.2rem 1.3rem;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    box-shadow: 0 1px 4px rgba(15,23,42,0.05);
+    box-shadow: 0 1px 4px rgba(45, 36, 30,0.05);
     animation: scIn 0.45s cubic-bezier(0.22,1,0.36,1) both;
     transition: box-shadow 0.2s, transform 0.2s;
   }
   .sc-card:hover {
-    box-shadow: 0 6px 20px rgba(26,115,232,0.1);
+    box-shadow: 0 6px 20px rgba(12, 131, 31,0.1);
     transform: translateY(-2px);
   }
   @keyframes scIn {
@@ -104,7 +104,7 @@ const css = `
   .sc-label {
     font-size: 0.78rem;
     font-weight: 600;
-    color: #64748b;
+    color: #7d6b5d;
     text-transform: uppercase;
     letter-spacing: 0.06em;
   }
@@ -120,7 +120,7 @@ const css = `
     font-family: 'Sora', sans-serif;
     font-size: clamp(1.5rem, 3vw, 1.9rem);
     font-weight: 800;
-    color: #0f172a;
+    color: #2d241e;
     letter-spacing: -0.02em;
     line-height: 1;
     display: flex;
@@ -130,7 +130,7 @@ const css = `
   .sc-prefix {
     font-size: 1.1rem;
     font-weight: 600;
-    color: #475569;
+    color: #5d4037;
   }
   .sc-trend-row {
     display: flex;
@@ -149,6 +149,6 @@ const css = `
   }
   .sc-trend-label {
     font-size: 0.73rem;
-    color: #94a3b8;
+    color: #a68b66;
   }
 `;

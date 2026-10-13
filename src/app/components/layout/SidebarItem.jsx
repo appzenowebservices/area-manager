@@ -29,11 +29,11 @@ export default function SidebarItem({ to, icon, label, collapsed, badge, isSubIt
 
           {/* Icon or sub-item dot */}
           {icon ? (
-            <span style={{ ...styles.icon, color: isActive ? "#1a73e8" : "#64748b" }}>
+            <span style={{ ...styles.icon, color: isActive ? "#ae2012" : "#7d6b5d" }}>
               {icon}
             </span>
           ) : isSubItem ? (
-            <span style={{ width: 6, height: 6, borderRadius:"50%", background: isActive ? "#1a73e8" : "#cbd5e1", flexShrink:0 }} />
+            <span style={{ width: 6, height: 6, borderRadius:"50%", background: isActive ? "#ae2012" : "#d2b48c", flexShrink:0 }} />
           ) : null}
 
           {/* Label — hidden when collapsed */}
@@ -41,7 +41,7 @@ export default function SidebarItem({ to, icon, label, collapsed, badge, isSubIt
             <span
               style={{
                 ...styles.label,
-                color: isActive ? "#1a73e8" : "#64748b",
+                color: isActive ? "#ae2012" : "#7d6b5d",
                 fontWeight: isActive ? 700 : 500,
                 fontSize: isSubItem ? "0.82rem" : "0.88rem",
               }}
@@ -86,7 +86,7 @@ const styles = {
     overflow: "hidden",
   },
   active: {
-    background: "#e8f0fe",
+    background: "#fdfbf7",
   },
   inactive: {
     background: "transparent",
@@ -99,7 +99,7 @@ const styles = {
     width: 3,
     height: 20,
     borderRadius: "0 3px 3px 0",
-    background: "#1a73e8",
+    background: "#ae2012",
   },
   icon: {
     display: "flex",
@@ -115,7 +115,7 @@ const styles = {
   },
   badge: {
     marginLeft: "auto",
-    background: "#1a73e8",
+    background: "#ae2012",
     color: "#fff",
     fontSize: "0.68rem",
     fontWeight: 700,

@@ -61,7 +61,7 @@ export default function EarningsPage() {
           <p className="text-xs md:text-sm text-slate-400 mt-1">Your commission-based income overview</p>
         </div>
         <button
-          className={`inline-flex items-center gap-2 px-5 py-2.5 text-white rounded-xl text-sm font-bold shadow-[0_4px_14px_rgba(26,115,232,0.35)] transition-all whitespace-nowrap ${
+          className={`inline-flex items-center gap-2 px-5 py-2.5 text-white rounded-xl text-sm font-bold shadow-[0_4px_14px_rgba(12, 131, 31,0.35)] transition-all whitespace-nowrap ${
             !canWithdraw ? "bg-slate-400 shadow-none cursor-not-allowed" : "bg-blue-600 hover:bg-blue-700"
           }`}
           onClick={() => canWithdraw && setShowModal(true)}
@@ -362,7 +362,7 @@ export default function EarningsPage() {
 function KpiCard({ label, value, sub, color, bg, icon, highlight }) {
   return (
     <div className={`bg-white border border-slate-200 rounded-2xl p-4 flex flex-col gap-1.5 shadow-sm transition-shadow hover:shadow-md ${
-      highlight ? "border-blue-200 bg-gradient-to-br from-[#f0f7ff] to-[#e8f0fe]" : ""
+      highlight ? "border-blue-200 bg-gradient-to-br from-[#eaf6ed] to-[#fdfbf7]" : ""
     }`}>
       <div className="flex justify-between items-center mb-1">
         <span className="text-[0.68rem] font-extrabold text-slate-400 uppercase tracking-widest">{label}</span>
@@ -389,6 +389,6 @@ function StatusPill({ status }) {
 }
 
 function rankColor(i) {
-  const colors = ["#1a73e8","#7c3aed","#10b981","#f59e0b","#ef4444","#64748b"];
-  return colors[i] || "#94a3b8";
+  const colors = ["#ae2012","#4a5d23","#0c831f","#e9c46a","#d32f2f","#7d6b5d"];
+  return colors[i] || "#a68b66";
 }

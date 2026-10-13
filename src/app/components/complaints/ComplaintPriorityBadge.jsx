@@ -4,10 +4,10 @@
  */
 export default function ComplaintPriorityBadge({ priority, size = "md" }) {
   const map = {
-    Low:      { bg: "#f0f9ff", color: "#0369a1", bar: "#38bdf8" },
-    Medium:   { bg: "#fef3c7", color: "#d97706", bar: "#f59e0b" },
-    High:     { bg: "#fee2e2", color: "#b91c1c", bar: "#ef4444" },
-    Critical: { bg: "#fff1f2", color: "#9f1239", bar: "#f43f5e" },
+    Low:      { bg: "#eaf6ed", color: "#2196f3", bar: "#2196f3" },
+    Medium:   { bg: "#faedcc", color: "#a67a22", bar: "#e9c46a" },
+    High:     { bg: "#fbebe9", color: "#8b150e", bar: "#d32f2f" },
+    Critical: { bg: "#fbebe9", color: "#8b150e", bar: "#d32f2f" },
   };
   const s = map[priority] || map["Low"];
   const sm = size === "sm";

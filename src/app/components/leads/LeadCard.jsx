@@ -15,7 +15,7 @@ export default function LeadCard({ lead, onView }) {
       <style>{css}</style>
       <div className="lc-card">
         <div className="lc-top">
-          <div className="lc-avatar" style={{ background: isVendor ? "linear-gradient(135deg,#1a73e8,#0d47a1)" : "linear-gradient(135deg,#10b981,#065f46)" }}>
+          <div className="lc-avatar" style={{ background: isVendor ? "linear-gradient(135deg,#ae2012,#2d241e)" : "linear-gradient(135deg,#0c831f,#0a671a)" }}>
             {lead.name.charAt(0)}
           </div>
           <div className="lc-info">
@@ -67,23 +67,23 @@ function Chip({ label, val, accent, ok, warn }) {
 }
 
 const css = `
-  .lc-card { background:#fff; border-radius:14px; border:1px solid #e2e8f0; padding:1rem 1.1rem; box-shadow:0 1px 4px rgba(15,23,42,0.04); }
+  .lc-card { background:#fff; border-radius:14px; border:1px solid #e9d8bf; padding:1rem 1.1rem; box-shadow:0 1px 4px rgba(45, 36, 30,0.04); }
   .lc-top { display:flex; align-items:center; gap:10px; margin-bottom:8px; }
   .lc-avatar { width:36px; height:36px; border-radius:9px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:0.95rem; font-weight:800; font-family:'Sora',sans-serif; flex-shrink:0; }
   .lc-info { flex:1; min-width:0; }
-  .lc-name { font-size:0.9rem; font-weight:700; color:#0f172a; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .lc-sub { font-size:0.71rem; color:#94a3b8; margin-top:1px; }
+  .lc-name { font-size:0.9rem; font-weight:700; color:#2d241e; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
+  .lc-sub { font-size:0.71rem; color:#a68b66; margin-top:1px; }
   .lc-meta-row { display:flex; flex-wrap:wrap; gap:8px; margin-bottom:4px; }
-  .lc-meta { font-size:0.74rem; color:#64748b; }
-  .lc-divider { height:1px; background:#f1f5f9; margin:8px 0; }
+  .lc-meta { font-size:0.74rem; color:#7d6b5d; }
+  .lc-divider { height:1px; background:#f5ebe0; margin:8px 0; }
   .lc-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:6px 12px; margin-bottom:8px; }
   .lc-chip-item { display:flex; flex-direction:column; gap:1px; }
-  .lc-chip-label { font-size:0.62rem; color:#94a3b8; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; }
-  .lc-chip-val { font-size:0.8rem; color:#334155; font-weight:600; }
-  .lc-accent { color:#7c3aed; }
-  .lc-ok   { color:#10b981; }
-  .lc-warn { color:#f59e0b; }
-  .lc-note { background:#f0f5ff; border-radius:8px; padding:0.4rem 0.7rem; font-size:0.74rem; color:#334155; margin-bottom:8px; }
-  .lc-btn { width:100%; padding:0.6rem; background:#e8f0fe; color:#1a73e8; border:none; border-radius:9px; font-size:0.83rem; font-weight:700; font-family:inherit; cursor:pointer; transition:background 0.15s; }
-  .lc-btn:hover { background:#d2e3fc; }
+  .lc-chip-label { font-size:0.62rem; color:#a68b66; font-weight:700; text-transform:uppercase; letter-spacing:0.04em; }
+  .lc-chip-val { font-size:0.8rem; color:#4a3f35; font-weight:600; }
+  .lc-accent { color:#4a5d23; }
+  .lc-ok   { color:#0c831f; }
+  .lc-warn { color:#e9c46a; }
+  .lc-note { background:#fdfbf7; border-radius:8px; padding:0.4rem 0.7rem; font-size:0.74rem; color:#4a3f35; margin-bottom:8px; }
+  .lc-btn { width:100%; padding:0.6rem; background:#fdfbf7; color:#ae2012; border:none; border-radius:9px; font-size:0.83rem; font-weight:700; font-family:inherit; cursor:pointer; transition:background 0.15s; }
+  .lc-btn:hover { background:#f5ebe0; }
 `;

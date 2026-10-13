@@ -121,21 +121,21 @@ const css = `
   .nt-channel {
     display:flex; align-items:center; gap:12px;
     padding:0.75rem 0.9rem;
-    border:1.5px solid #e2e8f0; border-radius:12px;
+    border:1.5px solid #e9d8bf; border-radius:12px;
     background:#fff; transition:all 0.15s;
   }
-  .nt-ch-on { border-color:#bfdbfe; background:#f0f7ff; }
+  .nt-ch-on { border-color:#e9d8bf; background:#eaf6ed; }
   .nt-ch-icon { font-size:1.1rem; }
   .nt-ch-text { flex:1; min-width:0; }
-  .nt-ch-label { display:block; font-size:0.85rem; font-weight:600; color:#1e293b; }
-  .nt-ch-desc  { display:block; font-size:0.72rem; color:#94a3b8; margin-top:1px; }
+  .nt-ch-label { display:block; font-size:0.85rem; font-weight:600; color:#2d241e; }
+  .nt-ch-desc  { display:block; font-size:0.72rem; color:#a68b66; margin-top:1px; }
 
   .nt-toggle {
     width:40px; height:22px; border-radius:11px;
-    background:#e2e8f0; border:none; cursor:pointer;
+    background:#e9d8bf; border:none; cursor:pointer;
     position:relative; transition:background 0.2s; flex-shrink:0; padding:0;
   }
-  .nt-on { background:#1a73e8; }
+  .nt-on { background:#ae2012; }
   .nt-thumb {
     position:absolute; top:3px; left:3px;
     width:16px; height:16px; border-radius:50%;
@@ -147,21 +147,21 @@ const css = `
   .nt-group-hdr {
     display:flex; align-items:center; gap:8px;
     padding-bottom:10px; margin-bottom:4px;
-    border-bottom:1px solid #f1f5f9;
+    border-bottom:1px solid #f5ebe0;
   }
   .nt-group-icon { font-size:1rem; }
-  .nt-group-name { flex:1; font-size:0.9rem; font-weight:700; color:#0f172a; }
+  .nt-group-name { flex:1; font-size:0.9rem; font-weight:700; color:#2d241e; }
   .nt-all-btn {
-    font-size:0.72rem; font-weight:600; color:#1a73e8;
+    font-size:0.72rem; font-weight:600; color:#ae2012;
     background:none; border:none; cursor:pointer; font-family:inherit; padding:0;
   }
 
   .nt-item {
     display:flex; align-items:center; gap:12px;
-    padding:0.65rem 0; border-bottom:1px solid #f8faff;
+    padding:0.65rem 0; border-bottom:1px solid #fdfbf7;
   }
   .nt-item:last-child { border-bottom:none; }
   .nt-item-text { flex:1; min-width:0; }
-  .nt-item-label { display:block; font-size:0.84rem; font-weight:600; color:#1e293b; }
-  .nt-item-desc  { display:block; font-size:0.71rem; color:#94a3b8; margin-top:1px; }
+  .nt-item-label { display:block; font-size:0.84rem; font-weight:600; color:#2d241e; }
+  .nt-item-desc  { display:block; font-size:0.71rem; color:#a68b66; margin-top:1px; }
 `;

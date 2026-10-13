@@ -19,7 +19,7 @@ import OrderStatusBadge from "../orders/OrderStatusBadge";
 const STATUSES = ["Available", "Busy", "Inactive"];
 
 const StarIcon = () => (
-  <svg width="13" height="13" viewBox="0 0 24 24" fill="#f59e0b" stroke="none">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="#e9c46a" stroke="none">
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
   </svg>
 );
@@ -76,9 +76,9 @@ export default function DeliveryDrawer({ partner: initialPartner, onClose, onSta
   };
 
   const statusStyle = {
-    Available: { bg: "#d1fae5", border: "#6ee7b7", color: "#065f46" },
-    Busy:      { bg: "#dbeafe", border: "#bfdbfe", color: "#1e40af" },
-    Inactive:  { bg: "#f1f5f9", border: "#e2e8f0", color: "#475569" },
+    Available: { bg: "#d3ebd8", border: "#93d3a0", color: "#0a671a" },
+    Busy:      { bg: "#f5ebe0", border: "#e9d8bf", color: "#8b150e" },
+    Inactive:  { bg: "#f5ebe0", border: "#e9d8bf", color: "#5d4037" },
   };
 
   return (
@@ -127,10 +127,10 @@ export default function DeliveryDrawer({ partner: initialPartner, onClose, onSta
           {/* KPI Cards */}
           <div className="dd-kpi-row">
             {[
-              { label: "Active",    val: stats.pending,   color: "#1a73e8", bg: "#e8f0fe" },
-              { label: "Delivered", val: stats.delivered, color: "#10b981", bg: "#d1fae5" },
-              { label: "Cancelled", val: stats.cancelled, color: "#ef4444", bg: "#fee2e2" },
-              { label: "Revenue",   val: `₹${stats.revenue.toLocaleString("en-IN")}`, color: "#7c3aed", bg: "#ede9fe" },
+              { label: "Active",    val: stats.pending,   color: "#ae2012", bg: "#fdfbf7" },
+              { label: "Delivered", val: stats.delivered, color: "#0c831f", bg: "#d3ebd8" },
+              { label: "Cancelled", val: stats.cancelled, color: "#d32f2f", bg: "#fbebe9" },
+              { label: "Revenue",   val: `₹${stats.revenue.toLocaleString("en-IN")}`, color: "#4a5d23", bg: "#f5ebe0" },
             ].map(k => (
               <div key={k.label} className="dd-kpi" style={{ background: k.bg }}>
                 <span className="dd-kpi-val" style={{ color: k.color }}>{k.val}</span>
@@ -212,13 +212,13 @@ const css = `
   /* Backdrop */
   .dd-backdrop {
     position: fixed; inset: 0;
-    background: rgba(15,23,42,0);
+    background: rgba(45, 36, 30,0);
     z-index: 300;
     transition: background 0.28s ease;
     pointer-events: none;
   }
   .dd-backdrop-in {
-    background: rgba(15,23,42,0.45);
+    background: rgba(45, 36, 30,0.45);
     backdrop-filter: blur(2px);
     pointer-events: all;
   }
@@ -229,13 +229,13 @@ const css = `
     top: 0; right: 0; bottom: 0;
     width: min(460px, 100vw);
     height: 100vh;
-    background: #f8faff;
+    background: #fdfbf7;
     z-index: 301;
     display: flex;
     flex-direction: column;
     overflow: hidden;
-    box-shadow: -8px 0 40px rgba(15,23,42,0.15);
-    border-left: 1px solid #e2e8f0;
+    box-shadow: -8px 0 40px rgba(45, 36, 30,0.15);
+    border-left: 1px solid #e9d8bf;
     transform: translateX(100%);
     transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
   }
@@ -248,14 +248,14 @@ const css = `
     align-items: center;
     padding: 1.1rem 1.3rem;
     background: #fff;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e9d8bf;
     flex-shrink: 0;
   }
   .dd-header-inner { display: flex; align-items: center; gap: 12px; }
   .dd-avatar {
     width: 44px; height: 44px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    background: linear-gradient(135deg, #ae2012, #2d241e);
     color: #fff;
     display: flex; align-items: center; justify-content: center;
     font-size: 0.88rem; font-weight: 700;
@@ -264,17 +264,17 @@ const css = `
   .dd-header-name {
     font-family: 'Sora', sans-serif;
     font-size: 1rem; font-weight: 800;
-    color: #0f172a;
+    color: #2d241e;
   }
-  .dd-header-meta { font-size: 0.73rem; color: #94a3b8; margin-top: 2px; }
+  .dd-header-meta { font-size: 0.73rem; color: #a68b66; margin-top: 2px; }
   .dd-close {
     width: 32px; height: 32px;
     display: flex; align-items: center; justify-content: center;
-    background: #f0f5ff; border: none; border-radius: 8px;
-    font-size: 0.9rem; color: #64748b; cursor: pointer;
+    background: #fdfbf7; border: none; border-radius: 8px;
+    font-size: 0.9rem; color: #7d6b5d; cursor: pointer;
     transition: background 0.15s, color 0.15s; flex-shrink: 0;
   }
-  .dd-close:hover { background: #fee2e2; color: #ef4444; }
+  .dd-close:hover { background: #fbebe9; color: #d32f2f; }
 
   /* Rating strip — fixed */
   .dd-strip {
@@ -283,20 +283,20 @@ const css = `
     gap: 14px;
     padding: 0.75rem 1.3rem;
     background: #fff;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f5ebe0;
     flex-shrink: 0;
   }
   .dd-rating {
     display: flex; align-items: center; gap: 5px;
-    font-size: 0.88rem; font-weight: 700; color: #0f172a;
+    font-size: 0.88rem; font-weight: 700; color: #2d241e;
   }
-  .dd-rating-label { font-size: 0.68rem; color: #94a3b8; font-weight: 500; }
+  .dd-rating-label { font-size: 0.68rem; color: #a68b66; font-weight: 500; }
   .dd-joins {
     display: flex; flex-direction: column; gap: 1px;
   }
-  .dd-strip-val { font-weight: 700; color: #0f172a; font-size: 0.88rem; }
-  .dd-strip-label { font-size: 0.65rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; }
-  .dd-divider-v { width: 1px; height: 28px; background: #e2e8f0; flex-shrink: 0; }
+  .dd-strip-val { font-weight: 700; color: #2d241e; font-size: 0.88rem; }
+  .dd-strip-label { font-size: 0.65rem; color: #a68b66; font-weight: 600; text-transform: uppercase; }
+  .dd-divider-v { width: 1px; height: 28px; background: #e9d8bf; flex-shrink: 0; }
 
   /* Scrollable body */
   .dd-body {
@@ -311,7 +311,7 @@ const css = `
   }
   .dd-body::-webkit-scrollbar { width: 4px; }
   .dd-body::-webkit-scrollbar-track { background: transparent; }
-  .dd-body::-webkit-scrollbar-thumb { background: #bfdbfe; border-radius: 99px; }
+  .dd-body::-webkit-scrollbar-thumb { background: #e9d8bf; border-radius: 99px; }
 
   /* KPI row */
   .dd-kpi-row {
@@ -331,7 +331,7 @@ const css = `
   }
   .dd-kpi-label {
     font-size: 0.62rem;
-    color: #64748b;
+    color: #7d6b5d;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -341,18 +341,18 @@ const css = `
   /* Section */
   .dd-section {
     background: #fff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e9d8bf;
     border-radius: 14px;
     padding: 1rem 1.1rem;
-    box-shadow: 0 1px 3px rgba(15,23,42,0.04);
+    box-shadow: 0 1px 3px rgba(45, 36, 30,0.04);
   }
   .dd-section-title {
     font-family: 'Sora', sans-serif;
     font-size: 0.82rem; font-weight: 700;
-    color: #0f172a;
+    color: #2d241e;
     padding-bottom: 8px;
     margin-bottom: 10px;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f5ebe0;
   }
 
   /* Info rows */
@@ -362,13 +362,13 @@ const css = `
     align-items: flex-start;
     gap: 12px;
     padding: 0.38rem 0;
-    border-bottom: 1px solid #f8faff;
+    border-bottom: 1px solid #fdfbf7;
     font-size: 0.83rem;
   }
   .dd-row:last-child { border-bottom: none; }
   .dd-row-label {
     font-size: 0.68rem;
-    color: #94a3b8;
+    color: #a68b66;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -377,7 +377,7 @@ const css = `
     min-width: 80px;
   }
   .dd-row-val {
-    color: #334155;
+    color: #4a3f35;
     font-weight: 500;
     font-size: 0.83rem;
     text-align: right;
@@ -392,10 +392,10 @@ const css = `
   }
   .dd-status-btn {
     padding: 0.55rem;
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid #e9d8bf;
     border-radius: 9px;
     background: #fff;
-    color: #64748b;
+    color: #7d6b5d;
     font-size: 0.78rem;
     font-weight: 600;
     font-family: inherit;
@@ -403,7 +403,7 @@ const css = `
     transition: all 0.15s;
     white-space: nowrap;
   }
-  .dd-status-btn:hover { background: #f0f5ff; border-color: #bfdbfe; }
+  .dd-status-btn:hover { background: #fdfbf7; border-color: #e9d8bf; }
 
   /* Orders list */
   .dd-orders-list { display: flex; flex-direction: column; gap: 6px; }
@@ -412,20 +412,20 @@ const css = `
     justify-content: space-between;
     align-items: center;
     padding: 0.55rem 0.75rem;
-    background: #f8faff;
-    border: 1px solid #f1f5f9;
+    background: #fdfbf7;
+    border: 1px solid #f5ebe0;
     border-radius: 10px;
     gap: 8px;
   }
   .dd-order-left { display: flex; flex-direction: column; gap: 2px; }
   .dd-order-id {
     font-family: 'Sora', sans-serif;
-    font-size: 0.78rem; font-weight: 700; color: #1a73e8;
+    font-size: 0.78rem; font-weight: 700; color: #ae2012;
   }
-  .dd-order-customer { font-size: 0.73rem; color: #475569; font-weight: 500; }
+  .dd-order-customer { font-size: 0.73rem; color: #5d4037; font-weight: 500; }
   .dd-order-right { display: flex; flex-direction: column; align-items: flex-end; gap: 4px; }
-  .dd-order-amt { font-weight: 700; color: #0f172a; font-size: 0.82rem; }
-  .dd-no-orders { font-size: 0.82rem; color: #94a3b8; text-align: center; padding: 1rem 0; }
+  .dd-order-amt { font-weight: 700; color: #2d241e; font-size: 0.82rem; }
+  .dd-no-orders { font-size: 0.82rem; color: #a68b66; text-align: center; padding: 1rem 0; }
 
   @media (max-width: 520px) { .dd-drawer { width: 100vw; } }
   @media (max-width: 380px) {

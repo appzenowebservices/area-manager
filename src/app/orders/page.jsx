@@ -72,12 +72,12 @@ export default function OrdersPage() {
       {/* Summary Strip */}
       <div className="op-summary">
         {[
-          { label: "Total",      val: orders.length,           color: "#1a73e8", bg: "#e8f0fe" },
-          { label: "Pending",    val: counts.Pending,          color: "#f59e0b", bg: "#fef3c7" },
-          { label: "Processing", val: counts.Processing,       color: "#1a73e8", bg: "#dbeafe" },
-          { label: "Delivered",  val: counts.Delivered,        color: "#10b981", bg: "#d1fae5" },
-          { label: "Cancelled",  val: counts.Cancelled,        color: "#ef4444", bg: "#fee2e2" },
-          { label: "Revenue",    val: `₹${totalRevenue.toLocaleString()}`, color: "#10b981", bg: "#d1fae5" },
+          { label: "Total",      val: orders.length,           color: "#ae2012", bg: "#fdfbf7" },
+          { label: "Pending",    val: counts.Pending,          color: "#e9c46a", bg: "#faedcc" },
+          { label: "Processing", val: counts.Processing,       color: "#ae2012", bg: "#f5ebe0" },
+          { label: "Delivered",  val: counts.Delivered,        color: "#0c831f", bg: "#d3ebd8" },
+          { label: "Cancelled",  val: counts.Cancelled,        color: "#d32f2f", bg: "#fbebe9" },
+          { label: "Revenue",    val: `₹${totalRevenue.toLocaleString()}`, color: "#0c831f", bg: "#d3ebd8" },
         ].map(s => (
           <div key={s.label} className="op-sum-chip" style={{ background: s.bg }}>
             <span className="op-sum-val" style={{ color: s.color }}>{s.val}</span>
@@ -131,16 +131,16 @@ export default function OrdersPage() {
 
 const css = `
   .op-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 1.25rem; flex-wrap: wrap; gap: 10px; }
-  .op-title { font-family: 'Sora', sans-serif; font-size: clamp(1.2rem, 3vw, 1.5rem); font-weight: 800; color: #0f172a; letter-spacing: -0.02em; margin: 0; }
-  .op-sub { font-size: 0.82rem; color: #94a3b8; margin-top: 3px; }
+  .op-title { font-family: 'Sora', sans-serif; font-size: clamp(1.2rem, 3vw, 1.5rem); font-weight: 800; color: #2d241e; letter-spacing: -0.02em; margin: 0; }
+  .op-sub { font-size: 0.82rem; color: #a68b66; margin-top: 3px; }
   .op-summary { display: flex; gap: 10px; flex-wrap: wrap; margin-bottom: 1.25rem; }
   .op-sum-chip { display: flex; flex-direction: column; align-items: center; gap: 2px; padding: 0.55rem 1rem; border-radius: 12px; min-width: 80px; flex: 1; }
   .op-sum-val { font-family: 'Sora', sans-serif; font-size: 1.15rem; font-weight: 800; line-height: 1; }
-  .op-sum-label { font-size: 0.68rem; color: #64748b; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
+  .op-sum-label { font-size: 0.68rem; color: #7d6b5d; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; white-space: nowrap; }
   .op-desktop { display: block; }
   .op-mobile  { display: none; }
   .op-card-list { display: flex; flex-direction: column; gap: 10px; }
-  .op-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 4rem 1rem; color: #94a3b8; font-size: 0.88rem; }
+  .op-empty { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 10px; padding: 4rem 1rem; color: #a68b66; font-size: 0.88rem; }
   @media (max-width: 768px) {
     .op-desktop { display: none; }
     .op-mobile  { display: block; }

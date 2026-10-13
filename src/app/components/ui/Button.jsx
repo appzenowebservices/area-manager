@@ -48,21 +48,21 @@ export default function Button({
 
   const variants = {
     primary: {
-      background: "#1a73e8",
+      background: "#ae2012",
       color: "#fff",
-      boxShadow: "0 4px 14px rgba(26,115,232,0.35)",
+      boxShadow: "0 4px 14px rgba(12, 131, 31,0.35)",
     },
     secondary: {
-      background: "#e8f0fe",
-      color: "#1a73e8",
+      background: "#fdfbf7",
+      color: "#ae2012",
     },
     ghost: {
       background: "transparent",
-      color: "#475569",
-      border: "1.5px solid #dbeafe",
+      color: "#5d4037",
+      border: "1.5px solid #f5ebe0",
     },
     danger: {
-      background: "#ef4444",
+      background: "#d32f2f",
       color: "#fff",
       boxShadow: "0 4px 14px rgba(239,68,68,0.3)",
     },

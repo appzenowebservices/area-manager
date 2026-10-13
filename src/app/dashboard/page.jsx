@@ -80,34 +80,34 @@ const css = `
     font-family: 'Sora', sans-serif;
     font-size: clamp(1.1rem, 2.5vw, 1.5rem);
     font-weight: 800;
-    color: #0f172a;
+    color: #2d241e;
     letter-spacing: -0.02em;
     margin: 0;
   }
-  .db-date { font-size: 0.8rem; color: #94a3b8; margin-top: 3px; }
+  .db-date { font-size: 0.8rem; color: #a68b66; margin-top: 3px; }
   .db-badge {
     display: flex;
     align-items: center;
     gap: 7px;
     padding: 0.4rem 0.9rem;
-    background: #d1fae5;
-    border: 1px solid #6ee7b7;
+    background: #d3ebd8;
+    border: 1px solid #93d3a0;
     border-radius: 99px;
     font-size: 0.75rem;
     font-weight: 700;
-    color: #065f46;
+    color: #0a671a;
     white-space: nowrap;
     flex-shrink: 0;
   }
   .db-dot {
     width: 7px; height: 7px;
     border-radius: 50%;
-    background: #10b981;
+    background: #0c831f;
     animation: dbPulse 2s infinite;
   }
   @keyframes dbPulse {
-    0%,100% { box-shadow: 0 0 0 2px rgba(16,185,129,0.3); }
-    50%      { box-shadow: 0 0 0 5px rgba(16,185,129,0.1); }
+    0%,100% { box-shadow: 0 0 0 2px rgba(12, 131, 31,0.3); }
+    50%      { box-shadow: 0 0 0 5px rgba(12, 131, 31,0.1); }
   }
 
   /* ── Middle: Chart + Right panel ── */

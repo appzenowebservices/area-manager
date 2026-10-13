@@ -11,10 +11,10 @@ const PAGE_SIZE_OPTIONS = [20, 40, 60];
 
 // Light background colors per status
 const STATUS_ROW_COLORS = {
-  Pending:    { bg: "#fffbeb", border: "#fde68a" },
-  Processing: { bg: "#eff6ff", border: "#bfdbfe" },
-  Delivered:  { bg: "#f0fdf4", border: "#bbf7d0" },
-  Cancelled:  { bg: "#fff1f2", border: "#fecdd3" },
+  Pending:    { bg: "#fdf6e4", border: "#faedcc" },
+  Processing: { bg: "#eaf6ed", border: "#e9d8bf" },
+  Delivered:  { bg: "#eaf6ed", border: "#d3ebd8" },
+  Cancelled:  { bg: "#fbebe9", border: "#f6d4ce" },
 };
 
 export default function RecentOrdersTable() {
@@ -127,7 +127,7 @@ export default function RecentOrdersTable() {
                   <tr
                     key={o.id}
                     className="rot-tr"
-                    style={{ "--row-bg": rowColor.bg || "#fff", "--row-border": rowColor.border || "#f1f5f9" }}
+                    style={{ "--row-bg": rowColor.bg || "#fff", "--row-border": rowColor.border || "#f5ebe0" }}
                   >
                     <td className="rot-td"><span className="rot-order-id">{o.id}</span></td>
                     <td className="rot-td">
@@ -160,7 +160,7 @@ export default function RecentOrdersTable() {
           {paginated.map(o => {
             const rowColor = STATUS_ROW_COLORS[o.status] || {};
             return (
-              <div key={o.id} className="rot-mobile-card" style={{ background: rowColor.bg || "#fafbff", borderColor: rowColor.border || "#f1f5f9" }}>
+              <div key={o.id} className="rot-mobile-card" style={{ background: rowColor.bg || "#fdfbf7", borderColor: rowColor.border || "#f5ebe0" }}>
                 <div className="rot-mc-row1">
                   <span className="rot-order-id">{o.id}</span>
                   <StatusBadge status={o.status} size="sm" />
@@ -246,78 +246,78 @@ export default function RecentOrdersTable() {
 }
 
 const css = `
-  .rot-card { background: #fff; border-radius: 16px; padding: 1.3rem; border: 1px solid #e2e8f0; box-shadow: 0 1px 4px rgba(15,23,42,0.05); }
+  .rot-card { background: #fff; border-radius: 16px; padding: 1.3rem; border: 1px solid #e9d8bf; box-shadow: 0 1px 4px rgba(45, 36, 30,0.05); }
 
   /* Header */
   .rot-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; flex-wrap: wrap; gap: 8px; }
-  .rot-title { font-family: 'Sora', sans-serif; font-size: 0.95rem; font-weight: 700; color: #0f172a; }
-  .rot-sub { font-size: 0.73rem; color: #94a3b8; margin-top: 2px; }
+  .rot-title { font-family: 'Sora', sans-serif; font-size: 0.95rem; font-weight: 700; color: #2d241e; }
+  .rot-sub { font-size: 0.73rem; color: #a68b66; margin-top: 2px; }
   .rot-header-right { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
-  .rot-viewall { background: none; border: none; color: #1a73e8; font-size: 0.82rem; font-weight: 700; cursor: pointer; font-family: inherit; padding: 0; white-space: nowrap; }
+  .rot-viewall { background: none; border: none; color: #ae2012; font-size: 0.82rem; font-weight: 700; cursor: pointer; font-family: inherit; padding: 0; white-space: nowrap; }
 
   /* Per-page selector */
   .rot-pagesize-wrap { display: flex; align-items: center; gap: 6px; }
-  .rot-pagesize-label { font-size: 0.76rem; color: #64748b; font-weight: 500; white-space: nowrap; }
-  .rot-pagesize-select { border: 1.5px solid #e2e8f0; border-radius: 7px; padding: 0.25rem 0.5rem; font-size: 0.78rem; font-family: inherit; color: #0f172a; font-weight: 600; background: #f8fafc; cursor: pointer; outline: none; }
-  .rot-pagesize-select:focus { border-color: #1a73e8; }
+  .rot-pagesize-label { font-size: 0.76rem; color: #7d6b5d; font-weight: 500; white-space: nowrap; }
+  .rot-pagesize-select { border: 1.5px solid #e9d8bf; border-radius: 7px; padding: 0.25rem 0.5rem; font-size: 0.78rem; font-family: inherit; color: #2d241e; font-weight: 600; background: #fdfbf7; cursor: pointer; outline: none; }
+  .rot-pagesize-select:focus { border-color: #ae2012; }
 
   /* Filters */
   .rot-filters { display: flex; gap: 6px; flex-wrap: wrap; margin-bottom: 10px; }
-  .rot-filter { display: inline-flex; align-items: center; gap: 5px; padding: 0.32rem 0.8rem; border: 1.5px solid #e2e8f0; border-radius: 8px; background: transparent; color: #64748b; font-size: 0.76rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
-  .rot-filter-active { background: #e8f0fe; border-color: #bfdbfe; color: #1a73e8; }
-  .rot-filter-count { background: #e2e8f0; color: #64748b; border-radius: 99px; padding: 0 5px; font-size: 0.65rem; font-weight: 700; }
-  .rot-filter-active .rot-filter-count { background: #1a73e8; color: #fff; }
+  .rot-filter { display: inline-flex; align-items: center; gap: 5px; padding: 0.32rem 0.8rem; border: 1.5px solid #e9d8bf; border-radius: 8px; background: transparent; color: #7d6b5d; font-size: 0.76rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.15s; white-space: nowrap; }
+  .rot-filter-active { background: #fdfbf7; border-color: #e9d8bf; color: #ae2012; }
+  .rot-filter-count { background: #e9d8bf; color: #7d6b5d; border-radius: 99px; padding: 0 5px; font-size: 0.65rem; font-weight: 700; }
+  .rot-filter-active .rot-filter-count { background: #ae2012; color: #fff; }
 
   /* Legend */
   .rot-legend { display: flex; gap: 14px; flex-wrap: wrap; margin-bottom: 12px; }
-  .rot-legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.72rem; color: #64748b; font-weight: 500; }
+  .rot-legend-item { display: flex; align-items: center; gap: 5px; font-size: 0.72rem; color: #7d6b5d; font-weight: 500; }
   .rot-legend-dot { width: 9px; height: 9px; border-radius: 3px; flex-shrink: 0; }
 
   /* Table */
-  .rot-table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid #f1f5f9; }
+  .rot-table-wrap { overflow-x: auto; border-radius: 10px; border: 1px solid #f5ebe0; }
   .rot-table { width: 100%; border-collapse: collapse; font-size: 0.84rem; min-width: 750px; }
-  .rot-th { text-align: left; padding: 0.6rem 0.85rem; color: #94a3b8; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; background: #f8faff; border-bottom: 1px solid #f1f5f9; white-space: nowrap; }
+  .rot-th { text-align: left; padding: 0.6rem 0.85rem; color: #a68b66; font-size: 0.7rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; background: #fdfbf7; border-bottom: 1px solid #f5ebe0; white-space: nowrap; }
 
   /* Colored rows */
   .rot-tr { transition: filter 0.12s; background: var(--row-bg, #fff); }
   .rot-tr:hover { filter: brightness(0.97); }
-  .rot-td { padding: 0.72rem 0.85rem; color: #334155; border-bottom: 1px solid var(--row-border, #f8faff); vertical-align: middle; white-space: nowrap; font-size: 0.84rem; background: transparent; }
+  .rot-td { padding: 0.72rem 0.85rem; color: #4a3f35; border-bottom: 1px solid var(--row-border, #fdfbf7); vertical-align: middle; white-space: nowrap; font-size: 0.84rem; background: transparent; }
   .rot-tr:last-child .rot-td { border-bottom: none; }
 
-  .rot-order-id { font-family: 'Sora', sans-serif; font-weight: 700; color: #1a73e8; font-size: 0.82rem; }
-  .rot-customer { font-weight: 600; color: #0f172a; font-size: 0.84rem; }
-  .rot-meta { display: inline-flex; align-items: center; gap: 4px; color: #94a3b8; font-size: 0.72rem; margin-top: 2px; }
-  .rot-area { color: #64748b; }
-  .rot-vendor { font-size: 0.82rem; color: #334155; font-weight: 500; }
-  .rot-unassigned { color: #f59e0b; font-weight: 600; font-size: 0.8rem; }
-  .rot-amount { font-weight: 700; color: #0f172a; font-size: 0.88rem; }
-  .rot-time { color: #94a3b8; font-size: 0.75rem; }
-  .rot-action-btn { display: inline-flex; align-items: center; gap: 5px; padding: 0.32rem 0.75rem; background: #e8f0fe; color: #1a73e8; border: none; border-radius: 7px; font-size: 0.76rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: background 0.15s; white-space: nowrap; }
-  .rot-action-btn:hover { background: #d2e3fc; }
-  .rot-empty-row { text-align: center; padding: 2rem; color: #94a3b8; font-size: 0.85rem; }
+  .rot-order-id { font-family: 'Sora', sans-serif; font-weight: 700; color: #ae2012; font-size: 0.82rem; }
+  .rot-customer { font-weight: 600; color: #2d241e; font-size: 0.84rem; }
+  .rot-meta { display: inline-flex; align-items: center; gap: 4px; color: #a68b66; font-size: 0.72rem; margin-top: 2px; }
+  .rot-area { color: #7d6b5d; }
+  .rot-vendor { font-size: 0.82rem; color: #4a3f35; font-weight: 500; }
+  .rot-unassigned { color: #e9c46a; font-weight: 600; font-size: 0.8rem; }
+  .rot-amount { font-weight: 700; color: #2d241e; font-size: 0.88rem; }
+  .rot-time { color: #a68b66; font-size: 0.75rem; }
+  .rot-action-btn { display: inline-flex; align-items: center; gap: 5px; padding: 0.32rem 0.75rem; background: #fdfbf7; color: #ae2012; border: none; border-radius: 7px; font-size: 0.76rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: background 0.15s; white-space: nowrap; }
+  .rot-action-btn:hover { background: #f5ebe0; }
+  .rot-empty-row { text-align: center; padding: 2rem; color: #a68b66; font-size: 0.85rem; }
 
   /* Footer + Pagination */
-  .rot-footer { margin-top: 12px; padding-top: 10px; border-top: 1px solid #f1f5f9; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
-  .rot-footer-count { font-size: 0.78rem; color: #94a3b8; }
+  .rot-footer { margin-top: 12px; padding-top: 10px; border-top: 1px solid #f5ebe0; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 10px; }
+  .rot-footer-count { font-size: 0.78rem; color: #a68b66; }
   .rot-pagination { display: flex; align-items: center; gap: 4px; }
-  .rot-pg-btn { min-width: 30px; height: 30px; padding: 0 6px; border: 1.5px solid #e2e8f0; border-radius: 7px; background: #fff; color: #475569; font-size: 0.78rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.15s; display: inline-flex; align-items: center; justify-content: center; }
-  .rot-pg-btn:hover:not(:disabled) { background: #e8f0fe; border-color: #bfdbfe; color: #1a73e8; }
+  .rot-pg-btn { min-width: 30px; height: 30px; padding: 0 6px; border: 1.5px solid #e9d8bf; border-radius: 7px; background: #fff; color: #5d4037; font-size: 0.78rem; font-weight: 600; cursor: pointer; font-family: inherit; transition: all 0.15s; display: inline-flex; align-items: center; justify-content: center; }
+  .rot-pg-btn:hover:not(:disabled) { background: #fdfbf7; border-color: #e9d8bf; color: #ae2012; }
   .rot-pg-btn:disabled { opacity: 0.35; cursor: not-allowed; }
-  .rot-pg-active { background: #1a73e8 !important; border-color: #1a73e8 !important; color: #fff !important; }
-  .rot-pg-ellipsis { font-size: 0.82rem; color: #94a3b8; padding: 0 2px; }
+  .rot-pg-active { background: #ae2012 !important; border-color: #ae2012 !important; color: #fff !important; }
+  .rot-pg-ellipsis { font-size: 0.82rem; color: #a68b66; padding: 0 2px; }
 
   /* Mobile cards */
   .rot-mobile-list { display: none; }
-  .rot-mobile-card { border: 1.5px solid #f1f5f9; border-radius: 12px; padding: 0.9rem; margin-bottom: 8px; }
+  .rot-mobile-card { border: 1.5px solid #f5ebe0; border-radius: 12px; padding: 0.9rem; margin-bottom: 8px; }
   .rot-mc-row1 { display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px; }
-  .rot-mc-name { font-weight: 700; color: #0f172a; font-size: 0.9rem; margin-bottom: 4px; }
+  .rot-mc-name { font-weight: 700; color: #2d241e; font-size: 0.9rem; margin-bottom: 4px; }
   .rot-mc-details { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 8px; }
   .rot-mc-bottom { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 10px; padding: 0.6rem 0; border-top: 1px solid rgba(0,0,0,0.06); border-bottom: 1px solid rgba(0,0,0,0.06); }
   .rot-mc-info { display: flex; flex-direction: column; gap: 2px; }
-  .rot-mc-label { font-size: 0.66rem; color: #94a3b8; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
+  .rot-mc-label { font-size: 0.66rem; color: #a68b66; font-weight: 600; text-transform: uppercase; letter-spacing: 0.04em; }
   .rot-mc-footer { display: flex; justify-content: space-between; align-items: center; margin-top: 2px; }
-  .rot-time-small { font-size: 0.72rem; color: #94a3b8; }
-  .rot-empty-mobile { text-align: center; padding: 2rem; color: #94a3b8; font-size: 0.85rem; }
+  .rot-time-small { font-size: 0.72rem; color: #a68b66; }
+  .rot-empty-mobile { text-align: center; padding: 2rem; color: #a68b66; font-size: 0.85rem; }
 
   @media (max-width: 700px) {
     .rot-table-wrap { display: none; }

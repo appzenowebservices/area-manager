@@ -78,7 +78,7 @@ export default function DeliveryFilters({
 const css = `
   .df-wrap {
     background: #fff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e9d8bf;
     border-radius: 14px;
     padding: 1rem 1.1rem;
     margin-bottom: 1.1rem;
@@ -97,17 +97,17 @@ const css = `
     min-width: 200px;
     display: flex;
     align-items: center;
-    background: #f8faff;
-    border: 1.5px solid #e2e8f0;
+    background: #fdfbf7;
+    border: 1.5px solid #e9d8bf;
     border-radius: 10px;
     padding: 0 0.75rem;
     transition: border-color 0.2s;
   }
   .df-search-wrap:focus-within {
-    border-color: #1a73e8;
-    box-shadow: 0 0 0 3px rgba(26,115,232,0.1);
+    border-color: #ae2012;
+    box-shadow: 0 0 0 3px rgba(12, 131, 31,0.1);
   }
-  .df-search-icon { color: #94a3b8; display: flex; align-items: center; flex-shrink: 0; }
+  .df-search-icon { color: #a68b66; display: flex; align-items: center; flex-shrink: 0; }
   .df-search {
     flex: 1;
     height: 40px;
@@ -115,41 +115,41 @@ const css = `
     outline: none;
     background: transparent;
     font-size: 0.85rem;
-    color: #0f172a;
+    color: #2d241e;
     font-family: inherit;
     padding: 0 8px;
   }
   .df-search::placeholder { color: #bbb; }
   .df-clear {
     background: none; border: none;
-    color: #94a3b8; cursor: pointer;
+    color: #a68b66; cursor: pointer;
     font-size: 0.8rem; padding: 2px 4px;
   }
   .df-select {
     height: 42px;
     padding: 0 0.75rem;
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid #e9d8bf;
     border-radius: 10px;
-    background: #f8faff;
+    background: #fdfbf7;
     font-size: 0.84rem;
-    color: #334155;
+    color: #4a3f35;
     font-family: inherit;
     outline: none;
     cursor: pointer;
     transition: border-color 0.2s;
     min-width: 130px;
   }
-  .df-select:focus { border-color: #1a73e8; }
+  .df-select:focus { border-color: #ae2012; }
   .df-meta {
     display: flex;
     justify-content: space-between;
     align-items: center;
   }
-  .df-count { font-size: 0.8rem; color: #64748b; }
-  .df-count strong { color: #1a73e8; }
+  .df-count { font-size: 0.8rem; color: #7d6b5d; }
+  .df-count strong { color: #ae2012; }
   .df-reset {
     background: none; border: none;
-    color: #ef4444; font-size: 0.78rem;
+    color: #d32f2f; font-size: 0.78rem;
     font-weight: 600; cursor: pointer;
     font-family: inherit; padding: 0;
   }

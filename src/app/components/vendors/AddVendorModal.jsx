@@ -126,14 +126,14 @@ function Field({ label, children, error }) {
 }
 
 const css = `
-  .avm-backdrop { position:fixed; inset:0; background:rgba(15,23,42,0.5); z-index:1300; backdrop-filter:blur(2px); }
+  .avm-backdrop { position:fixed; inset:0; background:rgba(45, 36, 30,0.5); z-index:1300; backdrop-filter:blur(2px); }
   .avm-modal {
     position:fixed; top:50%; left:50%;
     transform:translate(-50%,-50%);
     z-index:1301;
     width:min(560px,95vw);
     background:#fff; border-radius:18px;
-    box-shadow:0 20px 60px rgba(15,23,42,0.2);
+    box-shadow:0 20px 60px rgba(45, 36, 30,0.2);
     overflow:hidden;
     animation:avmIn 0.25s cubic-bezier(0.34,1.56,0.64,1);
     max-height:90vh;
@@ -143,27 +143,27 @@ const css = `
     from { transform:translate(-50%,-48%) scale(0.93); opacity:0; }
     to   { transform:translate(-50%,-50%) scale(1); opacity:1; }
   }
-  .avm-header { display:flex; justify-content:space-between; align-items:center; padding:1.1rem 1.3rem; border-bottom:1px solid #f1f5f9; flex-shrink:0; }
-  .avm-title { font-family:'Sora',sans-serif; font-size:1rem; font-weight:700; color:#0f172a; margin:0; }
-  .avm-close { width:30px; height:30px; background:#f0f5ff; border:none; border-radius:8px; color:#64748b; cursor:pointer; font-size:0.85rem; display:flex; align-items:center; justify-content:center; }
-  .avm-close:hover { background:#fee2e2; color:#ef4444; }
+  .avm-header { display:flex; justify-content:space-between; align-items:center; padding:1.1rem 1.3rem; border-bottom:1px solid #f5ebe0; flex-shrink:0; }
+  .avm-title { font-family:'Sora',sans-serif; font-size:1rem; font-weight:700; color:#2d241e; margin:0; }
+  .avm-close { width:30px; height:30px; background:#fdfbf7; border:none; border-radius:8px; color:#7d6b5d; cursor:pointer; font-size:0.85rem; display:flex; align-items:center; justify-content:center; }
+  .avm-close:hover { background:#fbebe9; color:#d32f2f; }
   .avm-body { padding:1.1rem 1.3rem; overflow-y:auto; flex:1; }
   .avm-grid { display:grid; grid-template-columns:1fr 1fr; gap:12px 16px; margin-bottom:12px; }
   .avm-field { display:flex; flex-direction:column; gap:5px; }
-  .avm-label { font-size:0.72rem; font-weight:700; color:#64748b; text-transform:uppercase; letter-spacing:0.05em; }
+  .avm-label { font-size:0.72rem; font-weight:700; color:#7d6b5d; text-transform:uppercase; letter-spacing:0.05em; }
   .avm-input, .avm-select, .avm-textarea {
-    border:1.5px solid #e2e8f0; border-radius:9px;
+    border:1.5px solid #e9d8bf; border-radius:9px;
     padding:0.55rem 0.75rem; font-size:0.85rem;
-    font-family:inherit; color:#0f172a; outline:none;
-    background:#f8faff; transition:border-color 0.2s;
+    font-family:inherit; color:#2d241e; outline:none;
+    background:#fdfbf7; transition:border-color 0.2s;
   }
-  .avm-input:focus, .avm-select:focus, .avm-textarea:focus { border-color:#1a73e8; background:#fff; }
-  .avm-err { border-color:#ef4444 !important; background:#fff5f5 !important; }
-  .avm-error { font-size:0.72rem; color:#ef4444; font-weight:600; }
+  .avm-input:focus, .avm-select:focus, .avm-textarea:focus { border-color:#ae2012; background:#fff; }
+  .avm-err { border-color:#d32f2f !important; background:#fbebe9 !important; }
+  .avm-error { font-size:0.72rem; color:#d32f2f; font-weight:600; }
   .avm-textarea { resize:vertical; }
-  .avm-footer { display:flex; gap:10px; padding:1rem 1.3rem; border-top:1px solid #f1f5f9; flex-shrink:0; }
-  .avm-cancel { flex:1; padding:0.7rem; background:#f0f5ff; border:none; border-radius:10px; color:#475569; font-size:0.88rem; font-weight:600; font-family:inherit; cursor:pointer; }
-  .avm-confirm { flex:2; padding:0.7rem; background:#1a73e8; border:none; border-radius:10px; color:#fff; font-size:0.88rem; font-weight:700; font-family:inherit; cursor:pointer; transition:background 0.15s; box-shadow:0 4px 12px rgba(26,115,232,0.35); }
-  .avm-confirm:hover { background:#1557b0; }
+  .avm-footer { display:flex; gap:10px; padding:1rem 1.3rem; border-top:1px solid #f5ebe0; flex-shrink:0; }
+  .avm-cancel { flex:1; padding:0.7rem; background:#fdfbf7; border:none; border-radius:10px; color:#5d4037; font-size:0.88rem; font-weight:600; font-family:inherit; cursor:pointer; }
+  .avm-confirm { flex:2; padding:0.7rem; background:#ae2012; border:none; border-radius:10px; color:#fff; font-size:0.88rem; font-weight:700; font-family:inherit; cursor:pointer; transition:background 0.15s; box-shadow:0 4px 12px rgba(12, 131, 31,0.35); }
+  .avm-confirm:hover { background:#8b150e; }
   @media (max-width:480px) { .avm-grid { grid-template-columns:1fr; } }
 `;

@@ -145,21 +145,21 @@ export default function Sidebar({ collapsed, onCollapse, mobileOpen, onMobileClo
                       display: "flex", alignItems: "center", gap: 12,
                       padding: collapsed ? "0.62rem 0" : "0.62rem 0.85rem",
                       justifyContent: collapsed ? "center" : "flex-start",
-                      color: isOpen ? "#1a73e8" : "#64748b",
+                      color: isOpen ? "#ae2012" : "#7d6b5d",
                       fontWeight: isOpen ? 700 : 500,
                       fontSize: "0.88rem", borderRadius: 10,
-                      background: isOpen ? "#e8f0fe" : "transparent",
+                      background: isOpen ? "#fdfbf7" : "transparent",
                       cursor: "default", position: "relative", marginBottom: 2,
                     }}>
                       {isOpen && (
-                        <span style={{ position:"absolute", left:0, top:"50%", transform:"translateY(-50%)", width:3, height:20, borderRadius:"0 3px 3px 0", background:"#1a73e8" }} />
+                        <span style={{ position:"absolute", left:0, top:"50%", transform:"translateY(-50%)", width:3, height:20, borderRadius:"0 3px 3px 0", background:"#ae2012" }} />
                       )}
-                      <span style={{ display:"flex", alignItems:"center", flexShrink:0, color: isOpen ? "#1a73e8" : "#64748b" }}>
+                      <span style={{ display:"flex", alignItems:"center", flexShrink:0, color: isOpen ? "#ae2012" : "#7d6b5d" }}>
                         {item.icon}
                       </span>
                       {!collapsed && <span style={{ flex:1 }}>{item.label}</span>}
                       {!collapsed && item.badge > 0 && (
-                        <span style={{ background:"#1a73e8", color:"#fff", fontSize:"0.68rem", fontWeight:700, padding:"2px 7px", borderRadius:99 }}>
+                        <span style={{ background:"#ae2012", color:"#fff", fontSize:"0.68rem", fontWeight:700, padding:"2px 7px", borderRadius:99 }}>
                           {item.badge}
                         </span>
                       )}
@@ -230,7 +230,7 @@ const styles = {
   mobileOverlay: {
     position: "fixed",
     inset: 0,
-    background: "rgba(15,23,42,0.45)",
+    background: "rgba(45, 36, 30,0.45)",
     zIndex: 99,
     backdropFilter: "blur(2px)",
   },
@@ -238,7 +238,7 @@ const styles = {
     position: "fixed",
     top: 0, left: 0, bottom: 0,
     background: "#fff",
-    borderRight: "1px solid #dbeafe",
+    borderRight: "1px solid #f5ebe0",
     display: "flex",
     flexDirection: "column",
     zIndex: 100,
@@ -249,7 +249,7 @@ const styles = {
     display: "flex",
     alignItems: "center",
     padding: "1.1rem 0.9rem",
-    borderBottom: "1px solid #f0f5ff",
+    borderBottom: "1px solid #fdfbf7",
     minHeight: 65,
     gap: 10,
   },
@@ -262,7 +262,7 @@ const styles = {
   brandLogo: {
     width: 36, height: 36,
     borderRadius: 10,
-    background: "linear-gradient(135deg, #1a73e8, #0d47a1)",
+    background: "linear-gradient(135deg, #ae2012, #2d241e)",
     display: "flex", alignItems: "center", justifyContent: "center",
     color: "#fff",
     fontSize: "1rem", fontWeight: 800,
@@ -272,25 +272,25 @@ const styles = {
   brandTitle: {
     fontSize: "0.95rem",
     fontWeight: 700,
-    color: "#0f172a",
+    color: "#2d241e",
     letterSpacing: "-0.01em",
     lineHeight: 1.2,
     fontFamily: "'Sora', sans-serif",
   },
   brandSub: {
     fontSize: "0.68rem",
-    color: "#94a3b8",
+    color: "#a68b66",
     letterSpacing: "0.04em",
     fontWeight: 500,
     textTransform: "uppercase",
   },
   collapseBtn: {
-    background: "#f0f5ff",
+    background: "#fdfbf7",
     border: "none",
     borderRadius: 8,
     width: 30, height: 30,
     display: "flex", alignItems: "center", justifyContent: "center",
-    color: "#64748b",
+    color: "#7d6b5d",
     cursor: "pointer",
     flexShrink: 0,
     transition: "background 0.15s",
@@ -306,7 +306,7 @@ const styles = {
   },
   footer: {
     padding: "0.75rem 0.6rem",
-    borderTop: "1px solid #f0f5ff",
+    borderTop: "1px solid #fdfbf7",
     display: "flex",
     flexDirection: "column",
     gap: 8,
@@ -316,14 +316,14 @@ const styles = {
     alignItems: "center",
     gap: 10,
     padding: "0.55rem 0.7rem",
-    background: "#f8faff",
+    background: "#fdfbf7",
     borderRadius: 10,
     overflow: "hidden",
   },
   avatar: {
     width: 32, height: 32,
     borderRadius: "50%",
-    background: "linear-gradient(135deg, #1a73e8, #0d47a1)",
+    background: "linear-gradient(135deg, #ae2012, #2d241e)",
     color: "#fff",
     display: "flex", alignItems: "center", justifyContent: "center",
     fontSize: "0.85rem", fontWeight: 700,
@@ -335,14 +335,14 @@ const styles = {
   userName: {
     fontSize: "0.82rem",
     fontWeight: 600,
-    color: "#1e293b",
+    color: "#2d241e",
     whiteSpace: "nowrap",
     overflow: "hidden",
     textOverflow: "ellipsis",
   },
   userRole: {
     fontSize: "0.7rem",
-    color: "#94a3b8",
+    color: "#a68b66",
     marginTop: 1,
   },
   logoutBtn: {
@@ -352,9 +352,9 @@ const styles = {
     width: "100%",
     padding: "0.6rem 0.8rem",
     background: "none",
-    border: "1px solid #fee2e2",
+    border: "1px solid #fbebe9",
     borderRadius: 9,
-    color: "#ef4444",
+    color: "#d32f2f",
     fontSize: "0.84rem",
     fontWeight: 600,
     fontFamily: "inherit",

@@ -39,10 +39,10 @@ export default function AreaInfoSection() {
   const available  = DELIVERY_PARTNERS.filter(p => p.status === "Available").length;
 
   const STATS = [
-    { label:"Orders Delivered",  val:delivered,                                    color:"#1a73e8", bg:"#e8f0fe" },
-    { label:"Revenue Generated", val:`₹${revenue.toLocaleString("en-IN")}`,        color:"#10b981", bg:"#d1fae5" },
-    { label:"Active Vendors",    val:vendors,                                        color:"#7c3aed", bg:"#ede9fe" },
-    { label:"Partners Available",val:`${available}/${DELIVERY_PARTNERS.length}`,    color:"#f59e0b", bg:"#fef3c7" },
+    { label:"Orders Delivered",  val:delivered,                                    color:"#ae2012", bg:"#fdfbf7" },
+    { label:"Revenue Generated", val:`₹${revenue.toLocaleString("en-IN")}`,        color:"#0c831f", bg:"#d3ebd8" },
+    { label:"Active Vendors",    val:vendors,                                        color:"#4a5d23", bg:"#f5ebe0" },
+    { label:"Partners Available",val:`${available}/${DELIVERY_PARTNERS.length}`,    color:"#e9c46a", bg:"#faedcc" },
   ];
 
   const handleSave = async () => {
@@ -101,10 +101,10 @@ export default function AreaInfoSection() {
         </div>
 
         <div className="ai-progress-section">
-          <ProgressRow label="Orders Delivered" current={delivered} target={targets.weeklyOrders}   color="#1a73e8" />
-          <ProgressRow label="Revenue"          current={revenue}   target={targets.monthlyRevenue}  color="#10b981" />
-          <ProgressRow label="Vendors Onboarded"current={vendors}   target={targets.newVendors}      color="#7c3aed" />
-          <ProgressRow label="Partners Recruited"current={DELIVERY_PARTNERS.length} target={targets.newPartners} color="#f59e0b" />
+          <ProgressRow label="Orders Delivered" current={delivered} target={targets.weeklyOrders}   color="#ae2012" />
+          <ProgressRow label="Revenue"          current={revenue}   target={targets.monthlyRevenue}  color="#0c831f" />
+          <ProgressRow label="Vendors Onboarded"current={vendors}   target={targets.newVendors}      color="#4a5d23" />
+          <ProgressRow label="Partners Recruited"current={DELIVERY_PARTNERS.length} target={targets.newPartners} color="#e9c46a" />
         </div>
 
         <SaveBar loading={loading} saved={saved} savedMsg="Targets saved!" onSave={handleSave} />
@@ -120,20 +120,20 @@ const css = `
     padding:0.8rem 0.25rem; border-radius:12px;
   }
   .ai-stat-val { font-family:'Sora',sans-serif; font-size:1.05rem; font-weight:800; line-height:1; }
-  .ai-stat-label { font-size:0.62rem; color:#64748b; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; text-align:center; }
+  .ai-stat-label { font-size:0.62rem; color:#7d6b5d; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; text-align:center; }
 
   .ai-areas { display:flex; flex-wrap:wrap; gap:7px; }
-  .ai-area-chip { padding:0.3rem 0.75rem; background:#e8f0fe; color:#1a73e8; border-radius:99px; font-size:0.78rem; font-weight:600; }
+  .ai-area-chip { padding:0.3rem 0.75rem; background:#fdfbf7; color:#ae2012; border-radius:99px; font-size:0.78rem; font-weight:600; }
 
   .ai-targets-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0.9rem; }
   .ai-progress-section { display:flex; flex-direction:column; gap:12px; }
 
   .ai-prog-wrap { display:flex; flex-direction:column; gap:5px; }
   .ai-prog-top { display:flex; justify-content:space-between; align-items:center; }
-  .ai-prog-label { font-size:0.8rem; font-weight:600; color:#334155; }
+  .ai-prog-label { font-size:0.8rem; font-weight:600; color:#4a3f35; }
   .ai-prog-vals  { font-size:0.78rem; font-weight:700; }
-  .ai-prog-pct   { font-weight:500; color:#94a3b8; }
-  .ai-prog-track { height:6px; background:#f1f5f9; border-radius:99px; overflow:hidden; }
+  .ai-prog-pct   { font-weight:500; color:#a68b66; }
+  .ai-prog-track { height:6px; background:#f5ebe0; border-radius:99px; overflow:hidden; }
   .ai-prog-fill  { height:100%; border-radius:99px; transition:width 0.4s ease; }
 
   @media (max-width:560px) {

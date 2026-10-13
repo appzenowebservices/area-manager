@@ -121,11 +121,11 @@ const css = `
     font-family: 'Sora', sans-serif;
     font-size: clamp(1.2rem, 3vw, 1.5rem);
     font-weight: 800;
-    color: #0f172a;
+    color: #2d241e;
     letter-spacing: -0.02em;
     margin: 0;
   }
-  .dp-sub { font-size: 0.82rem; color: #94a3b8; margin-top: 3px; }
+  .dp-sub { font-size: 0.82rem; color: #a68b66; margin-top: 3px; }
 
   /* Desktop: table visible, cards hidden */
   .dp-desktop { display: block; }
@@ -136,7 +136,7 @@ const css = `
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     gap: 10px; padding: 4rem 1rem;
-    color: #94a3b8; font-size: 0.88rem;
+    color: #a68b66; font-size: 0.88rem;
   }
 
   /* Mobile: cards visible, table hidden */

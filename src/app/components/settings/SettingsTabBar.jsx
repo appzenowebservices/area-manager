@@ -41,7 +41,7 @@ export default function SettingsTabBar({ active, onChange }) {
 const css = `
   .stb-wrap {
     background: #fff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e9d8bf;
     border-radius: 14px;
     padding: 0 0.5rem;
     margin-bottom: 1.25rem;
@@ -70,20 +70,20 @@ const css = `
     transition: background 0.15s;
     flex-shrink: 0;
   }
-  .stb-tab:hover .stb-label { color: #1a73e8; }
+  .stb-tab:hover .stb-label { color: #ae2012; }
   .stb-icon { font-size: 1rem; }
   .stb-label {
     font-size: 0.85rem;
     font-weight: 600;
-    color: #64748b;
+    color: #7d6b5d;
     transition: color 0.15s;
   }
-  .stb-active .stb-label { color: #1a73e8; }
+  .stb-active .stb-label { color: #ae2012; }
   .stb-underline {
     position: absolute;
     bottom: 0; left: 12px; right: 12px;
     height: 2.5px;
-    background: #1a73e8;
+    background: #ae2012;
     border-radius: 2px 2px 0 0;
   }
 

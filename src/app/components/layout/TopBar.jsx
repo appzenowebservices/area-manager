@@ -5,12 +5,12 @@ import { useLocation } from "react-router-dom";
 const TOPBAR_CSS = `
   .topbar-hamburger {
     display: none;
-    background: #f0f5ff;
+    background: #fdfbf7;
     border: none;
     border-radius: 9px;
     width: 36px; height: 36px;
     align-items: center; justify-content: center;
-    color: #475569;
+    color: #5d4037;
     cursor: pointer;
     flex-shrink: 0;
   }
@@ -128,7 +128,7 @@ const styles = {
   bar: {
     height: 65,
     background: "#fff",
-    borderBottom: "1px solid #dbeafe",
+    borderBottom: "1px solid #f5ebe0",
     display: "flex",
     alignItems: "center",
     justifyContent: "space-between",
@@ -150,13 +150,13 @@ const styles = {
     fontFamily: "'Sora', sans-serif",
     fontSize: "1.1rem",
     fontWeight: 700,
-    color: "#0f172a",
+    color: "#2d241e",
     letterSpacing: "-0.01em",
     lineHeight: 1.2,
   },
   sub: {
     fontSize: "0.73rem",
-    color: "#94a3b8",
+    color: "#a68b66",
     marginTop: 1,
   },
   right: {
@@ -168,8 +168,8 @@ const styles = {
     display: "flex",
     alignItems: "center",
     gap: 8,
-    background: "#f8faff",
-    border: "1.5px solid #e2e8f0",
+    background: "#fdfbf7",
+    border: "1.5px solid #e9d8bf",
     borderRadius: 10,
     padding: "0.4rem 0.75rem",
     transition: "width 0.25s ease, border-color 0.2s",
@@ -177,11 +177,11 @@ const styles = {
     overflow: "hidden",
   },
   searchOpen: {
-    borderColor: "#1a73e8",
+    borderColor: "#ae2012",
     width: 220,
   },
   searchIcon: {
-    color: "#94a3b8",
+    color: "#a68b66",
     display: "flex",
     alignItems: "center",
     flexShrink: 0,
@@ -191,28 +191,28 @@ const styles = {
     outline: "none",
     background: "transparent",
     fontSize: "0.84rem",
-    color: "#0f172a",
+    color: "#2d241e",
     width: "100%",
     fontFamily: "inherit",
   },
   datePill: {
     padding: "0.38rem 0.85rem",
-    background: "#f0f5ff",
-    border: "1px solid #dbeafe",
+    background: "#fdfbf7",
+    border: "1px solid #f5ebe0",
     borderRadius: 99,
     fontSize: "0.75rem",
     fontWeight: 600,
-    color: "#1a73e8",
+    color: "#ae2012",
     whiteSpace: "nowrap",
   },
   notifBtn: {
     position: "relative",
     width: 38, height: 38,
     display: "flex", alignItems: "center", justifyContent: "center",
-    background: "#f0f5ff",
-    border: "1.5px solid #dbeafe",
+    background: "#fdfbf7",
+    border: "1.5px solid #f5ebe0",
     borderRadius: 10,
-    color: "#475569",
+    color: "#5d4037",
     cursor: "pointer",
   },
   notifDot: {
@@ -220,7 +220,7 @@ const styles = {
     top: 7, right: 7,
     width: 8, height: 8,
     borderRadius: "50%",
-    background: "#ef4444",
+    background: "#d32f2f",
     border: "1.5px solid #fff",
   },
 };

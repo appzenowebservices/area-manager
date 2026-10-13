@@ -39,8 +39,8 @@ const css = `
     gap: 10px;
     width: 100%;
     padding: 0.7rem 0.8rem;
-    background: #f8faff;
-    border: 1.5px solid #e2e8f0;
+    background: #fdfbf7;
+    border: 1.5px solid #e9d8bf;
     border-radius: 12px;
     cursor: pointer;
     font-family: inherit;
@@ -78,7 +78,7 @@ const css = `
   .qai-label {
     font-size: 0.78rem;
     font-weight: 700;
-    color: #1e293b;
+    color: #2d241e;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -86,7 +86,7 @@ const css = `
   }
   .qai-desc {
     font-size: 0.67rem;
-    color: #94a3b8;
+    color: #a68b66;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;

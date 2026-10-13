@@ -46,18 +46,18 @@ const CustomTooltip = ({ active, payload, label }) => {
   return (
     <div style={{
       background: "#fff",
-      border: "1px solid #e2e8f0",
+      border: "1px solid #e9d8bf",
       borderRadius: 12,
       padding: "0.75rem 1rem",
-      boxShadow: "0 8px 24px rgba(15,23,42,0.12)",
+      boxShadow: "0 8px 24px rgba(45, 36, 30,0.12)",
       fontFamily: "'Plus Jakarta Sans', sans-serif",
       minWidth: 160,
     }}>
-      <p style={{ fontSize: "0.78rem", color: "#94a3b8", fontWeight: 600, marginBottom: 6 }}>{label}</p>
+      <p style={{ fontSize: "0.78rem", color: "#a68b66", fontWeight: 600, marginBottom: 6 }}>{label}</p>
       {payload.map((p) => (
         <div key={p.name} style={{ display: "flex", justifyContent: "space-between", gap: 16, fontSize: "0.82rem", marginBottom: 3 }}>
           <span style={{ color: p.color, fontWeight: 600 }}>{p.name}</span>
-          <span style={{ fontWeight: 700, color: "#0f172a" }}>
+          <span style={{ fontWeight: 700, color: "#2d241e" }}>
             {p.name === "Revenue" ? `₹${p.value.toLocaleString("en-IN")}` : p.value}
           </span>
         </div>
@@ -78,8 +78,8 @@ export default function OrdersChart() {
             <div className="oc-sub">Last 7 days activity</div>
           </div>
           <div className="oc-legend">
-            <span className="oc-dot" style={{ background: "#1a73e8" }} /> Orders
-            <span className="oc-dot" style={{ background: "#10b981", marginLeft: 12 }} /> Delivered
+            <span className="oc-dot" style={{ background: "#ae2012" }} /> Orders
+            <span className="oc-dot" style={{ background: "#0c831f", marginLeft: 12 }} /> Delivered
           </div>
         </div>
 
@@ -89,23 +89,23 @@ export default function OrdersChart() {
             <AreaChart data={chartData} margin={{ top: 8, right: 8, bottom: 0, left: -20 }}>
               <defs>
                 <linearGradient id="gradOrders" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%"  stopColor="#1a73e8" stopOpacity={0.18} />
-                  <stop offset="95%" stopColor="#1a73e8" stopOpacity={0.01} />
+                  <stop offset="5%"  stopColor="#ae2012" stopOpacity={0.18} />
+                  <stop offset="95%" stopColor="#ae2012" stopOpacity={0.01} />
                 </linearGradient>
                 <linearGradient id="gradDelivered" x1="0" y1="0" x2="0" y2="1">
-                  <stop offset="5%"  stopColor="#10b981" stopOpacity={0.15} />
-                  <stop offset="95%" stopColor="#10b981" stopOpacity={0.01} />
+                  <stop offset="5%"  stopColor="#0c831f" stopOpacity={0.15} />
+                  <stop offset="95%" stopColor="#0c831f" stopOpacity={0.01} />
                 </linearGradient>
               </defs>
-              <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+              <CartesianGrid strokeDasharray="3 3" stroke="#f5ebe0" vertical={false} />
               <XAxis
                 dataKey="day"
-                tick={{ fontSize: 11, fill: "#94a3b8", fontFamily: "'Plus Jakarta Sans',sans-serif" }}
+                tick={{ fontSize: 11, fill: "#a68b66", fontFamily: "'Plus Jakarta Sans',sans-serif" }}
                 axisLine={false}
                 tickLine={false}
               />
               <YAxis
-                tick={{ fontSize: 11, fill: "#94a3b8", fontFamily: "'Plus Jakarta Sans',sans-serif" }}
+                tick={{ fontSize: 11, fill: "#a68b66", fontFamily: "'Plus Jakarta Sans',sans-serif" }}
                 axisLine={false}
                 tickLine={false}
                 allowDecimals={false}
@@ -114,20 +114,20 @@ export default function OrdersChart() {
               <Area
                 type="monotone"
                 dataKey="Orders"
-                stroke="#1a73e8"
+                stroke="#ae2012"
                 strokeWidth={2.5}
                 fill="url(#gradOrders)"
-                dot={{ r: 3, fill: "#1a73e8", strokeWidth: 0 }}
-                activeDot={{ r: 5, fill: "#1a73e8" }}
+                dot={{ r: 3, fill: "#ae2012", strokeWidth: 0 }}
+                activeDot={{ r: 5, fill: "#ae2012" }}
               />
               <Area
                 type="monotone"
                 dataKey="Delivered"
-                stroke="#10b981"
+                stroke="#0c831f"
                 strokeWidth={2.5}
                 fill="url(#gradDelivered)"
-                dot={{ r: 3, fill: "#10b981", strokeWidth: 0 }}
-                activeDot={{ r: 5, fill: "#10b981" }}
+                dot={{ r: 3, fill: "#0c831f", strokeWidth: 0 }}
+                activeDot={{ r: 5, fill: "#0c831f" }}
               />
             </AreaChart>
           </ResponsiveContainer>
@@ -136,9 +136,9 @@ export default function OrdersChart() {
         {/* Bottom summary row */}
         <div className="oc-summary">
           {[
-            { label: "Total Orders", value: chartData.reduce((s, d) => s + d.Orders, 0), color: "#1a73e8" },
-            { label: "Delivered",    value: chartData.reduce((s, d) => s + d.Delivered, 0), color: "#10b981" },
-            { label: "Est. Revenue", value: `₹${chartData.reduce((s, d) => s + d.Revenue, 0).toLocaleString("en-IN")}`, color: "#f59e0b" },
+            { label: "Total Orders", value: chartData.reduce((s, d) => s + d.Orders, 0), color: "#ae2012" },
+            { label: "Delivered",    value: chartData.reduce((s, d) => s + d.Delivered, 0), color: "#0c831f" },
+            { label: "Est. Revenue", value: `₹${chartData.reduce((s, d) => s + d.Revenue, 0).toLocaleString("en-IN")}`, color: "#e9c46a" },
           ].map(s => (
             <div key={s.label} className="oc-sum-item">
               <div className="oc-sum-val" style={{ color: s.color }}>{s.value}</div>
@@ -154,10 +154,10 @@ export default function OrdersChart() {
 const css = `
   .oc-card {
     background: #fff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e9d8bf;
     border-radius: 16px;
     padding: 1.3rem;
-    box-shadow: 0 1px 4px rgba(15,23,42,0.05);
+    box-shadow: 0 1px 4px rgba(45, 36, 30,0.05);
     animation: scIn 0.45s 0.1s cubic-bezier(0.22,1,0.36,1) both;
   }
   .oc-header {
@@ -172,18 +172,18 @@ const css = `
     font-family: 'Sora', sans-serif;
     font-size: 0.95rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #2d241e;
   }
   .oc-sub {
     font-size: 0.73rem;
-    color: #94a3b8;
+    color: #a68b66;
     margin-top: 2px;
   }
   .oc-legend {
     display: flex;
     align-items: center;
     font-size: 0.75rem;
-    color: #64748b;
+    color: #7d6b5d;
     font-weight: 600;
     gap: 6px;
     flex-wrap: wrap;
@@ -201,7 +201,7 @@ const css = `
     gap: 1.5rem;
     margin-top: 1rem;
     padding-top: 1rem;
-    border-top: 1px solid #f1f5f9;
+    border-top: 1px solid #f5ebe0;
     flex-wrap: wrap;
   }
   .oc-sum-item {
@@ -216,7 +216,7 @@ const css = `
   }
   .oc-sum-label {
     font-size: 0.7rem;
-    color: #94a3b8;
+    color: #a68b66;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.05em;

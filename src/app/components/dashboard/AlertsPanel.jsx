@@ -97,8 +97,8 @@ const css = `
     background: #fff;
     border-radius: 16px;
     padding: 1.3rem;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 4px rgba(15,23,42,0.05);
+    border: 1px solid #e9d8bf;
+    box-shadow: 0 1px 4px rgba(45, 36, 30,0.05);
     height: 100%;
     display: flex;
     flex-direction: column;
@@ -115,18 +115,18 @@ const css = `
     font-family: 'Sora', sans-serif;
     font-size: 0.95rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #2d241e;
   }
   .ap-sub {
     font-size: 0.73rem;
-    color: #94a3b8;
+    color: #a68b66;
     margin-top: 2px;
   }
   .ap-restore {
     background: none;
-    border: 1px solid #dbeafe;
+    border: 1px solid #f5ebe0;
     border-radius: 7px;
-    color: #1a73e8;
+    color: #ae2012;
     font-size: 0.75rem;
     font-weight: 600;
     padding: 0.25rem 0.6rem;
@@ -147,7 +147,7 @@ const css = `
     justify-content: center;
     gap: 8px;
     padding: 2rem 0;
-    color: #94a3b8;
+    color: #a68b66;
     font-size: 0.85rem;
     font-weight: 500;
   }
@@ -178,14 +178,14 @@ const css = `
   }
   .ap-item-desc {
     font-size: 0.74rem;
-    color: #64748b;
+    color: #7d6b5d;
     margin-top: 2px;
     line-height: 1.4;
   }
   .ap-dismiss {
     background: none;
     border: none;
-    color: #94a3b8;
+    color: #a68b66;
     font-size: 1.1rem;
     cursor: pointer;
     padding: 0 2px;
@@ -193,7 +193,7 @@ const css = `
     flex-shrink: 0;
     transition: color 0.15s;
   }
-  .ap-dismiss:hover { color: #475569; }
+  .ap-dismiss:hover { color: #5d4037; }
   .ap-action-btn {
     border: 1.5px solid;
     border-radius: 8px;

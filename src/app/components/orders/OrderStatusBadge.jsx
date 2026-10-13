@@ -32,16 +32,16 @@ export default function OrderStatusBadge({ status, type = "order", size = "md" }
 }
 
 const orderMap = {
-  Pending:    { bg: "#fef3c7", color: "#d97706", dot: "#f59e0b" },
-  Processing: { bg: "#dbeafe", color: "#1d4ed8", dot: "#1a73e8" },
-  Delivered:  { bg: "#d1fae5", color: "#065f46", dot: "#10b981" },
-  Cancelled:  { bg: "#fee2e2", color: "#b91c1c", dot: "#ef4444" },
-  default:    { bg: "#f1f5f9", color: "#475569", dot: "#94a3b8" },
+  Pending:    { bg: "#faedcc", color: "#a67a22", dot: "#e9c46a" },
+  Processing: { bg: "#f5ebe0", color: "#ae2012", dot: "#ae2012" },
+  Delivered:  { bg: "#d3ebd8", color: "#0a671a", dot: "#0c831f" },
+  Cancelled:  { bg: "#fbebe9", color: "#8b150e", dot: "#d32f2f" },
+  default:    { bg: "#f5ebe0", color: "#5d4037", dot: "#a68b66" },
 };
 
 const paymentMap = {
-  Paid:    { bg: "#d1fae5", color: "#065f46", dot: "#10b981" },
-  Pending: { bg: "#fef3c7", color: "#d97706", dot: "#f59e0b" },
-  Failed:  { bg: "#fee2e2", color: "#b91c1c", dot: "#ef4444" },
-  default: { bg: "#f1f5f9", color: "#475569", dot: "#94a3b8" },
+  Paid:    { bg: "#d3ebd8", color: "#0a671a", dot: "#0c831f" },
+  Pending: { bg: "#faedcc", color: "#a67a22", dot: "#e9c46a" },
+  Failed:  { bg: "#fbebe9", color: "#8b150e", dot: "#d32f2f" },
+  default: { bg: "#f5ebe0", color: "#5d4037", dot: "#a68b66" },
 };

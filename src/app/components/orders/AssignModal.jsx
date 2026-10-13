@@ -76,7 +76,7 @@ export default function AssignModal({ type, currentId, onConfirm, onClose }) {
 const css = `
   .am-backdrop {
     position: fixed; inset: 0;
-    background: rgba(15,23,42,0.5);
+    background: rgba(45, 36, 30,0.5);
     z-index: 1300;
     backdrop-filter: blur(2px);
   }
@@ -88,7 +88,7 @@ const css = `
     width: min(420px, 95vw);
     background: #fff;
     border-radius: 18px;
-    box-shadow: 0 20px 60px rgba(15,23,42,0.2);
+    box-shadow: 0 20px 60px rgba(45, 36, 30,0.2);
     overflow: hidden;
     animation: modalIn 0.25s cubic-bezier(0.34,1.56,0.64,1);
   }
@@ -99,20 +99,20 @@ const css = `
   .am-header {
     display: flex; justify-content: space-between; align-items: center;
     padding: 1.1rem 1.3rem;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f5ebe0;
   }
   .am-title {
     font-family: 'Sora', sans-serif;
-    font-size: 1rem; font-weight: 700; color: #0f172a; margin: 0;
+    font-size: 1rem; font-weight: 700; color: #2d241e; margin: 0;
   }
   .am-close {
     width: 30px; height: 30px;
-    background: #f0f5ff; border: none; border-radius: 8px;
-    color: #64748b; cursor: pointer; font-size: 0.85rem;
+    background: #fdfbf7; border: none; border-radius: 8px;
+    color: #7d6b5d; cursor: pointer; font-size: 0.85rem;
     display: flex; align-items: center; justify-content: center;
     transition: background 0.15s;
   }
-  .am-close:hover { background: #fee2e2; color: #ef4444; }
+  .am-close:hover { background: #fbebe9; color: #d32f2f; }
   .am-body {
     padding: 0.75rem 1.1rem;
     display: flex; flex-direction: column; gap: 6px;
@@ -121,48 +121,48 @@ const css = `
   .am-option {
     display: flex; align-items: center; gap: 12px;
     padding: 0.75rem 0.9rem;
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid #e9d8bf;
     border-radius: 12px;
     cursor: pointer;
     transition: all 0.15s;
   }
-  .am-option:hover { background: #f8faff; border-color: #bfdbfe; }
-  .am-selected { background: #e8f0fe; border-color: #1a73e8; }
+  .am-option:hover { background: #fdfbf7; border-color: #e9d8bf; }
+  .am-selected { background: #fdfbf7; border-color: #ae2012; }
   .am-avatar {
     width: 36px; height: 36px; border-radius: 50%;
-    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    background: linear-gradient(135deg, #ae2012, #2d241e);
     color: #fff; font-size: 0.9rem; font-weight: 700;
     display: flex; align-items: center; justify-content: center;
     flex-shrink: 0;
   }
   .am-info { flex: 1; }
-  .am-name { font-size: 0.88rem; font-weight: 600; color: #0f172a; }
-  .am-phone { font-size: 0.73rem; color: #94a3b8; margin-top: 2px; }
+  .am-name { font-size: 0.88rem; font-weight: 600; color: #2d241e; }
+  .am-phone { font-size: 0.73rem; color: #a68b66; margin-top: 2px; }
   .am-check {
     width: 22px; height: 22px; border-radius: 50%;
-    background: #1a73e8; color: #fff;
+    background: #ae2012; color: #fff;
     display: flex; align-items: center; justify-content: center;
     font-size: 0.72rem; font-weight: 800; flex-shrink: 0;
   }
   .am-footer {
     display: flex; gap: 10px;
     padding: 1rem 1.1rem;
-    border-top: 1px solid #f1f5f9;
+    border-top: 1px solid #f5ebe0;
   }
   .am-cancel {
     flex: 1; padding: 0.7rem;
-    background: #f0f5ff; border: none; border-radius: 10px;
-    color: #475569; font-size: 0.88rem; font-weight: 600;
+    background: #fdfbf7; border: none; border-radius: 10px;
+    color: #5d4037; font-size: 0.88rem; font-weight: 600;
     font-family: inherit; cursor: pointer;
   }
   .am-confirm {
     flex: 2; padding: 0.7rem;
-    background: #1a73e8; border: none; border-radius: 10px;
+    background: #ae2012; border: none; border-radius: 10px;
     color: #fff; font-size: 0.88rem; font-weight: 700;
     font-family: inherit; cursor: pointer;
     transition: background 0.15s;
-    box-shadow: 0 4px 12px rgba(26,115,232,0.35);
+    box-shadow: 0 4px 12px rgba(12, 131, 31,0.35);
   }
-  .am-confirm:disabled { background: #c5d8fd; cursor: not-allowed; box-shadow: none; }
-  .am-confirm:hover:not(:disabled) { background: #1557b0; }
+  .am-confirm:disabled { background: #eaf6ed; cursor: not-allowed; box-shadow: none; }
+  .am-confirm:hover:not(:disabled) { background: #8b150e; }
 `;

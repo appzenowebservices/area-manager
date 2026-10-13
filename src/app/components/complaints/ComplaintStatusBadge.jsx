@@ -4,12 +4,12 @@
  */
 export default function ComplaintStatusBadge({ status, size = "md" }) {
   const map = {
-    "Open":        { bg: "#fee2e2", color: "#b91c1c", dot: "#ef4444" },
-    "In Progress": { bg: "#fef3c7", color: "#d97706", dot: "#f59e0b" },
-    "Resolved":    { bg: "#d1fae5", color: "#065f46", dot: "#10b981" },
-    "Escalated":   { bg: "#fdf2f8", color: "#9d174d", dot: "#ec4899" },
+    "Open":        { bg: "#fbebe9", color: "#8b150e", dot: "#d32f2f" },
+    "In Progress": { bg: "#faedcc", color: "#a67a22", dot: "#e9c46a" },
+    "Resolved":    { bg: "#d3ebd8", color: "#0a671a", dot: "#0c831f" },
+    "Escalated":   { bg: "#fbebe9", color: "#8b150e", dot: "#d32f2f" },
   };
-  const s = map[status] || { bg: "#f1f5f9", color: "#475569", dot: "#94a3b8" };
+  const s = map[status] || { bg: "#f5ebe0", color: "#5d4037", dot: "#a68b66" };
   const sm = size === "sm";
 
   return (

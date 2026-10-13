@@ -4,8 +4,8 @@ import { TOP_VENDORS } from "../../data/dashboardData";
 import { StarIcon } from "./icons/DashIcons";
 import StatusBadge from "../ui/StatusBadge";
 
-const RANK_COLORS = ["#1a73e8", "#8b5cf6", "#10b981", "#f59e0b"];
-const RANK_BG     = ["#e8f0fe", "#ede9fe", "#d1fae5", "#fef3c7"];
+const RANK_COLORS = ["#ae2012", "#4a5d23", "#0c831f", "#e9c46a"];
+const RANK_BG     = ["#fdfbf7", "#f5ebe0", "#d3ebd8", "#faedcc"];
 
 /**
  * TopVendorsCard
@@ -93,8 +93,8 @@ const css = `
     background: #fff;
     border-radius: 16px;
     padding: 1.3rem;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 4px rgba(15,23,42,0.05);
+    border: 1px solid #e9d8bf;
+    box-shadow: 0 1px 4px rgba(45, 36, 30,0.05);
     height: 100%;
   }
   .tvc-header {
@@ -109,13 +109,13 @@ const css = `
     font-family: 'Sora', sans-serif;
     font-size: 0.95rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #2d241e;
   }
-  .tvc-sub { font-size: 0.73rem; color: #94a3b8; margin-top: 2px; }
+  .tvc-sub { font-size: 0.73rem; color: #a68b66; margin-top: 2px; }
   .tvc-viewall {
     background: none;
     border: none;
-    color: #1a73e8;
+    color: #ae2012;
     font-size: 0.82rem;
     font-weight: 700;
     cursor: pointer;
@@ -133,7 +133,7 @@ const css = `
     align-items: center;
     gap: 12px;
     padding: 0.75rem 0;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f5ebe0;
   }
   .tvc-row:last-child { border-bottom: none; }
   .tvc-rank {
@@ -158,7 +158,7 @@ const css = `
   .tvc-name {
     font-size: 0.86rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #2d241e;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -171,8 +171,8 @@ const css = `
     flex-wrap: wrap;
   }
   .tvc-cat-badge {
-    background: #f0f5ff;
-    color: #1a73e8;
+    background: #fdfbf7;
+    color: #ae2012;
     border-radius: 99px;
     padding: 1px 8px;
     font-size: 0.68rem;
@@ -181,7 +181,7 @@ const css = `
   }
   .tvc-area {
     font-size: 0.7rem;
-    color: #94a3b8;
+    color: #a68b66;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
@@ -195,7 +195,7 @@ const css = `
     flex: 1;
     height: 5px;
     border-radius: 99px;
-    background: #f0f5ff;
+    background: #fdfbf7;
     overflow: hidden;
   }
   .tvc-bar-fill {
@@ -205,7 +205,7 @@ const css = `
   }
   .tvc-orders-count {
     font-size: 0.72rem;
-    color: #64748b;
+    color: #7d6b5d;
     font-weight: 600;
     white-space: nowrap;
     flex-shrink: 0;
@@ -221,7 +221,7 @@ const css = `
   .tvc-revenue {
     font-size: 0.82rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #2d241e;
     white-space: nowrap;
   }
   .tvc-rating {
@@ -230,7 +230,7 @@ const css = `
     gap: 3px;
     font-size: 0.75rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #2d241e;
   }
   @media (max-width: 480px) {
     .tvc-card { padding: 1rem; }

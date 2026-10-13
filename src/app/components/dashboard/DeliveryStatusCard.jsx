@@ -55,11 +55,11 @@ export default function DeliveryStatusCard() {
                 className="dsc-avatar"
                 style={{
                   background:
-                    d.status === "Available" ? "#d1fae5" :
-                    d.status === "Busy"      ? "#fef3c7" : "#f1f5f9",
+                    d.status === "Available" ? "#d3ebd8" :
+                    d.status === "Busy"      ? "#faedcc" : "#f5ebe0",
                   color:
-                    d.status === "Available" ? "#10b981" :
-                    d.status === "Busy"      ? "#f59e0b" : "#94a3b8",
+                    d.status === "Available" ? "#0c831f" :
+                    d.status === "Busy"      ? "#e9c46a" : "#a68b66",
                 }}
               >
                 {d.name.charAt(0)}
@@ -93,8 +93,8 @@ const css = `
     background: #fff;
     border-radius: 16px;
     padding: 1.3rem;
-    border: 1px solid #e2e8f0;
-    box-shadow: 0 1px 4px rgba(15,23,42,0.05);
+    border: 1px solid #e9d8bf;
+    box-shadow: 0 1px 4px rgba(45, 36, 30,0.05);
     height: 100%;
   }
   .dsc-header {
@@ -109,13 +109,13 @@ const css = `
     font-family: 'Sora', sans-serif;
     font-size: 0.95rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #2d241e;
   }
-  .dsc-sub { font-size: 0.73rem; color: #94a3b8; margin-top: 2px; }
+  .dsc-sub { font-size: 0.73rem; color: #a68b66; margin-top: 2px; }
   .dsc-viewall {
     background: none;
     border: none;
-    color: #1a73e8;
+    color: #ae2012;
     font-size: 0.82rem;
     font-weight: 700;
     cursor: pointer;
@@ -138,20 +138,20 @@ const css = `
     gap: 2px;
     border: 1px solid transparent;
   }
-  .dsc-chip-green { background: #f0fdf4; border-color: #bbf7d0; }
-  .dsc-chip-yellow { background: #fffbeb; border-color: #fde68a; }
-  .dsc-chip-gray { background: #f8faff; border-color: #e2e8f0; }
+  .dsc-chip-green { background: #eaf6ed; border-color: #d3ebd8; }
+  .dsc-chip-yellow { background: #fdf6e4; border-color: #faedcc; }
+  .dsc-chip-gray { background: #fdfbf7; border-color: #e9d8bf; }
   .dsc-chip-num {
     font-family: 'Sora', sans-serif;
     font-size: 1.25rem;
     font-weight: 800;
     line-height: 1;
-    color: #0f172a;
+    color: #2d241e;
   }
   .dsc-chip-lbl {
     font-size: 0.65rem;
     font-weight: 600;
-    color: #64748b;
+    color: #7d6b5d;
     text-transform: uppercase;
     letter-spacing: 0.04em;
   }
@@ -165,7 +165,7 @@ const css = `
     align-items: center;
     gap: 10px;
     padding: 0.7rem 0;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f5ebe0;
   }
   .dsc-row:last-child { border-bottom: none; }
   .dsc-avatar {
@@ -183,7 +183,7 @@ const css = `
   .dsc-name {
     font-size: 0.85rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #2d241e;
     margin-bottom: 3px;
     white-space: nowrap;
     overflow: hidden;
@@ -199,7 +199,7 @@ const css = `
     align-items: center;
     gap: 3px;
     font-size: 0.68rem;
-    color: #94a3b8;
+    color: #a68b66;
     white-space: nowrap;
   }
   .dsc-right {
@@ -211,7 +211,7 @@ const css = `
   }
   .dsc-orders {
     font-size: 0.7rem;
-    color: #64748b;
+    color: #7d6b5d;
     font-weight: 600;
     white-space: nowrap;
   }

@@ -77,7 +77,7 @@ const layoutCSS = `
   .app-shell {
     display: flex;
     min-height: 100vh;
-    background: #f0f5ff;
+    background: #fdfbf7;
   }
 
   .app-main {

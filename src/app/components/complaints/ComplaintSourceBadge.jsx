@@ -4,12 +4,12 @@
  */
 export default function ComplaintSourceBadge({ source, size = "md" }) {
   const map = {
-    "Customer":          { bg: "#ede9fe", color: "#7c3aed", icon: "👤" },
-    "Vendor":            { bg: "#e8f0fe", color: "#1a73e8", icon: "🏪" },
-    "Delivery Partner":  { bg: "#d1fae5", color: "#065f46", icon: "🚴" },
-    "Internal/System":   { bg: "#f1f5f9", color: "#475569", icon: "⚙️" },
+    "Customer":          { bg: "#f5ebe0", color: "#4a5d23", icon: "👤" },
+    "Vendor":            { bg: "#fdfbf7", color: "#ae2012", icon: "🏪" },
+    "Delivery Partner":  { bg: "#d3ebd8", color: "#0a671a", icon: "🚴" },
+    "Internal/System":   { bg: "#f5ebe0", color: "#5d4037", icon: "⚙️" },
   };
-  const s = map[source] || { bg: "#f1f5f9", color: "#475569", icon: "❓" };
+  const s = map[source] || { bg: "#f5ebe0", color: "#5d4037", icon: "❓" };
   const sm = size === "sm";
 
   return (

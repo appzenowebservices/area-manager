@@ -114,10 +114,10 @@ const css = `
   .cp-title {
     font-family: 'Sora', sans-serif;
     font-size: clamp(1.2rem, 3vw, 1.5rem);
-    font-weight: 800; color: #0f172a;
+    font-weight: 800; color: #2d241e;
     letter-spacing: -0.02em; margin: 0;
   }
-  .cp-sub { font-size: 0.82rem; color: #94a3b8; margin-top: 3px; }
+  .cp-sub { font-size: 0.82rem; color: #a68b66; margin-top: 3px; }
   .cp-desktop { display: block; }
   .cp-mobile  { display: none; }
   .cp-card-list { display: flex; flex-direction: column; gap: 10px; }
@@ -125,7 +125,7 @@ const css = `
     display: flex; flex-direction: column;
     align-items: center; justify-content: center;
     gap: 10px; padding: 4rem 1rem;
-    color: #94a3b8; font-size: 0.88rem;
+    color: #a68b66; font-size: 0.88rem;
   }
   @media (max-width: 768px) {
     .cp-desktop { display: none; }

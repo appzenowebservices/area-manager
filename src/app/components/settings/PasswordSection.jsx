@@ -30,10 +30,10 @@ function getStrength(p) {
 
 const STRENGTH_META = [
   null,
-  { label: "Weak",   color: "#ef4444" },
-  { label: "Fair",   color: "#f59e0b" },
-  { label: "Good",   color: "#1a73e8" },
-  { label: "Strong", color: "#10b981" },
+  { label: "Weak",   color: "#d32f2f" },
+  { label: "Fair",   color: "#e9c46a" },
+  { label: "Good",   color: "#ae2012" },
+  { label: "Strong", color: "#0c831f" },
 ];
 
 const SESSIONS = [
@@ -86,7 +86,7 @@ export default function PasswordSection() {
           autoComplete="new-password"
         />
         <button style={{ position:"absolute", right:10, background:"none", border:"none",
-          color:"#94a3b8", cursor:"pointer", display:"flex", alignItems:"center", padding:4 }}
+          color:"#a68b66", cursor:"pointer", display:"flex", alignItems:"center", padding:4 }}
           onClick={() => setShow(s => ({...s, [fkey]: !s[fkey]}))}>
           <EyeIcon open={show[fkey]} />
         </button>
@@ -109,7 +109,7 @@ export default function PasswordSection() {
             <div className="pw-bars">
               {[1,2,3,4].map(i => (
                 <div key={i} className="pw-bar"
-                  style={{ background: i <= strength ? smeta?.color : "#e2e8f0" }} />
+                  style={{ background: i <= strength ? smeta?.color : "#e9d8bf" }} />
               ))}
             </div>
             {smeta && <span style={{ fontSize:"0.72rem", fontWeight:700, color: smeta.color }}>{smeta.label}</span>}
@@ -180,42 +180,42 @@ const css = `
   .pw-tips {
     display:grid; grid-template-columns:repeat(2,minmax(0,1fr));
     gap:6px 12px;
-    background:#f8faff; border:1px solid #e2e8f0;
+    background:#fdfbf7; border:1px solid #e9d8bf;
     border-radius:10px; padding:0.8rem 1rem;
   }
-  .pw-tip { display:flex; align-items:center; gap:7px; font-size:0.78rem; color:#64748b; }
-  .pw-dot { width:5px; height:5px; border-radius:50%; background:#1a73e8; flex-shrink:0; }
+  .pw-tip { display:flex; align-items:center; gap:7px; font-size:0.78rem; color:#7d6b5d; }
+  .pw-dot { width:5px; height:5px; border-radius:50%; background:#ae2012; flex-shrink:0; }
 
   .pw-twofa-row { display:flex; align-items:center; gap:14px; flex-wrap:wrap; }
   .pw-twofa-info { display:flex; align-items:center; gap:12px; flex:1; min-width:0; }
   .pw-twofa-icon { font-size:1.8rem; }
-  .pw-twofa-label { font-weight:700; color:#0f172a; font-size:0.88rem; margin:0 0 3px; }
-  .pw-twofa-desc  { font-size:0.75rem; color:#64748b; margin:0; }
+  .pw-twofa-label { font-weight:700; color:#2d241e; font-size:0.88rem; margin:0 0 3px; }
+  .pw-twofa-desc  { font-size:0.75rem; color:#7d6b5d; margin:0; }
   .pw-twofa-btn {
     padding:0.55rem 1.1rem; border:none; border-radius:9px;
     font-size:0.84rem; font-weight:700; font-family:inherit;
     cursor:pointer; flex-shrink:0; transition:opacity 0.15s;
   }
-  .pw-twofa-on  { background:#e8f0fe; color:#1a73e8; }
-  .pw-twofa-off { background:#fee2e2; color:#ef4444; }
+  .pw-twofa-on  { background:#fdfbf7; color:#ae2012; }
+  .pw-twofa-off { background:#fbebe9; color:#d32f2f; }
   .pw-twofa-btn:hover { opacity:0.8; }
 
   .pw-session {
     display:flex; align-items:center; gap:12px;
     padding:0.75rem 0;
-    border-bottom:1px solid #f1f5f9;
+    border-bottom:1px solid #f5ebe0;
   }
   .pw-session:last-child { border-bottom:none; }
   .pw-session-icon { font-size:1.2rem; flex-shrink:0; }
   .pw-session-info { flex:1; min-width:0; }
-  .pw-session-device { font-size:0.85rem; font-weight:600; color:#1e293b; margin:0 0 2px; }
-  .pw-session-meta   { font-size:0.72rem; color:#94a3b8; margin:0; }
+  .pw-session-device { font-size:0.85rem; font-weight:600; color:#2d241e; margin:0 0 2px; }
+  .pw-session-meta   { font-size:0.72rem; color:#a68b66; margin:0; }
   .pw-session-current {
-    padding:0.28rem 0.7rem; background:#d1fae5; color:#065f46;
+    padding:0.28rem 0.7rem; background:#d3ebd8; color:#0a671a;
     border-radius:99px; font-size:0.7rem; font-weight:700; flex-shrink:0;
   }
   .pw-session-revoke {
-    padding:0.28rem 0.7rem; background:#fee2e2; color:#ef4444;
+    padding:0.28rem 0.7rem; background:#fbebe9; color:#d32f2f;
     border:none; border-radius:99px; font-size:0.7rem; font-weight:700;
     font-family:inherit; cursor:pointer; flex-shrink:0; transition:opacity 0.15s;
   }

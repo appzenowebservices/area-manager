@@ -14,13 +14,13 @@ export default function ComplaintsStatsBar() {
   const high       = COMPLAINTS.filter(c => c.priority === "High").length;
 
   const CHIPS = [
-    { label: "Total",       val: total,      color: "#1a73e8", bg: "#e8f0fe" },
-    { label: "Open",        val: open,       color: "#b91c1c", bg: "#fee2e2" },
-    { label: "In Progress", val: inProgress, color: "#d97706", bg: "#fef3c7" },
-    { label: "Resolved",    val: resolved,   color: "#065f46", bg: "#d1fae5" },
-    { label: "Escalated",   val: escalated,  color: "#9d174d", bg: "#fdf2f8" },
-    { label: "Critical",    val: critical,   color: "#9f1239", bg: "#fff1f2" },
-    { label: "High",        val: high,       color: "#b91c1c", bg: "#fee2e2" },
+    { label: "Total",       val: total,      color: "#ae2012", bg: "#fdfbf7" },
+    { label: "Open",        val: open,       color: "#8b150e", bg: "#fbebe9" },
+    { label: "In Progress", val: inProgress, color: "#a67a22", bg: "#faedcc" },
+    { label: "Resolved",    val: resolved,   color: "#0a671a", bg: "#d3ebd8" },
+    { label: "Escalated",   val: escalated,  color: "#8b150e", bg: "#fbebe9" },
+    { label: "Critical",    val: critical,   color: "#8b150e", bg: "#fbebe9" },
+    { label: "High",        val: high,       color: "#8b150e", bg: "#fbebe9" },
   ];
 
   return (
@@ -54,7 +54,7 @@ const css = `
     font-size: 1.15rem; font-weight: 800; line-height: 1;
   }
   .csb-label {
-    font-size: 0.62rem; color: #64748b;
+    font-size: 0.62rem; color: #7d6b5d;
     font-weight: 600; text-transform: uppercase;
     letter-spacing: 0.04em; white-space: nowrap;
   }

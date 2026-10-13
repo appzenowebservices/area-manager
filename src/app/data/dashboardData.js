@@ -10,8 +10,8 @@ export const STATS = [
     trendPct: "+14.3%",
     trendUp: true,
     iconType: "order",
-    color: "#1a73e8",
-    bg: "#e8f0fe",
+    color: "#ae2012",
+    bg: "#fdfbf7",
   },
   {
     id: "pending",
@@ -22,8 +22,8 @@ export const STATS = [
     trendPct: "-27.8%",
     trendUp: false,
     iconType: "pending",
-    color: "#f59e0b",
-    bg: "#fef3c7",
+    color: "#e9c46a",
+    bg: "#faedcc",
   },
   {
     id: "revenue",
@@ -34,8 +34,8 @@ export const STATS = [
     trendPct: "+17.3%",
     trendUp: true,
     iconType: "revenue",
-    color: "#10b981",
-    bg: "#d1fae5",
+    color: "#0c831f",
+    bg: "#d3ebd8",
   },
   {
     id: "vendors",
@@ -46,8 +46,8 @@ export const STATS = [
     trendPct: "+6.9%",
     trendUp: true,
     iconType: "vendor",
-    color: "#8b5cf6",
-    bg: "#ede9fe",
+    color: "#4a5d23",
+    bg: "#f5ebe0",
   },
 ];
 
@@ -70,9 +70,9 @@ export const ALERTS = [
     desc: "New vendor registrations awaiting your review.",
     action: "Review Now",
     actionRoute: "/vendors",
-    color: "#f59e0b",
-    bg: "#fffbeb",
-    border: "#fde68a",
+    color: "#e9c46a",
+    bg: "#fdf6e4",
+    border: "#faedcc",
   },
   {
     id: 2,
@@ -82,9 +82,9 @@ export const ALERTS = [
     desc: "Orders #ORD‑887 and #ORD‑891 are overdue.",
     action: "View Orders",
     actionRoute: "/orders",
-    color: "#ef4444",
-    bg: "#fff5f5",
-    border: "#fecaca",
+    color: "#d32f2f",
+    bg: "#fbebe9",
+    border: "#f6d4ce",
   },
   {
     id: 3,
@@ -94,9 +94,9 @@ export const ALERTS = [
     desc: "Customer complaints need your attention today.",
     action: "Open Complaints",
     actionRoute: "/complaints",
-    color: "#1a73e8",
-    bg: "#eff6ff",
-    border: "#bfdbfe",
+    color: "#ae2012",
+    bg: "#eaf6ed",
+    border: "#e9d8bf",
   },
   {
     id: 4,
@@ -106,9 +106,9 @@ export const ALERTS = [
     desc: "Revenue goal: ₹31,000 — ₹24,860 collected so far.",
     action: "View Earnings",
     actionRoute: "/earnings",
-    color: "#10b981",
-    bg: "#f0fdf4",
-    border: "#bbf7d0",
+    color: "#0c831f",
+    bg: "#eaf6ed",
+    border: "#d3ebd8",
   },
 ];
 
@@ -139,12 +139,12 @@ export const DELIVERY_BOYS = [
 ];
 
 export const STATUS_CONFIG = {
-  Delivered:  { color: "#10b981", bg: "#d1fae5" },
-  Processing: { color: "#1a73e8", bg: "#dbeafe" },
-  Pending:    { color: "#f59e0b", bg: "#fef3c7" },
-  Cancelled:  { color: "#ef4444", bg: "#fee2e2" },
-  Active:     { color: "#10b981", bg: "#d1fae5" },
-  Busy:       { color: "#f59e0b", bg: "#fef3c7" },
-  Available:  { color: "#10b981", bg: "#d1fae5" },
-  Offline:    { color: "#94a3b8", bg: "#f1f5f9" },
+  Delivered:  { color: "#0c831f", bg: "#d3ebd8" },
+  Processing: { color: "#ae2012", bg: "#f5ebe0" },
+  Pending:    { color: "#e9c46a", bg: "#faedcc" },
+  Cancelled:  { color: "#d32f2f", bg: "#fbebe9" },
+  Active:     { color: "#0c831f", bg: "#d3ebd8" },
+  Busy:       { color: "#e9c46a", bg: "#faedcc" },
+  Available:  { color: "#0c831f", bg: "#d3ebd8" },
+  Offline:    { color: "#a68b66", bg: "#f5ebe0" },
 };

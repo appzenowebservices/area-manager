@@ -67,12 +67,12 @@ export default function VendorsPage() {
       {/* Summary Strip */}
       <div className="vp-summary">
         {[
-          { label: "Total Vendors", val: total,    color: "#1a73e8", bg: "#e8f0fe" },
-          { label: "Active",        val: active,   color: "#10b981", bg: "#d1fae5" },
-          { label: "Inactive",      val: inactive, color: "#ef4444", bg: "#fee2e2" },
-          { label: "Pending KYC",   val: pendingKyc, color: "#f59e0b", bg: "#fef3c7" },
-          { label: "KYC Verified",  val: verified, color: "#10b981", bg: "#d1fae5" },
-          { label: "Est. Revenue",  val: `₹${(totalRev/1000).toFixed(0)}k`, color: "#7c3aed", bg: "#ede9fe" },
+          { label: "Total Vendors", val: total,    color: "#ae2012", bg: "#fdfbf7" },
+          { label: "Active",        val: active,   color: "#0c831f", bg: "#d3ebd8" },
+          { label: "Inactive",      val: inactive, color: "#d32f2f", bg: "#fbebe9" },
+          { label: "Pending KYC",   val: pendingKyc, color: "#e9c46a", bg: "#faedcc" },
+          { label: "KYC Verified",  val: verified, color: "#0c831f", bg: "#d3ebd8" },
+          { label: "Est. Revenue",  val: `₹${(totalRev/1000).toFixed(0)}k`, color: "#4a5d23", bg: "#f5ebe0" },
         ].map(s => (
           <div key={s.label} className="vp-sum-chip" style={{ background: s.bg }}>
             <span className="vp-sum-val" style={{ color: s.color }}>{s.val}</span>
@@ -133,16 +133,16 @@ export default function VendorsPage() {
 
 const css = `
   .vp-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.25rem; flex-wrap:wrap; gap:10px; }
-  .vp-title { font-family:'Sora',sans-serif; font-size:clamp(1.2rem,3vw,1.5rem); font-weight:800; color:#0f172a; letter-spacing:-0.02em; margin:0; }
-  .vp-sub { font-size:0.82rem; color:#94a3b8; margin-top:3px; }
+  .vp-title { font-family:'Sora',sans-serif; font-size:clamp(1.2rem,3vw,1.5rem); font-weight:800; color:#2d241e; letter-spacing:-0.02em; margin:0; }
+  .vp-sub { font-size:0.82rem; color:#a68b66; margin-top:3px; }
   .vp-summary { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:1.25rem; }
   .vp-sum-chip { display:flex; flex-direction:column; align-items:center; gap:2px; padding:0.55rem 1rem; border-radius:12px; min-width:80px; flex:1; }
   .vp-sum-val { font-family:'Sora',sans-serif; font-size:1.15rem; font-weight:800; line-height:1; }
-  .vp-sum-label { font-size:0.68rem; color:#64748b; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; white-space:nowrap; }
+  .vp-sum-label { font-size:0.68rem; color:#7d6b5d; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; white-space:nowrap; }
   .vp-desktop { display:block; }
   .vp-mobile  { display:none; }
   .vp-card-list { display:flex; flex-direction:column; gap:10px; }
-  .vp-empty { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:4rem 1rem; color:#94a3b8; font-size:0.88rem; }
+  .vp-empty { display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; padding:4rem 1rem; color:#a68b66; font-size:0.88rem; }
   @media (max-width:768px) {
     .vp-desktop { display:none; }
     .vp-mobile  { display:block; }

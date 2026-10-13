@@ -53,7 +53,7 @@ const css = `
     justify-content: space-between;
     flex-wrap: wrap;
     gap: 12px;
-    background: linear-gradient(130deg, #1a73e8 0%, #0d47a1 100%);
+    background: linear-gradient(130deg, #ae2012 0%, #2d241e 100%);
     border-radius: 18px;
     padding: 1.3rem 1.75rem;
     margin-bottom: 1.5rem;
@@ -126,8 +126,8 @@ const css = `
   .wb-dot {
     width: 8px; height: 8px;
     border-radius: 50%;
-    background: #4ade80;
-    box-shadow: 0 0 0 3px rgba(74,222,128,0.3);
+    background: #4fbf6e;
+    box-shadow: 0 0 0 3px rgba(12, 131, 31,0.3);
     animation: wb-pulse 1.6s ease-in-out infinite;
     flex-shrink: 0;
   }

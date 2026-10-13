@@ -29,7 +29,7 @@ export default function OrderDetailPage() {
   if (!order) {
     return (
       <PageWrapper>
-        <div style={{ textAlign: "center", padding: "4rem", color: "#94a3b8" }}>
+        <div style={{ textAlign: "center", padding: "4rem", color: "#a68b66" }}>
           <div style={{ fontSize: "3rem" }}>🔍</div>
           <p style={{ marginTop: 12, fontWeight: 600 }}>Order not found: {id}</p>
           <button onClick={() => navigate("/orders")} style={backBtnStyle}>
@@ -115,7 +115,7 @@ export default function OrderDetailPage() {
             {/* Bill summary */}
             <div className="od-bill">
               <BillRow label="Subtotal"         val={`₹${subtotal.toLocaleString()}`} />
-              {order.discount > 0 && <BillRow label="Discount" val={`-₹${order.discount}`} accent="#10b981" />}
+              {order.discount > 0 && <BillRow label="Discount" val={`-₹${order.discount}`} accent="#0c831f" />}
               {order.deliveryCharge > 0 && <BillRow label="Delivery" val={`₹${order.deliveryCharge}`} />}
               <BillRow label="Total" val={`₹${order.finalAmount.toLocaleString()}`} bold />
             </div>
@@ -247,10 +247,10 @@ function statusEmoji(s) {
 
 function getActiveStyle(s) {
   const map = {
-    Pending:    { background: "#fef3c7", color: "#f59e0b", borderColor: "#fde68a" },
-    Processing: { background: "#dbeafe", color: "#1a73e8", borderColor: "#bfdbfe" },
-    Delivered:  { background: "#d1fae5", color: "#10b981", borderColor: "#6ee7b7" },
-    Cancelled:  { background: "#fee2e2", color: "#ef4444", borderColor: "#fecaca" },
+    Pending:    { background: "#faedcc", color: "#e9c46a", borderColor: "#faedcc" },
+    Processing: { background: "#f5ebe0", color: "#ae2012", borderColor: "#e9d8bf" },
+    Delivered:  { background: "#d3ebd8", color: "#0c831f", borderColor: "#93d3a0" },
+    Cancelled:  { background: "#fbebe9", color: "#d32f2f", borderColor: "#f6d4ce" },
   };
   return map[s] || {};
 }
@@ -258,7 +258,7 @@ function getActiveStyle(s) {
 const backBtnStyle = {
   marginTop: 16,
   padding: "0.6rem 1.4rem",
-  background: "#1a73e8",
+  background: "#ae2012",
   color: "#fff",
   border: "none",
   borderRadius: 10,
@@ -275,7 +275,7 @@ const css = `
   .od-back {
     background: none;
     border: none;
-    color: #1a73e8;
+    color: #ae2012;
     font-size: 0.85rem;
     font-weight: 700;
     font-family: inherit;
@@ -296,13 +296,13 @@ const css = `
     font-family: 'Sora', sans-serif;
     font-size: clamp(1.3rem, 3vw, 1.7rem);
     font-weight: 800;
-    color: #0f172a;
+    color: #2d241e;
     letter-spacing: -0.02em;
     margin: 0;
   }
   .od-meta-time {
     font-size: 0.8rem;
-    color: #94a3b8;
+    color: #a68b66;
     margin-top: 5px;
   }
 
@@ -323,18 +323,18 @@ const css = `
   .od-section {
     background: #fff;
     border-radius: 16px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e9d8bf;
     padding: 1.2rem 1.3rem;
-    box-shadow: 0 1px 4px rgba(15,23,42,0.04);
+    box-shadow: 0 1px 4px rgba(45, 36, 30,0.04);
   }
   .od-section-title {
     font-family: 'Sora', sans-serif;
     font-size: 0.9rem;
     font-weight: 700;
-    color: #0f172a;
+    color: #2d241e;
     margin-bottom: 14px;
     padding-bottom: 10px;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f5ebe0;
   }
 
   /* Info rows */
@@ -344,20 +344,20 @@ const css = `
     align-items: flex-start;
     gap: 10px;
     padding: 0.45rem 0;
-    border-bottom: 1px solid #f8faff;
+    border-bottom: 1px solid #fdfbf7;
   }
   .od-info-row:last-of-type { border-bottom: none; }
   .od-full { flex-direction: column; gap: 3px; }
   .od-highlight {
-    background: #fffbeb;
+    background: #fdf6e4;
     border-radius: 8px;
     padding: 0.45rem 0.7rem;
-    border: 1px solid #fde68a;
-    border-bottom: 1px solid #fde68a !important;
+    border: 1px solid #faedcc;
+    border-bottom: 1px solid #faedcc !important;
   }
   .od-info-label {
     font-size: 0.72rem;
-    color: #94a3b8;
+    color: #a68b66;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.05em;
@@ -366,18 +366,18 @@ const css = `
   }
   .od-info-val {
     font-size: 0.85rem;
-    color: #334155;
+    color: #4a3f35;
     font-weight: 500;
     text-align: right;
   }
   .od-full .od-info-val { text-align: left; }
-  .od-bold { font-weight: 800; color: #0f172a; font-size: 0.95rem; }
+  .od-bold { font-weight: 800; color: #2d241e; font-size: 0.95rem; }
 
   /* Items table */
   .od-items-table-wrap {
     overflow-x: auto;
     border-radius: 10px;
-    border: 1px solid #f1f5f9;
+    border: 1px solid #f5ebe0;
     margin-bottom: 14px;
   }
   .od-items-table {
@@ -387,41 +387,41 @@ const css = `
     min-width: 340px;
   }
   .od-items-table th {
-    background: #f8faff;
+    background: #fdfbf7;
     padding: 0.55rem 0.85rem;
     text-align: left;
     font-size: 0.68rem;
     font-weight: 700;
-    color: #94a3b8;
+    color: #a68b66;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e9d8bf;
   }
   .od-items-table td {
     padding: 0.65rem 0.85rem;
-    border-bottom: 1px solid #f1f5f9;
-    color: #334155;
+    border-bottom: 1px solid #f5ebe0;
+    color: #4a3f35;
   }
   .od-items-table tr:last-child td { border-bottom: none; }
-  .od-item-total { font-weight: 700; color: #0f172a; }
+  .od-item-total { font-weight: 700; color: #2d241e; }
 
   /* Bill */
   .od-bill {
-    border-top: 1px solid #f1f5f9;
+    border-top: 1px solid #f5ebe0;
     padding-top: 10px;
   }
   .od-bill-row {
     display: flex;
     justify-content: space-between;
     font-size: 0.83rem;
-    color: #64748b;
+    color: #7d6b5d;
     padding: 3px 0;
   }
   .od-bill-total {
     font-size: 0.95rem;
     font-weight: 800;
-    color: #0f172a;
-    border-top: 1px dashed #e2e8f0;
+    color: #2d241e;
+    border-top: 1px dashed #e9d8bf;
     padding-top: 8px;
     margin-top: 4px;
   }
@@ -429,7 +429,7 @@ const css = `
   /* Unassigned */
   .od-unassigned-text {
     font-size: 0.82rem;
-    color: #f59e0b;
+    color: #e9c46a;
     font-weight: 600;
     margin-bottom: 10px;
   }
@@ -448,8 +448,8 @@ const css = `
     transition: opacity 0.15s;
   }
   .od-assign-btn:hover { opacity: 0.88; }
-  .od-assign-vendor   { background: #e8f0fe; color: #1a73e8; }
-  .od-assign-delivery { background: #d1fae5; color: #10b981; }
+  .od-assign-vendor   { background: #fdfbf7; color: #ae2012; }
+  .od-assign-delivery { background: #d3ebd8; color: #0c831f; }
 
   /* Status change */
   .od-status-btns {
@@ -459,10 +459,10 @@ const css = `
   }
   .od-status-btn {
     padding: 0.6rem 0.5rem;
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid #e9d8bf;
     border-radius: 10px;
     background: #fff;
-    color: #64748b;
+    color: #7d6b5d;
     font-size: 0.8rem;
     font-weight: 600;
     font-family: inherit;
@@ -471,8 +471,8 @@ const css = `
     white-space: nowrap;
   }
   .od-status-btn:hover:not(.od-status-btn-active) {
-    background: #f0f5ff;
-    border-color: #bfdbfe;
+    background: #fdfbf7;
+    border-color: #e9d8bf;
   }
 
   /* Responsive */

@@ -61,7 +61,7 @@ export default function OtpField({ phone, value, onChange, error }) {
         error={error}
       />
       {sent && (
-        <p style={{ fontSize: "0.78rem", color: "#22c55e", marginTop: 6 }}>
+        <p style={{ fontSize: "0.78rem", color: "#0c831f", marginTop: 6 }}>
           ✓ OTP sent to +91 {phone}
         </p>
       )}

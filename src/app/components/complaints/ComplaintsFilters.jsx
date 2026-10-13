@@ -71,7 +71,7 @@ export default function ComplaintsFilters({
 
 const css = `
   .cf-wrap {
-    background: #fff; border: 1px solid #e2e8f0;
+    background: #fff; border: 1px solid #e9d8bf;
     border-radius: 14px; padding: 1rem 1.1rem;
     margin-bottom: 1.1rem; display: flex;
     flex-direction: column; gap: 10px;
@@ -80,32 +80,32 @@ const css = `
   .cf-search-wrap {
     flex: 1; min-width: 200px;
     display: flex; align-items: center;
-    background: #f8faff; border: 1.5px solid #e2e8f0;
+    background: #fdfbf7; border: 1.5px solid #e9d8bf;
     border-radius: 10px; padding: 0 0.75rem;
     transition: border-color 0.2s;
   }
-  .cf-search-wrap:focus-within { border-color: #1a73e8; box-shadow: 0 0 0 3px rgba(26,115,232,0.1); }
-  .cf-icon { color: #94a3b8; display: flex; align-items: center; flex-shrink: 0; }
+  .cf-search-wrap:focus-within { border-color: #ae2012; box-shadow: 0 0 0 3px rgba(12, 131, 31,0.1); }
+  .cf-icon { color: #a68b66; display: flex; align-items: center; flex-shrink: 0; }
   .cf-search {
     flex: 1; height: 40px; border: none; outline: none;
     background: transparent; font-size: 0.85rem;
-    color: #0f172a; font-family: inherit; padding: 0 8px;
+    color: #2d241e; font-family: inherit; padding: 0 8px;
   }
   .cf-search::placeholder { color: #bbb; }
-  .cf-clear { background: none; border: none; color: #94a3b8; cursor: pointer; font-size: 0.8rem; padding: 2px 4px; }
+  .cf-clear { background: none; border: none; color: #a68b66; cursor: pointer; font-size: 0.8rem; padding: 2px 4px; }
   .cf-select {
     height: 42px; padding: 0 0.75rem;
-    border: 1.5px solid #e2e8f0; border-radius: 10px;
-    background: #f8faff; font-size: 0.84rem;
-    color: #334155; font-family: inherit;
+    border: 1.5px solid #e9d8bf; border-radius: 10px;
+    background: #fdfbf7; font-size: 0.84rem;
+    color: #4a3f35; font-family: inherit;
     outline: none; cursor: pointer;
     transition: border-color 0.2s; min-width: 120px;
   }
-  .cf-select:focus { border-color: #1a73e8; }
+  .cf-select:focus { border-color: #ae2012; }
   .cf-meta { display: flex; justify-content: space-between; align-items: center; }
-  .cf-count { font-size: 0.8rem; color: #64748b; }
-  .cf-count strong { color: #1a73e8; }
-  .cf-reset { background: none; border: none; color: #ef4444; font-size: 0.78rem; font-weight: 600; cursor: pointer; font-family: inherit; padding: 0; }
+  .cf-count { font-size: 0.8rem; color: #7d6b5d; }
+  .cf-count strong { color: #ae2012; }
+  .cf-reset { background: none; border: none; color: #d32f2f; font-size: 0.78rem; font-weight: 600; cursor: pointer; font-family: inherit; padding: 0; }
   @media (max-width: 600px) {
     .cf-search-wrap { min-width: 100%; }
     .cf-select { flex: 1; min-width: 100px; }

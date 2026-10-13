@@ -3,11 +3,11 @@
 export const LEAD_STAGES = ["All", "New", "Contacted", "Docs Pending", "Approved", "Rejected"];
 
 export const LEAD_STAGE_CONFIG = {
-  "New":          { bg: "#dbeafe", color: "#1d4ed8", dot: "#1a73e8",  next: "Contacted"    },
-  "Contacted":    { bg: "#ede9fe", color: "#6d28d9", dot: "#7c3aed",  next: "Docs Pending" },
-  "Docs Pending": { bg: "#fef3c7", color: "#d97706", dot: "#f59e0b",  next: "Approved"     },
-  "Approved":     { bg: "#d1fae5", color: "#065f46", dot: "#10b981",  next: null           },
-  "Rejected":     { bg: "#fee2e2", color: "#b91c1c", dot: "#ef4444",  next: null           },
+  "New":          { bg: "#f5ebe0", color: "#ae2012", dot: "#ae2012",  next: "Contacted"    },
+  "Contacted":    { bg: "#f5ebe0", color: "#4a5d23", dot: "#4a5d23",  next: "Docs Pending" },
+  "Docs Pending": { bg: "#faedcc", color: "#a67a22", dot: "#e9c46a",  next: "Approved"     },
+  "Approved":     { bg: "#d3ebd8", color: "#0a671a", dot: "#0c831f",  next: null           },
+  "Rejected":     { bg: "#fbebe9", color: "#8b150e", dot: "#d32f2f",  next: null           },
 };
 
 // ── Vendor Leads (from public vendor registration form) ──

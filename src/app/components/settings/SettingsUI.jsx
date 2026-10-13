@@ -56,17 +56,17 @@ export function SaveBar({ loading, saved, savedMsg = "Saved successfully!", onSa
 }
 
 export function Divider() {
-  return <div style={{ height: 1, background: "#f1f5f9", margin: "0.25rem 0" }} />;
+  return <div style={{ height: 1, background: "#f5ebe0", margin: "0.25rem 0" }} />;
 }
 
 export const inputCss = `
   .si-input {
     width: 100%;
     padding: 0.65rem 0.9rem;
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid #e9d8bf;
     border-radius: 10px;
     font-size: 0.88rem;
-    color: #0f172a;
+    color: #2d241e;
     background: #fff;
     font-family: inherit;
     outline: none;
@@ -74,22 +74,22 @@ export const inputCss = `
     transition: border-color 0.2s, box-shadow 0.2s;
   }
   .si-input:focus {
-    border-color: #1a73e8;
-    box-shadow: 0 0 0 3px rgba(26,115,232,0.1);
+    border-color: #ae2012;
+    box-shadow: 0 0 0 3px rgba(12, 131, 31,0.1);
   }
   .si-input:disabled {
-    background: #f8faff;
-    color: #94a3b8;
+    background: #fdfbf7;
+    color: #a68b66;
     cursor: not-allowed;
   }
-  .si-input-error { border-color: #ef4444 !important; }
+  .si-input-error { border-color: #d32f2f !important; }
   .si-select {
     width: 100%;
     padding: 0.65rem 0.9rem;
-    border: 1.5px solid #e2e8f0;
+    border: 1.5px solid #e9d8bf;
     border-radius: 10px;
     font-size: 0.88rem;
-    color: #0f172a;
+    color: #2d241e;
     background: #fff;
     font-family: inherit;
     outline: none;
@@ -97,34 +97,34 @@ export const inputCss = `
     box-sizing: border-box;
     transition: border-color 0.2s;
   }
-  .si-select:focus { border-color: #1a73e8; }
+  .si-select:focus { border-color: #ae2012; }
 `;
 
 const cardCss = `
   .sc-card {
     background: #fff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e9d8bf;
     border-radius: 14px;
     padding: 1.3rem 1.4rem;
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
-  .sc-header { border-bottom: 1px solid #f1f5f9; padding-bottom: 0.85rem; }
+  .sc-header { border-bottom: 1px solid #f5ebe0; padding-bottom: 0.85rem; }
   .sc-title {
     font-family: 'Sora', sans-serif;
     font-size: 0.95rem; font-weight: 700;
-    color: #0f172a; margin: 0 0 3px;
+    color: #2d241e; margin: 0 0 3px;
   }
-  .sc-sub { font-size: 0.78rem; color: #94a3b8; margin: 0; }
+  .sc-sub { font-size: 0.78rem; color: #a68b66; margin: 0; }
 `;
 
 const fieldCss = `
   .ff-wrap { display: flex; flex-direction: column; gap: 5px; }
   .ff-half { }
-  .ff-label { font-size: 0.78rem; font-weight: 600; color: #334155; }
-  .ff-hint  { font-size: 0.72rem; color: #94a3b8; margin: 0; }
-  .ff-error { font-size: 0.72rem; color: #ef4444; margin: 0; }
+  .ff-label { font-size: 0.78rem; font-weight: 600; color: #4a3f35; }
+  .ff-hint  { font-size: 0.72rem; color: #a68b66; margin: 0; }
+  .ff-error { font-size: 0.72rem; color: #d32f2f; margin: 0; }
 `;
 
 const saveCss = `
@@ -136,16 +136,16 @@ const saveCss = `
     flex-wrap: wrap;
     padding-top: 0.5rem;
   }
-  .sb-saved { font-size: 0.82rem; color: #10b981; font-weight: 600; }
+  .sb-saved { font-size: 0.82rem; color: #0c831f; font-weight: 600; }
   .sb-btn {
     padding: 0.65rem 1.5rem;
-    background: #1a73e8; color: #fff;
+    background: #ae2012; color: #fff;
     border: none; border-radius: 10px;
     font-size: 0.88rem; font-weight: 700;
     font-family: inherit; cursor: pointer;
-    box-shadow: 0 4px 12px rgba(26,115,232,0.3);
+    box-shadow: 0 4px 12px rgba(12, 131, 31,0.3);
     transition: background 0.15s, transform 0.12s;
   }
-  .sb-btn:hover:not(:disabled) { background: #1557b0; transform: translateY(-1px); }
-  .sb-btn:disabled { background: #93b8fb; cursor: not-allowed; transform: none; box-shadow: none; }
+  .sb-btn:hover:not(:disabled) { background: #8b150e; transform: translateY(-1px); }
+  .sb-btn:disabled { background: #d3ebd8; cursor: not-allowed; transform: none; box-shadow: none; }
 `;

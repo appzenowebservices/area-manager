@@ -10,7 +10,7 @@ import { getDeliveryStats } from "../../data/deliveryData";
  */
 
 const StarIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b" stroke="none">
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="#e9c46a" stroke="none">
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
   </svg>
 );
@@ -52,15 +52,15 @@ export default function DeliveryCard({ partner: p, onView }) {
             <span className="dc-stat-label">Total</span>
           </div>
           <div className="dc-stat">
-            <span className="dc-stat-val" style={{ color: "#1a73e8" }}>{stats.pending}</span>
+            <span className="dc-stat-val" style={{ color: "#ae2012" }}>{stats.pending}</span>
             <span className="dc-stat-label">Active</span>
           </div>
           <div className="dc-stat">
-            <span className="dc-stat-val" style={{ color: "#10b981" }}>{stats.delivered}</span>
+            <span className="dc-stat-val" style={{ color: "#0c831f" }}>{stats.delivered}</span>
             <span className="dc-stat-label">Delivered</span>
           </div>
           <div className="dc-stat">
-            <span className="dc-stat-val" style={{ color: "#10b981" }}>
+            <span className="dc-stat-val" style={{ color: "#0c831f" }}>
               ₹{stats.revenue.toLocaleString("en-IN")}
             </span>
             <span className="dc-stat-label">Revenue</span>
@@ -78,13 +78,13 @@ export default function DeliveryCard({ partner: p, onView }) {
 const css = `
   .dc-card {
     background: #fff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e9d8bf;
     border-radius: 14px;
     padding: 1rem 1.1rem;
-    box-shadow: 0 1px 4px rgba(15,23,42,0.04);
+    box-shadow: 0 1px 4px rgba(45, 36, 30,0.04);
     transition: box-shadow 0.18s;
   }
-  .dc-card:hover { box-shadow: 0 4px 14px rgba(26,115,232,0.1); }
+  .dc-card:hover { box-shadow: 0 4px 14px rgba(12, 131, 31,0.1); }
   .dc-top {
     display: flex;
     justify-content: space-between;
@@ -95,23 +95,23 @@ const css = `
   .dc-avatar {
     width: 38px; height: 38px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    background: linear-gradient(135deg, #ae2012, #2d241e);
     color: #fff;
     display: flex; align-items: center; justify-content: center;
     font-size: 0.78rem; font-weight: 700;
     flex-shrink: 0;
   }
-  .dc-name { font-weight: 700; color: #0f172a; font-size: 0.92rem; }
-  .dc-id   { font-size: 0.72rem; color: #94a3b8; margin-top: 2px; }
+  .dc-name { font-weight: 700; color: #2d241e; font-size: 0.92rem; }
+  .dc-id   { font-size: 0.72rem; color: #a68b66; margin-top: 2px; }
   .dc-meta-row {
     display: flex; flex-wrap: wrap; gap: 10px;
     margin-bottom: 4px;
   }
   .dc-meta {
     display: inline-flex; align-items: center; gap: 4px;
-    font-size: 0.76rem; color: #64748b;
+    font-size: 0.76rem; color: #7d6b5d;
   }
-  .dc-divider { height: 1px; background: #f1f5f9; margin: 10px 0; }
+  .dc-divider { height: 1px; background: #f5ebe0; margin: 10px 0; }
   .dc-stats {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -121,7 +121,7 @@ const css = `
   .dc-stat {
     display: flex; flex-direction: column;
     align-items: center; gap: 2px;
-    background: #f8faff;
+    background: #fdfbf7;
     border-radius: 10px;
     padding: 0.5rem 0.25rem;
   }
@@ -129,11 +129,11 @@ const css = `
     font-family: 'Sora', sans-serif;
     font-size: 0.95rem;
     font-weight: 800;
-    color: #0f172a;
+    color: #2d241e;
   }
   .dc-stat-label {
     font-size: 0.62rem;
-    color: #94a3b8;
+    color: #a68b66;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.04em;
@@ -141,8 +141,8 @@ const css = `
   .dc-btn {
     width: 100%;
     padding: 0.6rem;
-    background: #e8f0fe;
-    color: #1a73e8;
+    background: #fdfbf7;
+    color: #ae2012;
     border: none;
     border-radius: 9px;
     font-size: 0.83rem;
@@ -151,5 +151,5 @@ const css = `
     cursor: pointer;
     transition: background 0.15s;
   }
-  .dc-btn:hover { background: #d2e3fc; }
+  .dc-btn:hover { background: #f5ebe0; }
 `;

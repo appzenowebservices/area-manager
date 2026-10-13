@@ -11,7 +11,7 @@ import { getDeliveryStats } from "../../data/deliveryData";
  */
 
 const StarIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="#f59e0b" stroke="none">
+  <svg width="12" height="12" viewBox="0 0 24 24" fill="#e9c46a" stroke="none">
     <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
   </svg>
 );
@@ -127,7 +127,7 @@ const css = `
   .dt-wrap {
     overflow-x: auto;
     border-radius: 14px;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e9d8bf;
   }
   .dt-table {
     width: 100%;
@@ -138,20 +138,20 @@ const css = `
   .dt-th {
     text-align: left;
     padding: 0.65rem 0.9rem;
-    background: #f8faff;
-    color: #94a3b8;
+    background: #fdfbf7;
+    color: #a68b66;
     font-size: 0.68rem;
     font-weight: 700;
     text-transform: uppercase;
     letter-spacing: 0.06em;
-    border-bottom: 1px solid #e2e8f0;
+    border-bottom: 1px solid #e9d8bf;
     white-space: nowrap;
   }
   .dt-tr { transition: background 0.12s; }
-  .dt-tr:hover .dt-td { background: #f8faff; }
+  .dt-tr:hover .dt-td { background: #fdfbf7; }
   .dt-td {
     padding: 0.75rem 0.9rem;
-    border-bottom: 1px solid #f1f5f9;
+    border-bottom: 1px solid #f5ebe0;
     vertical-align: middle;
     white-space: nowrap;
     background: #fff;
@@ -163,40 +163,40 @@ const css = `
   .dt-avatar {
     width: 34px; height: 34px;
     border-radius: 50%;
-    background: linear-gradient(135deg, #1a73e8, #0d47a1);
+    background: linear-gradient(135deg, #ae2012, #2d241e);
     color: #fff;
     display: flex; align-items: center; justify-content: center;
     font-size: 0.72rem; font-weight: 700;
     flex-shrink: 0;
   }
-  .dt-name { font-weight: 700; color: #0f172a; font-size: 0.85rem; }
-  .dt-id   { font-size: 0.68rem; color: #94a3b8; margin-top: 1px; }
+  .dt-name { font-weight: 700; color: #2d241e; font-size: 0.85rem; }
+  .dt-id   { font-size: 0.68rem; color: #a68b66; margin-top: 1px; }
 
-  .dt-phone      { font-size: 0.8rem; color: #334155; font-weight: 500; }
-  .dt-area-small { font-size: 0.68rem; color: #94a3b8; margin-top: 2px; }
-  .dt-area-badge { font-size: 0.78rem; color: #475569; }
+  .dt-phone      { font-size: 0.8rem; color: #4a3f35; font-weight: 500; }
+  .dt-area-small { font-size: 0.68rem; color: #a68b66; margin-top: 2px; }
+  .dt-area-badge { font-size: 0.78rem; color: #5d4037; }
 
-  .dt-vehicle { font-size: 0.82rem; color: #334155; font-weight: 600; }
-  .dt-vno     { font-size: 0.68rem; color: #94a3b8; margin-top: 2px; }
+  .dt-vehicle { font-size: 0.82rem; color: #4a3f35; font-weight: 600; }
+  .dt-vno     { font-size: 0.68rem; color: #a68b66; margin-top: 2px; }
 
   .dt-rating {
     display: flex; align-items: center; gap: 4px;
-    font-weight: 700; color: #0f172a; font-size: 0.85rem;
+    font-weight: 700; color: #2d241e; font-size: 0.85rem;
   }
 
   .dt-count {
     font-family: 'Sora', sans-serif;
-    font-weight: 700; color: #334155;
+    font-weight: 700; color: #4a3f35;
   }
 
   .dt-active {
     font-weight: 700;
-    color: #94a3b8;
+    color: #a68b66;
     font-size: 0.85rem;
   }
   .dt-active-has {
-    color: #1a73e8;
-    background: #e8f0fe;
+    color: #ae2012;
+    background: #fdfbf7;
     padding: 2px 10px;
     border-radius: 99px;
   }
@@ -204,7 +204,7 @@ const css = `
   .dt-revenue {
     font-family: 'Sora', sans-serif;
     font-weight: 700;
-    color: #10b981;
+    color: #0c831f;
     font-size: 0.85rem;
   }
 
@@ -213,8 +213,8 @@ const css = `
     align-items: center;
     gap: 5px;
     padding: 0.35rem 0.85rem;
-    background: #e8f0fe;
-    color: #1a73e8;
+    background: #fdfbf7;
+    color: #ae2012;
     border: none;
     border-radius: 8px;
     font-size: 0.78rem;
@@ -224,12 +224,12 @@ const css = `
     transition: background 0.15s;
     white-space: nowrap;
   }
-  .dt-view-btn:hover { background: #d2e3fc; }
+  .dt-view-btn:hover { background: #f5ebe0; }
 
   .dt-empty {
     text-align: center;
     padding: 3.5rem 1rem;
-    color: #94a3b8;
+    color: #a68b66;
   }
   .dt-empty p { margin-top: 8px; font-size: 0.88rem; }
 `;

@@ -68,33 +68,33 @@ export default function ComplaintCard({ complaint: c, onView }) {
 
 const css = `
   .cc-card {
-    background: #fff; border: 1px solid #e2e8f0;
+    background: #fff; border: 1px solid #e9d8bf;
     border-radius: 14px; padding: 1rem 1.1rem;
-    box-shadow: 0 1px 4px rgba(15,23,42,0.04);
+    box-shadow: 0 1px 4px rgba(45, 36, 30,0.04);
     transition: box-shadow 0.18s;
   }
-  .cc-card:hover { box-shadow: 0 4px 14px rgba(26,115,232,0.1); }
+  .cc-card:hover { box-shadow: 0 4px 14px rgba(12, 131, 31,0.1); }
   .cc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-  .cc-id { font-family: 'Sora', sans-serif; font-size: 0.82rem; font-weight: 700; color: #1a73e8; }
-  .cc-subject { font-size: 0.9rem; font-weight: 700; color: #0f172a; margin-bottom: 8px; line-height: 1.3; }
+  .cc-id { font-family: 'Sora', sans-serif; font-size: 0.82rem; font-weight: 700; color: #ae2012; }
+  .cc-subject { font-size: 0.9rem; font-weight: 700; color: #2d241e; margin-bottom: 8px; line-height: 1.3; }
   .cc-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
-  .cc-divider { height: 1px; background: #f1f5f9; margin: 10px 0; }
+  .cc-divider { height: 1px; background: #f5ebe0; margin: 10px 0; }
   .cc-info-grid {
     display: grid; grid-template-columns: repeat(3, minmax(0,1fr));
     gap: 8px 10px; margin-bottom: 10px;
   }
   .cc-info { display: flex; flex-direction: column; gap: 2px; }
-  .cc-info-label { font-size: 0.62rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
-  .cc-info-val { font-size: 0.78rem; color: #334155; font-weight: 600; }
+  .cc-info-label { font-size: 0.62rem; color: #a68b66; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+  .cc-info-val { font-size: 0.78rem; color: #4a3f35; font-weight: 600; }
   .cc-btn {
     width: 100%; padding: 0.6rem;
-    background: #e8f0fe; color: #1a73e8;
+    background: #fdfbf7; color: #ae2012;
     border: none; border-radius: 9px;
     font-size: 0.83rem; font-weight: 700;
     font-family: inherit; cursor: pointer;
     transition: background 0.15s;
   }
-  .cc-btn:hover { background: #d2e3fc; }
+  .cc-btn:hover { background: #f5ebe0; }
   @media (max-width: 360px) {
     .cc-info-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
   }

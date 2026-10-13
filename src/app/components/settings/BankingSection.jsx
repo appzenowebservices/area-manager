@@ -97,8 +97,8 @@ export default function BankingSection() {
   const ifscIcon = {
     idle:    null,
     loading: <span className="bk-ifsc-spin" />,
-    success: <span style={{ color: "#10b981", fontSize: "1rem" }}>✓</span>,
-    error:   <span style={{ color: "#ef4444", fontSize: "0.9rem" }}>✕</span>,
+    success: <span style={{ color: "#0c831f", fontSize: "1rem" }}>✓</span>,
+    error:   <span style={{ color: "#d32f2f", fontSize: "0.9rem" }}>✕</span>,
   }[ifscStatus];
 
   return (
@@ -248,7 +248,7 @@ const css = `
   /* IFSC */
   .bk-ifsc-wrap { position: relative; display: flex; align-items: center; }
   .bk-ifsc-input { padding-right: 2.8rem !important; font-family: 'Sora', sans-serif; }
-  .bk-ifsc-ok { border-color: #10b981 !important; }
+  .bk-ifsc-ok { border-color: #0c831f !important; }
   .bk-ifsc-status {
     position: absolute; right: 12px;
     display: flex; align-items: center;
@@ -256,8 +256,8 @@ const css = `
   .bk-ifsc-spin {
     display: inline-block;
     width: 14px; height: 14px;
-    border: 2px solid #e2e8f0;
-    border-top-color: #1a73e8;
+    border: 2px solid #e9d8bf;
+    border-top-color: #ae2012;
     border-radius: 50%;
     animation: bkSpin 0.7s linear infinite;
   }
@@ -265,8 +265,8 @@ const css = `
 
   /* Bank info panel */
   .bk-bank-panel {
-    background: linear-gradient(135deg, #f0f9ff, #e8f0fe);
-    border: 1px solid #bfdbfe;
+    background: linear-gradient(135deg, #eaf6ed, #fdfbf7);
+    border: 1px solid #e9d8bf;
     border-radius: 12px;
     padding: 1rem 1.1rem;
     animation: bkFadeIn 0.3s ease;
@@ -275,21 +275,21 @@ const css = `
   .bk-bank-header { display: flex; align-items: center; gap: 12px; margin-bottom: 10px; }
   .bk-bank-logo {
     width: 40px; height: 40px; border-radius: 10px;
-    background: #1a73e8; color: #fff;
+    background: #ae2012; color: #fff;
     display: flex; align-items: center; justify-content: center;
     font-size: 1.1rem; font-weight: 800;
     font-family: 'Sora', sans-serif; flex-shrink: 0;
   }
-  .bk-bank-name { font-weight: 700; color: #0f172a; font-size: 0.92rem; margin: 0 0 2px; }
-  .bk-bank-sub  { font-size: 0.7rem; color: #10b981; font-weight: 600; margin: 0; }
+  .bk-bank-name { font-weight: 700; color: #2d241e; font-size: 0.92rem; margin: 0 0 2px; }
+  .bk-bank-sub  { font-size: 0.7rem; color: #0c831f; font-weight: 600; margin: 0; }
   .bk-pills { display: flex; flex-wrap: wrap; gap: 6px; }
   .bk-pill {
     display: flex; flex-direction: column; gap: 1px;
-    background: #fff; border: 1px solid #dbeafe;
+    background: #fff; border: 1px solid #f5ebe0;
     border-radius: 8px; padding: 0.4rem 0.65rem;
   }
-  .bk-pill-label { font-size: 0.6rem; color: #94a3b8; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
-  .bk-pill-value { font-size: 0.78rem; color: #1e293b; font-weight: 600; }
+  .bk-pill-label { font-size: 0.6rem; color: #a68b66; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
+  .bk-pill-value { font-size: 0.78rem; color: #2d241e; font-weight: 600; }
 
   /* UPI */
   .bk-upi-wrap { position: relative; display: flex; align-items: center; }
@@ -299,10 +299,10 @@ const css = `
   /* Note */
   .bk-note {
     display: flex; align-items: flex-start; gap: 10px;
-    background: #f0f9ff; border: 1px solid #bae6fd;
+    background: #eaf6ed; border: 1px solid #eaf6ed;
     border-radius: 12px; padding: 0.85rem 1rem;
   }
-  .bk-note p { font-size: 0.78rem; color: #0369a1; line-height: 1.55; margin: 0; }
+  .bk-note p { font-size: 0.78rem; color: #2196f3; line-height: 1.55; margin: 0; }
 
   @media (max-width: 520px) { .bk-grid { grid-template-columns: minmax(0,1fr); } }
 `;

@@ -6,7 +6,7 @@ import { LEAD_STAGE_CONFIG } from "../../data/leadsData";
  * Props: stage string, size "sm"|"md"
  */
 export default function LeadStageBadge({ stage, size = "md" }) {
-  const cfg = LEAD_STAGE_CONFIG[stage] || { bg: "#f1f5f9", color: "#475569", dot: "#94a3b8" };
+  const cfg = LEAD_STAGE_CONFIG[stage] || { bg: "#f5ebe0", color: "#5d4037", dot: "#a68b66" };
   return (
     <span style={{
       display: "inline-flex", alignItems: "center",

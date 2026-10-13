@@ -8,9 +8,9 @@
  */
 export default function DeliveryStatusBadge({ status, size = "md" }) {
   const map = {
-    Available: { bg: "#d1fae5", color: "#065f46", dot: "#10b981" },
-    Busy:      { bg: "#dbeafe", color: "#1e40af", dot: "#1a73e8" },
-    Inactive:  { bg: "#f1f5f9", color: "#475569", dot: "#94a3b8" },
+    Available: { bg: "#d3ebd8", color: "#0a671a", dot: "#0c831f" },
+    Busy:      { bg: "#f5ebe0", color: "#8b150e", dot: "#ae2012" },
+    Inactive:  { bg: "#f5ebe0", color: "#5d4037", dot: "#a68b66" },
   };
   const s = map[status] || map["Inactive"];
 
@@ -35,7 +35,7 @@ export default function DeliveryStatusBadge({ status, size = "md" }) {
         background: s.dot,
         flexShrink: 0,
         ...(status === "Available" ? {
-          boxShadow: `0 0 0 2px rgba(16,185,129,0.25)`,
+          boxShadow: `0 0 0 2px rgba(12, 131, 31,0.25)`,
           animation: "dsBlink 2s infinite",
         } : {}),
       }} />

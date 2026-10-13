@@ -66,7 +66,7 @@ const pageStyles = `
   .login-page {
     display: flex;
     min-height: 100vh;
-    background: #f0f5ff;
+    background: #fdfbf7;
   }
 
   /* Left brand panel */
@@ -82,7 +82,7 @@ const pageStyles = `
     align-items: center;
     justify-content: center;
     padding: 3rem 2.5rem;
-    background: #f8faff;
+    background: #fdfbf7;
     animation: fadeUp 0.6s 0.2s cubic-bezier(0.22,1,0.36,1) both;
   }
 

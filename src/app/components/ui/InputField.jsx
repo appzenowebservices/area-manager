@@ -104,7 +104,7 @@ const styles = {
   label: {
     fontSize: "0.8rem",
     fontWeight: 600,
-    color: "#334155",
+    color: "#4a3f35",
     letterSpacing: "0.02em",
   },
   inputWrap: {
@@ -112,16 +112,16 @@ const styles = {
     alignItems: "center",
     position: "relative",
     background: "#fff",
-    border: "1.5px solid #dbeafe",
+    border: "1.5px solid #f5ebe0",
     borderRadius: 10,
     transition: "border-color 0.2s, box-shadow 0.2s",
   },
   focused: {
-    borderColor: "#1a73e8",
-    boxShadow: "0 0 0 3px rgba(26,115,232,0.12)",
+    borderColor: "#ae2012",
+    boxShadow: "0 0 0 3px rgba(12, 131, 31,0.12)",
   },
   errored: {
-    borderColor: "#ef4444",
+    borderColor: "#d32f2f",
     boxShadow: "0 0 0 3px rgba(239,68,68,0.1)",
   },
   input: {
@@ -131,13 +131,13 @@ const styles = {
     outline: "none",
     background: "transparent",
     fontSize: "0.9rem",
-    color: "#0f172a",
+    color: "#2d241e",
     fontFamily: "inherit",
   },
   iconLeft: {
     position: "absolute",
     left: 13,
-    color: "#94a3b8",
+    color: "#a68b66",
     display: "flex",
     alignItems: "center",
     pointerEvents: "none",
@@ -147,7 +147,7 @@ const styles = {
     right: 12,
     background: "none",
     border: "none",
-    color: "#94a3b8",
+    color: "#a68b66",
     cursor: "pointer",
     display: "flex",
     alignItems: "center",
@@ -161,7 +161,7 @@ const styles = {
   },
   errorMsg: {
     fontSize: "0.78rem",
-    color: "#ef4444",
+    color: "#d32f2f",
     marginTop: 2,
   },
 };

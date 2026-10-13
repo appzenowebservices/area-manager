@@ -134,26 +134,26 @@ const css = `
   .pf-avatar-row { display:flex; align-items:center; gap:16px; flex-wrap:wrap; }
   .pf-avatar {
     width:68px; height:68px; border-radius:50%;
-    background:linear-gradient(135deg,#1a73e8,#0d47a1);
+    background:linear-gradient(135deg,#ae2012,#2d241e);
     color:#fff; font-size:1.3rem; font-weight:700;
     display:flex; align-items:center; justify-content:center;
     font-family:'Sora',sans-serif; flex-shrink:0;
   }
-  .pf-name { font-weight:700; color:#0f172a; font-size:1rem; margin:0 0 2px; }
-  .pf-role { font-size:0.75rem; color:#94a3b8; margin:0 0 10px; }
+  .pf-name { font-weight:700; color:#2d241e; font-size:1rem; margin:0 0 2px; }
+  .pf-role { font-size:0.75rem; color:#a68b66; margin:0 0 10px; }
   .pf-avatar-btns { display:flex; gap:8px; }
   .pf-btn-blue {
-    padding:0.35rem 0.85rem; background:#e8f0fe; color:#1a73e8;
+    padding:0.35rem 0.85rem; background:#fdfbf7; color:#ae2012;
     border:none; border-radius:8px; font-size:0.78rem; font-weight:600;
     font-family:inherit; cursor:pointer; transition:background 0.15s;
   }
-  .pf-btn-blue:hover { background:#d2e3fc; }
+  .pf-btn-blue:hover { background:#f5ebe0; }
   .pf-btn-ghost {
-    padding:0.35rem 0.85rem; background:transparent; color:#94a3b8;
-    border:1.5px solid #e2e8f0; border-radius:8px; font-size:0.78rem;
+    padding:0.35rem 0.85rem; background:transparent; color:#a68b66;
+    border:1.5px solid #e9d8bf; border-radius:8px; font-size:0.78rem;
     font-weight:600; font-family:inherit; cursor:pointer; transition:all 0.15s;
   }
-  .pf-btn-ghost:hover { border-color:#ef4444; color:#ef4444; }
+  .pf-btn-ghost:hover { border-color:#d32f2f; color:#d32f2f; }
   .pf-grid {
     display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:0.9rem;
   }

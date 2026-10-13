@@ -115,30 +115,30 @@ export default function DeliveryLeadsPage() {
 
 const css = `
   .dlp-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.25rem; flex-wrap:wrap; gap:10px; }
-  .dlp-title { font-family:'Sora',sans-serif; font-size:clamp(1.2rem,3vw,1.5rem); font-weight:800; color:#0f172a; letter-spacing:-0.02em; margin:0; }
-  .dlp-sub { font-size:0.82rem; color:#94a3b8; margin-top:3px; }
-  .dlp-form-link { display:inline-flex; align-items:center; gap:5px; padding:0.5rem 1rem; background:#d1fae5; color:#065f46; border-radius:10px; font-size:0.82rem; font-weight:700; text-decoration:none; white-space:nowrap; transition:background 0.15s; }
-  .dlp-form-link:hover { background:#a7f3d0; }
+  .dlp-title { font-family:'Sora',sans-serif; font-size:clamp(1.2rem,3vw,1.5rem); font-weight:800; color:#2d241e; letter-spacing:-0.02em; margin:0; }
+  .dlp-sub { font-size:0.82rem; color:#a68b66; margin-top:3px; }
+  .dlp-form-link { display:inline-flex; align-items:center; gap:5px; padding:0.5rem 1rem; background:#d3ebd8; color:#0a671a; border-radius:10px; font-size:0.82rem; font-weight:700; text-decoration:none; white-space:nowrap; transition:background 0.15s; }
+  .dlp-form-link:hover { background:#d3ebd8; }
   .dlp-stage-cards { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:1.1rem; }
-  .dlp-stage-card { background:#fff; border:1.5px solid #e2e8f0; border-radius:12px; padding:0.75rem 1rem; display:flex; flex-direction:column; gap:6px; cursor:pointer; transition:all 0.15s; flex:1; min-width:80px; align-items:center; }
-  .dlp-stage-card:hover { border-color:#bfdbfe; background:#f8faff; }
-  .dlp-stage-selected { border-color:#10b981; background:#d1fae5; }
-  .dlp-sc-count { font-family:'Sora',sans-serif; font-size:1.4rem; font-weight:800; color:#0f172a; line-height:1; }
-  .dlp-filters { display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:#fff; border:1px solid #e2e8f0; border-radius:14px; padding:0.85rem 1.1rem; margin-bottom:1.1rem; }
-  .dlp-search-wrap { display:flex; align-items:center; flex:1; min-width:180px; background:#f8faff; border:1.5px solid #e2e8f0; border-radius:10px; padding:0 0.75rem; transition:border-color 0.2s; }
-  .dlp-search-wrap:focus-within { border-color:#10b981; }
-  .dlp-si { color:#94a3b8; font-size:0.85rem; }
-  .dlp-search { flex:1; height:38px; border:none; outline:none; background:transparent; font-size:0.84rem; color:#0f172a; font-family:inherit; padding:0 8px; }
-  .dlp-clear { background:none; border:none; color:#94a3b8; cursor:pointer; }
-  .dlp-select { height:40px; padding:0 0.75rem; border:1.5px solid #e2e8f0; border-radius:10px; background:#f8faff; font-size:0.84rem; color:#334155; font-family:inherit; outline:none; cursor:pointer; }
-  .dlp-select:focus { border-color:#10b981; }
-  .dlp-count { font-size:0.8rem; color:#64748b; white-space:nowrap; }
-  .dlp-count strong { color:#10b981; }
-  .dlp-reset { background:none; border:none; color:#ef4444; font-size:0.78rem; font-weight:600; cursor:pointer; font-family:inherit; }
+  .dlp-stage-card { background:#fff; border:1.5px solid #e9d8bf; border-radius:12px; padding:0.75rem 1rem; display:flex; flex-direction:column; gap:6px; cursor:pointer; transition:all 0.15s; flex:1; min-width:80px; align-items:center; }
+  .dlp-stage-card:hover { border-color:#e9d8bf; background:#fdfbf7; }
+  .dlp-stage-selected { border-color:#0c831f; background:#d3ebd8; }
+  .dlp-sc-count { font-family:'Sora',sans-serif; font-size:1.4rem; font-weight:800; color:#2d241e; line-height:1; }
+  .dlp-filters { display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:#fff; border:1px solid #e9d8bf; border-radius:14px; padding:0.85rem 1.1rem; margin-bottom:1.1rem; }
+  .dlp-search-wrap { display:flex; align-items:center; flex:1; min-width:180px; background:#fdfbf7; border:1.5px solid #e9d8bf; border-radius:10px; padding:0 0.75rem; transition:border-color 0.2s; }
+  .dlp-search-wrap:focus-within { border-color:#0c831f; }
+  .dlp-si { color:#a68b66; font-size:0.85rem; }
+  .dlp-search { flex:1; height:38px; border:none; outline:none; background:transparent; font-size:0.84rem; color:#2d241e; font-family:inherit; padding:0 8px; }
+  .dlp-clear { background:none; border:none; color:#a68b66; cursor:pointer; }
+  .dlp-select { height:40px; padding:0 0.75rem; border:1.5px solid #e9d8bf; border-radius:10px; background:#fdfbf7; font-size:0.84rem; color:#4a3f35; font-family:inherit; outline:none; cursor:pointer; }
+  .dlp-select:focus { border-color:#0c831f; }
+  .dlp-count { font-size:0.8rem; color:#7d6b5d; white-space:nowrap; }
+  .dlp-count strong { color:#0c831f; }
+  .dlp-reset { background:none; border:none; color:#d32f2f; font-size:0.78rem; font-weight:600; cursor:pointer; font-family:inherit; }
   .dlp-desktop { display:block; }
   .dlp-mobile  { display:none; }
   .dlp-card-list { display:flex; flex-direction:column; gap:10px; }
-  .dlp-empty { display:flex; flex-direction:column; align-items:center; gap:10px; padding:4rem 1rem; color:#94a3b8; font-size:0.88rem; }
+  .dlp-empty { display:flex; flex-direction:column; align-items:center; gap:10px; padding:4rem 1rem; color:#a68b66; font-size:0.88rem; }
   @media (max-width:768px) { .dlp-desktop { display:none; } .dlp-mobile { display:block; } }
   @media (max-width:480px) { .dlp-stage-cards { gap:6px; } .dlp-sc-count { font-size:1.1rem; } }
 `;

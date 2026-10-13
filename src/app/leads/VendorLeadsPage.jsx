@@ -142,35 +142,35 @@ export default function VendorLeadsPage() {
 
 const css = `
   .vlp-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.25rem; flex-wrap:wrap; gap:10px; }
-  .vlp-title { font-family:'Sora',sans-serif; font-size:clamp(1.2rem,3vw,1.5rem); font-weight:800; color:#0f172a; letter-spacing:-0.02em; margin:0; }
-  .vlp-sub { font-size:0.82rem; color:#94a3b8; margin-top:3px; }
-  .vlp-form-link { display:inline-flex; align-items:center; gap:5px; padding:0.5rem 1rem; background:#e8f0fe; color:#1a73e8; border-radius:10px; font-size:0.82rem; font-weight:700; text-decoration:none; white-space:nowrap; transition:background 0.15s; }
-  .vlp-form-link:hover { background:#d2e3fc; }
+  .vlp-title { font-family:'Sora',sans-serif; font-size:clamp(1.2rem,3vw,1.5rem); font-weight:800; color:#2d241e; letter-spacing:-0.02em; margin:0; }
+  .vlp-sub { font-size:0.82rem; color:#a68b66; margin-top:3px; }
+  .vlp-form-link { display:inline-flex; align-items:center; gap:5px; padding:0.5rem 1rem; background:#fdfbf7; color:#ae2012; border-radius:10px; font-size:0.82rem; font-weight:700; text-decoration:none; white-space:nowrap; transition:background 0.15s; }
+  .vlp-form-link:hover { background:#f5ebe0; }
 
   /* Stage summary */
   .vlp-stage-cards { display:flex; gap:10px; flex-wrap:wrap; margin-bottom:1.1rem; }
-  .vlp-stage-card { background:#fff; border:1.5px solid #e2e8f0; border-radius:12px; padding:0.75rem 1rem; display:flex; flex-direction:column; gap:6px; cursor:pointer; transition:all 0.15s; flex:1; min-width:80px; align-items:center; }
-  .vlp-stage-card:hover { border-color:#bfdbfe; background:#f8faff; }
-  .vlp-stage-selected { border-color:#1a73e8; background:#e8f0fe; }
-  .vlp-sc-count { font-family:'Sora',sans-serif; font-size:1.4rem; font-weight:800; color:#0f172a; line-height:1; }
+  .vlp-stage-card { background:#fff; border:1.5px solid #e9d8bf; border-radius:12px; padding:0.75rem 1rem; display:flex; flex-direction:column; gap:6px; cursor:pointer; transition:all 0.15s; flex:1; min-width:80px; align-items:center; }
+  .vlp-stage-card:hover { border-color:#e9d8bf; background:#fdfbf7; }
+  .vlp-stage-selected { border-color:#ae2012; background:#fdfbf7; }
+  .vlp-sc-count { font-family:'Sora',sans-serif; font-size:1.4rem; font-weight:800; color:#2d241e; line-height:1; }
 
   /* Filters */
-  .vlp-filters { display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:#fff; border:1px solid #e2e8f0; border-radius:14px; padding:0.85rem 1.1rem; margin-bottom:1.1rem; }
-  .vlp-search-wrap { display:flex; align-items:center; flex:1; min-width:180px; background:#f8faff; border:1.5px solid #e2e8f0; border-radius:10px; padding:0 0.75rem; transition:border-color 0.2s; }
-  .vlp-search-wrap:focus-within { border-color:#1a73e8; }
-  .vlp-si { color:#94a3b8; font-size:0.85rem; }
-  .vlp-search { flex:1; height:38px; border:none; outline:none; background:transparent; font-size:0.84rem; color:#0f172a; font-family:inherit; padding:0 8px; }
-  .vlp-clear { background:none; border:none; color:#94a3b8; cursor:pointer; }
-  .vlp-select { height:40px; padding:0 0.75rem; border:1.5px solid #e2e8f0; border-radius:10px; background:#f8faff; font-size:0.84rem; color:#334155; font-family:inherit; outline:none; cursor:pointer; }
-  .vlp-select:focus { border-color:#1a73e8; }
-  .vlp-count { font-size:0.8rem; color:#64748b; white-space:nowrap; }
-  .vlp-count strong { color:#1a73e8; }
-  .vlp-reset { background:none; border:none; color:#ef4444; font-size:0.78rem; font-weight:600; cursor:pointer; font-family:inherit; }
+  .vlp-filters { display:flex; gap:8px; flex-wrap:wrap; align-items:center; background:#fff; border:1px solid #e9d8bf; border-radius:14px; padding:0.85rem 1.1rem; margin-bottom:1.1rem; }
+  .vlp-search-wrap { display:flex; align-items:center; flex:1; min-width:180px; background:#fdfbf7; border:1.5px solid #e9d8bf; border-radius:10px; padding:0 0.75rem; transition:border-color 0.2s; }
+  .vlp-search-wrap:focus-within { border-color:#ae2012; }
+  .vlp-si { color:#a68b66; font-size:0.85rem; }
+  .vlp-search { flex:1; height:38px; border:none; outline:none; background:transparent; font-size:0.84rem; color:#2d241e; font-family:inherit; padding:0 8px; }
+  .vlp-clear { background:none; border:none; color:#a68b66; cursor:pointer; }
+  .vlp-select { height:40px; padding:0 0.75rem; border:1.5px solid #e9d8bf; border-radius:10px; background:#fdfbf7; font-size:0.84rem; color:#4a3f35; font-family:inherit; outline:none; cursor:pointer; }
+  .vlp-select:focus { border-color:#ae2012; }
+  .vlp-count { font-size:0.8rem; color:#7d6b5d; white-space:nowrap; }
+  .vlp-count strong { color:#ae2012; }
+  .vlp-reset { background:none; border:none; color:#d32f2f; font-size:0.78rem; font-weight:600; cursor:pointer; font-family:inherit; }
 
   .vlp-desktop { display:block; }
   .vlp-mobile  { display:none; }
   .vlp-card-list { display:flex; flex-direction:column; gap:10px; }
-  .vlp-empty { display:flex; flex-direction:column; align-items:center; gap:10px; padding:4rem 1rem; color:#94a3b8; font-size:0.88rem; }
+  .vlp-empty { display:flex; flex-direction:column; align-items:center; gap:10px; padding:4rem 1rem; color:#a68b66; font-size:0.88rem; }
 
   @media (max-width:768px) { .vlp-desktop { display:none; } .vlp-mobile { display:block; } }
   @media (max-width:480px) { .vlp-stage-cards { gap:6px; } .vlp-sc-count { font-size:1.1rem; } }

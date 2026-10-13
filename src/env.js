@@ -13,6 +13,7 @@ export const env = createEnv({
     // AUTH_DISCORD_ID: isProd ? z.string() : z.string().optional(),
     // AUTH_DISCORD_SECRET: isProd ? z.string() : z.string().optional(),
     DATABASE_URL: isProd ? z.string().url() : z.string().url().optional(),
+    MONGODB_URI: z.string().optional(),
     NODE_ENV: z.enum(["development", "test", "production"]).default("development"),
  
   },
@@ -23,6 +24,9 @@ export const env = createEnv({
    */
   client: {
     NEXT_PUBLIC_FIREBASE_VAPID_KEY: z.string().optional(),
+    // Central ADDies backend (Express). Used by the set-password page to
+    // consume the e-mailed single-use token.
+    NEXT_PUBLIC_API_URL: z.string().url().optional(),
   },
 
   /**
@@ -37,6 +41,7 @@ export const env = createEnv({
     MONGODB_URI: process.env.MONGODB_URI,
     NODE_ENV: process.env.NODE_ENV,
     NEXT_PUBLIC_FIREBASE_VAPID_KEY: process.env.NEXT_PUBLIC_FIREBASE_VAPID_KEY,
+    NEXT_PUBLIC_API_URL: process.env.NEXT_PUBLIC_API_URL,
   },
   /**
    * Run `build` or `dev` with `SKIP_ENV_VALIDATION` to skip env validation. This is especially

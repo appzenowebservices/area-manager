@@ -65,22 +65,22 @@ export default function VendorFilters({
 }
 
 const css = `
-  .vf-wrap { background:#fff; border:1px solid #e2e8f0; border-radius:14px; padding:1rem 1.1rem; margin-bottom:1.1rem; display:flex; flex-direction:column; gap:10px; }
+  .vf-wrap { background:#fff; border:1px solid #e9d8bf; border-radius:14px; padding:1rem 1.1rem; margin-bottom:1.1rem; display:flex; flex-direction:column; gap:10px; }
   .vf-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-  .vf-search-wrap { display:flex; align-items:center; flex:1; min-width:200px; position:relative; background:#f8faff; border:1.5px solid #e2e8f0; border-radius:10px; padding:0 0.75rem; transition:border-color 0.2s; }
-  .vf-search-wrap:focus-within { border-color:#1a73e8; box-shadow:0 0 0 3px rgba(26,115,232,0.1); }
-  .vf-search-icon { color:#94a3b8; display:flex; align-items:center; flex-shrink:0; }
-  .vf-search { flex:1; height:40px; border:none; outline:none; background:transparent; font-size:0.85rem; color:#0f172a; font-family:inherit; padding:0 8px; }
+  .vf-search-wrap { display:flex; align-items:center; flex:1; min-width:200px; position:relative; background:#fdfbf7; border:1.5px solid #e9d8bf; border-radius:10px; padding:0 0.75rem; transition:border-color 0.2s; }
+  .vf-search-wrap:focus-within { border-color:#ae2012; box-shadow:0 0 0 3px rgba(12, 131, 31,0.1); }
+  .vf-search-icon { color:#a68b66; display:flex; align-items:center; flex-shrink:0; }
+  .vf-search { flex:1; height:40px; border:none; outline:none; background:transparent; font-size:0.85rem; color:#2d241e; font-family:inherit; padding:0 8px; }
   .vf-search::placeholder { color:#bbb; }
-  .vf-clear { background:none; border:none; color:#94a3b8; cursor:pointer; font-size:0.8rem; padding:2px 4px; }
-  .vf-select { height:42px; padding:0 0.75rem; border:1.5px solid #e2e8f0; border-radius:10px; background:#f8faff; font-size:0.84rem; color:#334155; font-family:inherit; outline:none; cursor:pointer; transition:border-color 0.2s; min-width:130px; }
-  .vf-select:focus { border-color:#1a73e8; }
-  .vf-add-btn { height:42px; padding:0 1.2rem; background:#1a73e8; color:#fff; border:none; border-radius:10px; font-size:0.85rem; font-weight:700; font-family:inherit; cursor:pointer; white-space:nowrap; transition:background 0.15s; flex-shrink:0; }
-  .vf-add-btn:hover { background:#1557b0; }
+  .vf-clear { background:none; border:none; color:#a68b66; cursor:pointer; font-size:0.8rem; padding:2px 4px; }
+  .vf-select { height:42px; padding:0 0.75rem; border:1.5px solid #e9d8bf; border-radius:10px; background:#fdfbf7; font-size:0.84rem; color:#4a3f35; font-family:inherit; outline:none; cursor:pointer; transition:border-color 0.2s; min-width:130px; }
+  .vf-select:focus { border-color:#ae2012; }
+  .vf-add-btn { height:42px; padding:0 1.2rem; background:#ae2012; color:#fff; border:none; border-radius:10px; font-size:0.85rem; font-weight:700; font-family:inherit; cursor:pointer; white-space:nowrap; transition:background 0.15s; flex-shrink:0; }
+  .vf-add-btn:hover { background:#8b150e; }
   .vf-meta-row { display:flex; justify-content:space-between; align-items:center; }
-  .vf-count { font-size:0.8rem; color:#64748b; }
-  .vf-count strong { color:#1a73e8; }
-  .vf-reset { background:none; border:none; color:#ef4444; font-size:0.78rem; font-weight:600; cursor:pointer; font-family:inherit; padding:0; }
+  .vf-count { font-size:0.8rem; color:#7d6b5d; }
+  .vf-count strong { color:#ae2012; }
+  .vf-reset { background:none; border:none; color:#d32f2f; font-size:0.78rem; font-weight:600; cursor:pointer; font-family:inherit; padding:0; }
   @media (max-width:680px) {
     .vf-search-wrap { min-width:100%; }
     .vf-select { flex:1; min-width:120px; }

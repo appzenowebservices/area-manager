@@ -46,10 +46,10 @@ export function buildOrdersReport(period) {
 
   // Status breakdown for donut chart
   const statusBreakdown = [
-    { label: "Delivered",  value: delivered,  color: "#10b981" },
-    { label: "Processing", value: processing, color: "#1a73e8" },
-    { label: "Pending",    value: pending,    color: "#f59e0b" },
-    { label: "Cancelled",  value: cancelled,  color: "#ef4444" },
+    { label: "Delivered",  value: delivered,  color: "#0c831f" },
+    { label: "Processing", value: processing, color: "#ae2012" },
+    { label: "Pending",    value: pending,    color: "#e9c46a" },
+    { label: "Cancelled",  value: cancelled,  color: "#d32f2f" },
   ].filter(s => s.value > 0);
 
   // Area breakdown

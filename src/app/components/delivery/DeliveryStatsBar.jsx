@@ -17,11 +17,11 @@ export default function DeliveryStatsBar() {
   }, 0);
 
   const CHIPS = [
-    { label: "Total Partners", val: total,          color: "#1a73e8", bg: "#e8f0fe" },
-    { label: "Available",      val: available,       color: "#10b981", bg: "#d1fae5" },
-    { label: "Busy",           val: busy,            color: "#1a73e8", bg: "#dbeafe" },
-    { label: "Inactive",       val: inactive,        color: "#64748b", bg: "#f1f5f9" },
-    { label: "Orders Delivered", val: totalDeliveries, color: "#7c3aed", bg: "#ede9fe" },
+    { label: "Total Partners", val: total,          color: "#ae2012", bg: "#fdfbf7" },
+    { label: "Available",      val: available,       color: "#0c831f", bg: "#d3ebd8" },
+    { label: "Busy",           val: busy,            color: "#ae2012", bg: "#f5ebe0" },
+    { label: "Inactive",       val: inactive,        color: "#7d6b5d", bg: "#f5ebe0" },
+    { label: "Orders Delivered", val: totalDeliveries, color: "#4a5d23", bg: "#f5ebe0" },
   ];
 
   return (
@@ -64,7 +64,7 @@ const css = `
   }
   .dsb-label {
     font-size: 0.67rem;
-    color: #64748b;
+    color: #7d6b5d;
     font-weight: 600;
     text-transform: uppercase;
     letter-spacing: 0.04em;

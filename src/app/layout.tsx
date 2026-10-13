@@ -1,7 +1,7 @@
 import "./styles/globals.css";
 
 import { type Metadata } from "next";
-import { Geist } from "next/font/google";
+import { Poppins } from "next/font/google";
 
 // import { TRPCReactProvider } from "~/trpc/react";
 import { SessionProvider } from 'next-auth/react';
@@ -69,19 +69,21 @@ export const metadata: Metadata = {
 
 };
 
-const geist = Geist({
+const poppins = Poppins({
   subsets: ["latin"],
-  variable: "--font-geist-sans",
+  weight: ["400", "500", "600", "700", "800", "900"],
+  variable: "--font-poppins",
+  display: "swap",
 });
 
 export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${geist.variable}`}>
+    <html lang="en" className={`${poppins.variable}`}>
       <link rel="manifest" href="/manifest.json" />
         <link rel="apple-touch-icon" href="/icons/logo.webp" />
-        <meta name="theme-color" content="#174dc8" />
+        <meta name="theme-color" content="#ae2012" />
       <body>
         {/* <SessionProvider > */}
           {/* <TRPCReactProvider> */}

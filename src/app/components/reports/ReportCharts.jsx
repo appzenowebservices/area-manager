@@ -1,7 +1,7 @@
 // src/components/reports/ReportCharts.jsx
 
 // ─── Bar Chart ────────────────────────────────────────────────────────────────
-export function BarChart({ data, color = "#1a73e8", label = "Orders", valuePrefix = "" }) {
+export function BarChart({ data, color = "#ae2012", label = "Orders", valuePrefix = "" }) {
   if (!data?.length) return <Empty />;
   const max    = Math.max(...data.map(d => d.value), 1);
   const BAR_W  = Math.max(20, Math.min(40, Math.floor(520 / data.length) - 10));
@@ -19,7 +19,7 @@ export function BarChart({ data, color = "#1a73e8", label = "Orders", valuePrefi
           return (
             <g key={i}>
               {/* Track */}
-              <rect x={x} y={0} width={BAR_W} height={CHART_H} rx={6} fill="#f0f5ff" />
+              <rect x={x} y={0} width={BAR_W} height={CHART_H} rx={6} fill="#fdfbf7" />
               {/* Bar */}
               <rect x={x} y={y} width={BAR_W} height={barH} rx={6} fill={color} opacity={d.value === max ? 1 : 0.7} />
               {/* Value on top */}
@@ -29,7 +29,7 @@ export function BarChart({ data, color = "#1a73e8", label = "Orders", valuePrefi
                 </text>
               )}
               {/* Label */}
-              <text x={x + BAR_W / 2} y={CHART_H + 16} textAnchor="middle" fill="#94a3b8" fontSize="9.5" fontWeight="500">
+              <text x={x + BAR_W / 2} y={CHART_H + 16} textAnchor="middle" fill="#a68b66" fontSize="9.5" fontWeight="500">
                 {d.label}
               </text>
             </g>
@@ -41,7 +41,7 @@ export function BarChart({ data, color = "#1a73e8", label = "Orders", valuePrefi
 }
 
 // ─── Line Chart ───────────────────────────────────────────────────────────────
-export function LineChart({ data, color = "#10b981", valuePrefix = "" }) {
+export function LineChart({ data, color = "#0c831f", valuePrefix = "" }) {
   if (!data?.length || data.length < 2) return <Empty />;
   const W = 520, H = 130, PAD = 20;
   const max = Math.max(...data.map(d => d.value), 1);
@@ -67,14 +67,14 @@ export function LineChart({ data, color = "#10b981", valuePrefix = "" }) {
         </defs>
         {/* Grid lines */}
         {[0,0.25,0.5,0.75,1].map((f,i) => (
-          <line key={i} x1={PAD} y1={PAD + f*(H-PAD*2)} x2={W-PAD} y2={PAD + f*(H-PAD*2)} stroke="#f1f5f9" strokeWidth="1" />
+          <line key={i} x1={PAD} y1={PAD + f*(H-PAD*2)} x2={W-PAD} y2={PAD + f*(H-PAD*2)} stroke="#f5ebe0" strokeWidth="1" />
         ))}
         <path d={areaPath} fill={`url(#${gradId})`} />
         <path d={linePath} stroke={color} strokeWidth="2.5" fill="none" strokeLinejoin="round" strokeLinecap="round" />
         {pts.map((p, i) => (
           <g key={i}>
             <circle cx={p.x} cy={p.y} r="3.5" fill={color} />
-            <text x={p.x} y={H + 20} textAnchor="middle" fill="#94a3b8" fontSize="9.5" fontWeight="500">
+            <text x={p.x} y={H + 20} textAnchor="middle" fill="#a68b66" fontSize="9.5" fontWeight="500">
               {data[i].label}
             </text>
           </g>
@@ -118,15 +118,15 @@ export function DonutChart({ data }) {
     <div style={{ display:"flex", alignItems:"center", gap:16, flexWrap:"wrap" }}>
       <svg width="180" height="180" viewBox="0 0 180 180" style={{ flexShrink:0 }}>
         {slices.map((s, i) => <path key={i} d={s.path} fill={s.color} />)}
-        <text x={cx} y={cy - 8}  textAnchor="middle" fill="#0f172a" fontSize="20" fontWeight="800" fontFamily="'Sora',sans-serif">{total}</text>
-        <text x={cx} y={cy + 12} textAnchor="middle" fill="#94a3b8" fontSize="10" fontWeight="600">Total</text>
+        <text x={cx} y={cy - 8}  textAnchor="middle" fill="#2d241e" fontSize="20" fontWeight="800" fontFamily="'Sora',sans-serif">{total}</text>
+        <text x={cx} y={cy + 12} textAnchor="middle" fill="#a68b66" fontSize="10" fontWeight="600">Total</text>
       </svg>
       <div style={{ display:"flex", flexDirection:"column", gap:8 }}>
         {slices.map((s, i) => (
           <div key={i} style={{ display:"flex", alignItems:"center", gap:8 }}>
             <span style={{ width:10, height:10, borderRadius:"50%", background:s.color, flexShrink:0 }} />
-            <span style={{ fontSize:"0.8rem", color:"#334155", fontWeight:600 }}>{s.label}</span>
-            <span style={{ fontSize:"0.8rem", color:"#94a3b8", marginLeft:"auto", paddingLeft:8 }}>{s.value} ({s.pct}%)</span>
+            <span style={{ fontSize:"0.8rem", color:"#4a3f35", fontWeight:600 }}>{s.label}</span>
+            <span style={{ fontSize:"0.8rem", color:"#a68b66", marginLeft:"auto", paddingLeft:8 }}>{s.value} ({s.pct}%)</span>
           </div>
         ))}
       </div>
@@ -135,5 +135,5 @@ export function DonutChart({ data }) {
 }
 
 function Empty() {
-  return <div style={{ textAlign:"center", padding:"1.5rem", color:"#94a3b8", fontSize:"0.82rem" }}>No data for this period</div>;
+  return <div style={{ textAlign:"center", padding:"1.5rem", color:"#a68b66", fontSize:"0.82rem" }}>No data for this period</div>;
 }

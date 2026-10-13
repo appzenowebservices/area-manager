@@ -1,7 +1,6 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
 import { db } from "~/server/db";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 
 export const authConfig = {
   providers: [
@@ -16,6 +15,29 @@ export const authConfig = {
         const password = credentials?.password;
         if (!identifier || !password) return null;
 
+        // Area managers (shared DB): e-mail or phone number + bcrypt password.
+        const manager = await db.areaManager.findFirst({
+          where: {
+            OR: [
+              { email: identifier.toLowerCase() },
+              { phoneNumber: identifier },
+            ],
+          },
+        });
+
+        if (manager) {
+          if (manager.isActive === false) return null;
+          const valid = await compare(password, manager.password);
+          if (!valid) return null;
+          return {
+            id: manager.id,
+            name: manager.fullName,
+            email: manager.email,
+            mobile: manager.phoneNumber,
+          };
+        }
+
+        // Fallback: shared User accounts (legacy).
         const user = await db.user.findFirst({
           where: {
             OR: [{ mobile: identifier }, { email: identifier }],
@@ -31,7 +53,8 @@ export const authConfig = {
       },
     }),
   ],
-  adapter: PrismaAdapter(db),
+  // No PrismaAdapter — JWT sessions only, no DB session storage. The adapter
+  // also broke the production build at import time (page-data collection).
   session: {
     strategy: "jwt", // 👈 forces JWT sessions instead of DB
   },

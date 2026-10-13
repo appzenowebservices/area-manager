@@ -4,7 +4,7 @@ import { Store, MoveLeft, Construction, AlertTriangle } from "lucide-react";
 
 export default function Custom404() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-[#fffcf7] text-center px-6 relative overflow-hidden">
+    <div className="flex flex-col items-center justify-center min-h-screen bg-[#fdfbf7] text-center px-6 relative overflow-hidden">
       
       {/* BACKGROUND DECO: Large Faded Stamp */}
       <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 opacity-[0.03] pointer-events-none select-none">

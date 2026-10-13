@@ -56,10 +56,10 @@ const css = `
   .sp-title {
     font-family: 'Sora', sans-serif;
     font-size: clamp(1.2rem, 3vw, 1.5rem);
-    font-weight: 800; color: #0f172a;
+    font-weight: 800; color: #2d241e;
     letter-spacing: -0.02em; margin: 0;
   }
-  .sp-sub { font-size: 0.82rem; color: #94a3b8; margin-top: 3px; }
+  .sp-sub { font-size: 0.82rem; color: #a68b66; margin-top: 3px; }
 
   .sp-content {
     display: flex;

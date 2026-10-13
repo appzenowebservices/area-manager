@@ -72,9 +72,9 @@ function buildAlerts(orders) {
 }
 
 const TYPE_STYLES = {
-  warning: { bg: "#fffbeb", border: "#fde68a", dot: "#f59e0b", badge: "#fef3c7", badgeText: "#d97706" },
-  info:    { bg: "#eff6ff", border: "#bfdbfe", dot: "#1a73e8", badge: "#dbeafe", badgeText: "#1d4ed8" },
-  danger:  { bg: "#fff1f2", border: "#fecdd3", dot: "#ef4444", badge: "#fee2e2", badgeText: "#b91c1c" },
+  warning: { bg: "#fdf6e4", border: "#faedcc", dot: "#e9c46a", badge: "#faedcc", badgeText: "#a67a22" },
+  info:    { bg: "#eaf6ed", border: "#e9d8bf", dot: "#ae2012", badge: "#f5ebe0", badgeText: "#ae2012" },
+  danger:  { bg: "#fbebe9", border: "#f6d4ce", dot: "#d32f2f", badge: "#fbebe9", badgeText: "#8b150e" },
 };
 
 export default function AlertsSection() {
@@ -139,25 +139,25 @@ export default function AlertsSection() {
 const styles = {
   emptyCard: {
     background: "#fff",
-    border: "1px solid #e2e8f0",
+    border: "1px solid #e9d8bf",
     borderRadius: 16,
     padding: "1.5rem 1.3rem",
     display: "flex",
     alignItems: "center",
     gap: 14,
-    boxShadow: "0 1px 4px rgba(15,23,42,0.05)",
+    boxShadow: "0 1px 4px rgba(45, 36, 30,0.05)",
   },
-  emptyTitle: { fontWeight: 700, color: "#0f172a", fontSize: "0.9rem" },
-  emptySub:   { color: "#94a3b8", fontSize: "0.78rem", marginTop: 2 },
+  emptyTitle: { fontWeight: 700, color: "#2d241e", fontSize: "0.9rem" },
+  emptySub:   { color: "#a68b66", fontSize: "0.78rem", marginTop: 2 },
 };
 
 const css = `
   .as-card {
     background: #fff;
-    border: 1px solid #e2e8f0;
+    border: 1px solid #e9d8bf;
     border-radius: 16px;
     padding: 1.2rem 1.3rem;
-    box-shadow: 0 1px 4px rgba(15,23,42,0.05);
+    box-shadow: 0 1px 4px rgba(45, 36, 30,0.05);
     animation: scIn 0.45s 0.2s cubic-bezier(0.22,1,0.36,1) both;
   }
   .as-header { margin-bottom: 1rem; }
@@ -165,7 +165,7 @@ const css = `
     display: flex;
     align-items: center;
     gap: 8px;
-    color: #0f172a;
+    color: #2d241e;
     margin-bottom: 2px;
   }
   .as-title {
@@ -174,14 +174,14 @@ const css = `
     font-weight: 700;
   }
   .as-count {
-    background: #fee2e2;
-    color: #ef4444;
+    background: #fbebe9;
+    color: #d32f2f;
     font-size: 0.7rem;
     font-weight: 800;
     padding: 1px 7px;
     border-radius: 99px;
   }
-  .as-sub { font-size: 0.73rem; color: #94a3b8; }
+  .as-sub { font-size: 0.73rem; color: #a68b66; }
   .as-list { display: flex; flex-direction: column; gap: 8px; }
   .as-item {
     display: flex;
@@ -200,14 +200,14 @@ const css = `
   .as-item-title {
     font-size: 0.83rem;
     font-weight: 700;
-    color: #1e293b;
+    color: #2d241e;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
   }
   .as-item-desc {
     font-size: 0.72rem;
-    color: #64748b;
+    color: #7d6b5d;
     margin-top: 2px;
     white-space: nowrap;
     overflow: hidden;

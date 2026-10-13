@@ -89,16 +89,16 @@ const css = `
   .ap-card {
     position:relative; display:flex; flex-direction:column;
     align-items:center; gap:5px; padding:0.9rem 0.5rem;
-    border:1.5px solid #e2e8f0; border-radius:12px;
+    border:1.5px solid #e9d8bf; border-radius:12px;
     background:#fff; cursor:pointer; font-family:inherit;
     transition:all 0.15s;
   }
-  .ap-card:hover { background:#f8faff; border-color:#bfdbfe; }
-  .ap-active { background:#e8f0fe; border-color:#1a73e8; }
+  .ap-card:hover { background:#fdfbf7; border-color:#e9d8bf; }
+  .ap-active { background:#fdfbf7; border-color:#ae2012; }
   .ap-icon  { font-size:1.3rem; }
-  .ap-label { font-size:0.82rem; font-weight:700; color:#1e293b; }
-  .ap-active .ap-label { color:#1a73e8; }
-  .ap-desc  { font-size:0.65rem; color:#94a3b8; text-align:center; }
-  .ap-check { position:absolute; top:6px; right:8px; font-size:0.7rem; color:#1a73e8; font-weight:800; }
+  .ap-label { font-size:0.82rem; font-weight:700; color:#2d241e; }
+  .ap-active .ap-label { color:#ae2012; }
+  .ap-desc  { font-size:0.65rem; color:#a68b66; text-align:center; }
+  .ap-check { position:absolute; top:6px; right:8px; font-size:0.7rem; color:#ae2012; font-weight:800; }
   @media (max-width:480px) { .ap-3 { grid-template-columns:repeat(2,minmax(0,1fr)); } }
 `;

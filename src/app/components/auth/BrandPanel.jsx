@@ -70,7 +70,7 @@ const styles = {
   panel: {
     width: "45%",
     minHeight: "100vh",
-    background: "linear-gradient(145deg, #1a73e8 0%, #1251b5 55%, #0d47a1 100%)",
+    background: "linear-gradient(145deg, #ae2012 0%, #ae2012 55%, #2d241e 100%)",
     display: "flex",
     alignItems: "center",
     justifyContent: "center",
@@ -136,7 +136,7 @@ const styles = {
     letterSpacing: "-0.02em",
   },
   brandAccent: {
-    color: "#a8c8ff",
+    color: "#f5dfa6",
   },
   tagline: {
     marginTop: "0.5rem",
@@ -196,7 +196,7 @@ const styles = {
   dot: {
     width: 7, height: 7,
     borderRadius: "50%",
-    background: "#4ade80",
-    boxShadow: "0 0 6px #4ade80",
+    background: "#4fbf6e",
+    boxShadow: "0 0 6px #4fbf6e",
   },
 };
