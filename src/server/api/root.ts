@@ -1,5 +1,6 @@
 
 import { createCallerFactory, createTRPCRouter } from "./trpc";
+import { areaManagerAuthRouter } from "./routers/areaManagerAuth";
 
 
 /**
@@ -9,7 +10,7 @@ import { createCallerFactory, createTRPCRouter } from "./trpc";
  */
 export const appRouter = createTRPCRouter({
   // post: postRouter,
-
+  areaManagerAuth: areaManagerAuthRouter,
 });
 
 // export type definition of API

@@ -1,20 +1,14 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
+import { signIn } from "next-auth/react";
 import useAuthStore from "../../hooks/authStore";
-import MethodToggle from "../../components/auth/MethodToggle";
-import OtpField from "../../components/auth/OtpField";
 import InputField from "../../components/ui/InputField";
 import Button from "../../components/ui/Button";
+import { api } from "~/trpc/react";
 
 /* --- Icons --- */
-const PhoneIcon = () => (
-  <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <path d="M22 16.92v3a2 2 0 01-2.18 2 19.79 19.79 0 01-8.63-3.07A19.5 19.5 0 013.07 9.81a19.79 19.79 0 01-3.07-8.67A2 2 0 012 1h3a2 2 0 012 1.72c.127.96.361 1.903.7 2.81a2 2 0 01-.45 2.11L6.09 8.91a16 16 0 006 6l1.27-1.27a2 2 0 012.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0122 16.92z" />
-  </svg>
-);
-
 const MailIcon = () => (
   <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
     <rect x="2" y="4" width="20" height="16" rx="2" />
@@ -32,75 +26,118 @@ const LockIcon = () => (
 export default function LoginPage() {
   const router = useRouter();
   const searchParams = useSearchParams();
-  const { login, loginError, clearError } = useAuthStore();
+  const { loginError, clearError } = useAuthStore();
 
-  // Next.js equivalent of location.state?.from
   const callbackUrl = searchParams.get("callbackUrl") || "/dashboard";
 
-  const [method, setMethod] = useState("password");
   const [email, setEmail] = useState("");
-  const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
-  const [otp, setOtp] = useState("");
   const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
+  const [notice, setNotice] = useState("");
 
-  /* -- Cleanup errors on unmount -- */
+  const requestPassword = api.areaManagerAuth.requestPassword.useMutation();
+  const utils = api.useUtils();
+
   useEffect(() => {
     return () => clearError();
   }, [clearError]);
 
+  const showError = (message: string) => {
+    useAuthStore.setState({ loginError: message });
+  };
+
   const validate = () => {
-    const e: Record<string, string> = {};
-    if (method === "password") {
-      if (!email || !email.includes("@")) e.email = "Enter a valid email address.";
-      if (!password) e.password = "Password is required.";
-    }
-    if (method === "otp") {
-      if (!phone || phone.length < 10) e.phone = "Enter a valid 10-digit mobile number.";
-      if (otp.length < 6) e.otp = "Enter the 6-digit OTP.";
-    }
-    setErrors(e);
-    return Object.keys(e).length === 0;
+    const next: Record<string, string> = {};
+    if (!email || !email.includes("@")) next.email = "Enter a valid email address.";
+    if (!password) next.password = "Password is required.";
+    setErrors(next);
+    return Object.keys(next).length === 0;
   };
 
   const handleSubmit = async () => {
     clearError();
+    setNotice("");
     if (!validate()) return;
 
     setLoading(true);
     try {
-      await new Promise((r) => setTimeout(r, 800));
+      // State-first: the e-mail alone tells us which stage the manager is at,
+      // so we can show the right prompt before attempting a password check.
+      const stage = await utils.areaManagerAuth.stage.fetch({ email });
 
-      if (method === "password") {
-        const success = await login(email, password);
-        if (success) {
-          router.push(callbackUrl);
-          router.refresh(); // Refresh to update server components with new auth state
-        }
+      if (stage.state === "email_not_verified") {
+        showError(
+          "Please confirm your email first — we sent you a confirmation link. Open it, then come back and sign in.",
+        );
+        return;
+      }
+      if (stage.state === "not_approved") {
+        showError(
+          "Your account is verified, but it is not approved yet. The admin team will review it shortly — you can sign in once it is approved.",
+        );
+        return;
+      }
+      if (stage.state === "password_not_set") {
+        await requestPassword.mutateAsync({ email });
+        showError(
+          "Your account is approved! We've just emailed you a link to create your password — check your inbox, then sign in.",
+        );
+        return;
       }
 
-      if (method === "otp") {
-        // OTP Demo Mode
-        router.push(callbackUrl);
-        router.refresh();
+      const result = await signIn("credentials", {
+        redirect: false,
+        email,
+        password,
+      });
+
+      if (!result || result.error) {
+        showError("Invalid email or password.");
+        return;
       }
-    } catch (err) {
-      console.error("Login error:", err);
+
+      useAuthStore.setState({
+        user: {
+          id: "",
+          name: email.split("@")[0],
+          email,
+          role: "area_manager",
+        },
+        isAuthenticated: true,
+        loginError: null,
+      });
+      router.push(callbackUrl);
+      router.refresh();
+    } catch {
+      showError("Sign-in failed. Please try again.");
     } finally {
       setLoading(false);
     }
   };
 
-  const handleMethodChange = (m: string) => {
-    setMethod(m);
-    setErrors({});
+  /** Self-service PIN reset: emails the set-password link when eligible. */
+  const handleForgotPassword = async () => {
     clearError();
+    setNotice("");
+    if (!email || !email.includes("@")) {
+      setErrors({ email: "Enter your registered email above, then tap “Forgot password?”." });
+      return;
+    }
+    setErrors({});
+    try {
+      await requestPassword.mutateAsync({ email });
+      setNotice(
+        "If your account is verified and approved, a password setup link is on its way. Check your inbox.",
+      );
+    } catch {
+      setNotice("Could not send the link right now. Please try again in a moment.");
+    }
   };
 
   return (
-    <main style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', minHeight: '100vh', padding: '1rem' }}>
+    <main style={{ display: "flex", justifyContent: "center", alignItems: "center", minHeight: "100vh", padding: "1rem" }}>
       <div style={styles.card}>
         {/* Header */}
         <div style={styles.header}>
@@ -109,75 +146,44 @@ export default function LoginPage() {
           <p style={styles.subtitle}>Sign in to manage your area's operations.</p>
         </div>
 
-        {/* Method Toggle */}
-        <div style={styles.section}>
-          <MethodToggle method={method} onChange={handleMethodChange} />
-        </div>
-
-        {/* Error Banner */}
+        {/* Error banner */}
         {loginError && (
           <div style={styles.errorBanner}>
-            <span>⚠</span> {loginError}
+            <span>⚠️</span> {loginError}
           </div>
         )}
+
+        {/* Info / success notice */}
+        {notice && <div style={styles.noticeBox}>{notice}</div>}
 
         {/* Inputs */}
         <div style={styles.section}>
-          {method === "password" ? (
-            <InputField
-              label="Email Address"
-              type="email"
-              value={email}
-              onChange={(e: any) => setEmail(e.target.value)}
-              placeholder="yourname@add.com"
-              icon={<MailIcon />}
-              error={errors.email}
-              autoComplete="email"
-            />
-          ) : (
-            <InputField
-              label="Mobile Number"
-              type="tel"
-              value={phone}
-              onChange={(e: any) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 10))}
-              placeholder="10-digit mobile number"
-              icon={<PhoneIcon />}
-              error={errors.phone}
-              autoComplete="tel"
-            />
-          )}
+          <InputField
+            label="Email Address"
+            type="email"
+            value={email}
+            onChange={(e: any) => setEmail(e.target.value)}
+            placeholder="yourname@add.com"
+            icon={<MailIcon />}
+            error={errors.email}
+            autoComplete="email"
+          />
         </div>
 
         <div style={styles.section}>
-          {method === "password" ? (
-            <InputField
-              label="Password"
-              type="password"
-              value={password}
-              onChange={(e: any) => setPassword(e.target.value)}
-              placeholder="Enter your password"
-              icon={<LockIcon />}
-              error={errors.password}
-              autoComplete="current-password"
-            />
-          ) : (
-            <OtpField
-              phone={phone}
-              value={otp}
-              onChange={(e: any) => setOtp(e.target.value.replace(/\D/g, "").slice(0, 6))}
-              error={errors.otp}
-            />
-          )}
+          <InputField
+            label="Password"
+            type="password"
+            value={password}
+            onChange={(e: any) => setPassword(e.target.value)}
+            placeholder="Enter your password"
+            icon={<LockIcon />}
+            error={errors.password}
+            autoComplete="current-password"
+          />
         </div>
 
-        {/* Demo Hint */}
-        {method === "password" && (
-          <div style={styles.hintBox}>
-            💡 Demo — Email: <b>rajesh@add.com</b> &nbsp;|&nbsp; Password: <b>admin123</b>
-          </div>
-        )}
-
-        {/* Remember me row */}
+        {/* Remember / forgot */}
         <div style={styles.rememberRow}>
           <label style={styles.checkLabel}>
             <input
@@ -188,11 +194,14 @@ export default function LoginPage() {
             />
             Remember me
           </label>
-          {method === "password" && (
-            <button type="button" style={styles.forgotBtn}>
-              Forgot password?
-            </button>
-          )}
+          <button
+            type="button"
+            style={styles.forgotBtn}
+            onClick={handleForgotPassword}
+            disabled={requestPassword.isPending}
+          >
+            {requestPassword.isPending ? "Sending…" : "Forgot password?"}
+          </button>
         </div>
 
         {/* Submit */}
@@ -204,22 +213,15 @@ export default function LoginPage() {
           onClick={handleSubmit}
           style={{ borderRadius: 12, marginTop: 4, boxShadow: "0 6px 20px rgba(12, 131, 31,0.38)" }}
         >
-          {loading
-            ? "Verifying..."
-            : method === "password"
-              ? "Sign In"
-              : "Verify OTP"}
+          {loading ? "Verifying..." : "Sign In"}
         </Button>
 
-        <p style={styles.footer}>
-          Protected · Apni Desi Dukaan © 2025
-        </p>
+        <p style={styles.footer}>Protected · Apni Desi Dukaan · 2026</p>
       </div>
     </main>
   );
 }
 
-// Styles preserved from your original code
 const styles: Record<string, React.CSSProperties> = {
   card: {
     width: "100%",
@@ -228,9 +230,7 @@ const styles: Record<string, React.CSSProperties> = {
     flexDirection: "column",
     gap: 0,
   },
-  header: {
-    marginBottom: "2rem",
-  },
+  header: { marginBottom: "2rem" },
   eyebrow: {
     fontSize: "0.72rem",
     fontWeight: 700,
@@ -246,14 +246,8 @@ const styles: Record<string, React.CSSProperties> = {
     letterSpacing: "-0.02em",
     lineHeight: 1.15,
   },
-  subtitle: {
-    marginTop: "0.45rem",
-    fontSize: "0.88rem",
-    color: "#7d6b5d",
-  },
-  section: {
-    marginBottom: "1.1rem",
-  },
+  subtitle: { marginTop: "0.45rem", fontSize: "0.88rem", color: "#7d6b5d" },
+  section: { marginBottom: "1.1rem" },
   errorBanner: {
     display: "flex",
     alignItems: "center",
@@ -266,13 +260,13 @@ const styles: Record<string, React.CSSProperties> = {
     color: "#b71c1c",
     marginBottom: "1rem",
   },
-  hintBox: {
+  noticeBox: {
     background: "#eaf6ed",
-    border: "1px solid #e9d8bf",
-    borderRadius: 8,
-    padding: "0.55rem 0.9rem",
-    fontSize: "0.78rem",
-    color: "#8b150e",
+    border: "1px solid #b8e0c2",
+    borderRadius: 10,
+    padding: "0.65rem 1rem",
+    fontSize: "0.82rem",
+    color: "#0a671a",
     marginBottom: "1rem",
   },
   rememberRow: {
@@ -298,10 +292,5 @@ const styles: Record<string, React.CSSProperties> = {
     cursor: "pointer",
     padding: 0,
   },
-  footer: {
-    marginTop: "1.5rem",
-    textAlign: "center",
-    fontSize: "0.73rem",
-    color: "#a68b66",
-  },
+  footer: { textAlign: "center", marginTop: "2rem", fontSize: "0.78rem", color: "#a68b66" },
 };

@@ -1,72 +1,73 @@
 import CredentialsProvider from "next-auth/providers/credentials";
 import { compare } from "bcryptjs";
 import { db } from "~/server/db";
+import { login } from "~/server/services/areaManagerAuth";
 
 export const authConfig = {
   providers: [
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        mobile: { label: "Mobile", type: "text" },
+        email: { label: "Email", type: "text" },
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const identifier = credentials?.mobile?.trim();
-        const password = credentials?.password;
+        const identifier = (credentials?.email ?? "").trim();
+        const password = credentials?.password ?? "";
         if (!identifier || !password) return null;
 
-        // Area managers (shared DB): e-mail or phone number + bcrypt password.
-        const manager = await db.areaManager.findFirst({
-          where: {
-            OR: [
-              { email: identifier.toLowerCase() },
-              { phoneNumber: identifier },
-            ],
-          },
-        });
-
-        if (manager) {
-          if (manager.isActive === false) return null;
-          const valid = await compare(password, manager.password);
-          if (!valid) return null;
+        // E-mail: the shared stage-gated flow (verify → approve → PIN → login).
+        // Stage-specific prompts are handled by the login page via
+        // `areaManagerAuth.stage`; here we only allow or deny.
+        if (identifier.includes("@")) {
+          const result = await login({ email: identifier, password });
+          if (!result.ok) return null;
+          const data = result.data as {
+            id: string;
+            name: string;
+            email: string;
+            mobile: string;
+          };
           return {
-            id: manager.id,
-            name: manager.fullName,
-            email: manager.email,
-            mobile: manager.phoneNumber,
+            id: data.id,
+            name: data.name,
+            email: data.email,
+            mobile: data.mobile,
           };
         }
 
-        // Fallback: shared User accounts (legacy).
-        const user = await db.user.findFirst({
-          where: {
-            OR: [{ mobile: identifier }, { email: identifier }],
-          },
+        // Legacy phone-number sign-in (same DB row, bcrypt password).
+        const manager = await db.areaManager.findFirst({
+          where: { phoneNumber: identifier },
         });
-
-        if (!user) return null;
-
-        const valid = await compare(password, user.passwordHash);
+        if (!manager || manager.isDeleted === true || manager.isActive === false) {
+          return null;
+        }
+        if (!manager.isApproved) return null;
+        const valid = await compare(password, manager.password);
         if (!valid) return null;
-
-        return { id: user.id, name: user.name, email: user.email, mobile: user.mobile };
+        return {
+          id: manager.id,
+          name: manager.fullName,
+          email: manager.email,
+          mobile: manager.phoneNumber,
+        };
       },
     }),
   ],
-  // No PrismaAdapter — JWT sessions only, no DB session storage. The adapter
-  // also broke the production build at import time (page-data collection).
+  // No PrismaAdapter — JWT sessions only, no DB session storage.
   session: {
-    strategy: "jwt", // 👈 forces JWT sessions instead of DB
+    strategy: "jwt",
   },
   callbacks: {
-    async jwt({ token, user }) {
+    async jwt({ token, user }: { token: any; user: any }) {
       if (user) {
         token.id = user.id ?? token.sub;
         token.mobile = user.mobile;
       }
       return token;
     },
-    async session({ session, token }) {
+    async session({ session, token }: { session: any; token: any }) {
       if (token) {
         session.user.id = (token.id ?? token.sub) as string;
         session.user.mobile = token.mobile as string;
@@ -74,5 +75,4 @@ export const authConfig = {
       return session;
     },
   },
-
 };

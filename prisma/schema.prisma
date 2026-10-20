@@ -1023,6 +1023,10 @@ model AreaManager {
   employeeCode String? @unique
   isActive     Boolean @default(true)
 
+  // Approval gate + password lifecycle (mirrors the vendor flow).
+  isApproved    Boolean?  @default(false)
+  passwordSetAt DateTime?
+
   // documents
   idProofUrl      String @default("")
   addressProofUrl String @default("")

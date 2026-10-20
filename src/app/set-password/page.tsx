@@ -6,13 +6,8 @@ import { AlertCircle, CheckCircle2, LockKeyhole } from 'lucide-react';
 
 /**
  * Landing page for the single-use set-password link e-mailed to an area
- * manager after their address is verified (super-admin webhook -> central
- * backend -> Patra). The backend owns the token; this page consumes it.
+ * manager after approval. The token is verified by this app's auth service.
  */
-const API_BASE = (
-  process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:8000'
-).replace(/\/+$/, '');
-
 export default function SetPasswordPage() {
   const [token, setToken] = useState('');
   const [password, setPassword] = useState('');
@@ -48,20 +43,18 @@ export default function SetPasswordPage() {
 
     setBusy(true);
     try {
-      const res = await fetch(
-        `${API_BASE}/api/v1/area-manager/auth/reset-password`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ token, password, confirmPassword: confirm }),
-        },
-      );
-      const data = (await res.json().catch(() => ({}))) as {
+      const res = await fetch('/api/public/set-password', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token, password, confirmPassword: confirm }),
+      });
+      const result = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
         message?: string;
       };
 
-      if (!res.ok) {
-        setError(data?.message || 'Could not set the password. Please try again.');
+      if (!res.ok || !result.ok) {
+        setError(result.message || 'Could not set the password. Please try again.');
         return;
       }
       setDone(true);

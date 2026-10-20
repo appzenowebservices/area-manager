@@ -1,6 +1,5 @@
 'use client'
-import { useEffect } from "react";
-// import { useNavigate } from "react-router-dom";
+import { Suspense, useEffect } from "react";
 import BrandPanel from "../components/auth/BrandPanel";
 import LoginForm from "../components/auth/LoginForm";
 import useAuthStore from "../hooks/authStore";
@@ -34,7 +33,9 @@ export default function LoginPage() {
 
         {/* Right: form panel */}
         <div className="login-form-panel">
-          <LoginForm />
+          <Suspense fallback={null}>
+            <LoginForm />
+          </Suspense>
         </div>
       </main>
     </>
