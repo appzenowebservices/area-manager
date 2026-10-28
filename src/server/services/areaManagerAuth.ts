@@ -129,13 +129,16 @@ async function sendTx(input: {
   }
 }
 
-const appUrl = () =>
-  (
+const appUrl = () => {
+  const explicit =
     process.env.AREA_MANAGER_APP_URL ??
-    process.env.NEXT_PUBLIC_APP_URL ??
-    process.env.NEXTAUTH_URL ??
-    ""
-  ).replace(/\/+$/, "");
+    process.env.AUTH_URL ??
+    process.env.NEXTAUTH_URL;
+  if (explicit) return explicit.replace(/\/+$/, "");
+
+  // Local fallback: this app runs on 3003 (see package.json).
+  return `http://localhost:${process.env.PORT ?? 3003}`;
+};
 
 /** Which stage an e-mail or mobile number is at — used by the login forms. */
 export type LoginStageState =
