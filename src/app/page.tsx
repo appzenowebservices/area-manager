@@ -21,10 +21,11 @@ import {
   Headset,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
-
-const API_BASE = (
-  process.env.NEXT_PUBLIC_API_URL ?? 'http://127.0.0.1:8000'
-).replace(/\/+$/, '');
+import {
+  fetchLoginStage,
+  requestPasswordInvite,
+  STAGE_MESSAGES,
+} from './components/auth/authClient';
 
 const PROMOS = [
   {
@@ -71,50 +72,83 @@ const AreaManagerLogin = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    if (isSubmitting) return;
+
     setIsSubmitting(true);
     setError('');
     setNotice('');
+    setSuccessMessage('');
 
-    const res = await signIn('credentials', {
-      redirect: false,
-      mobile: identifier.current,
-      password: password.current,
-    });
+    const identifierValue = identifier.current.trim();
+    const passwordValue = password.current;
 
-    if (res?.error) {
-      setError('Invalid credentials. Please check your e-mail / mobile and password.');
+    if (!identifierValue) {
+      setError('Enter your registered e-mail or mobile number.');
       setIsSubmitting(false);
-    } else {
+      return;
+    }
+    if (!passwordValue) {
+      setError('Enter your password.');
+      setIsSubmitting(false);
+      return;
+    }
+
+    try {
+      // State-first: the identifier alone tells us which stage the manager is
+      // at, so the right prompt appears before we check credentials.
+      const state = await fetchLoginStage(identifierValue);
+
+      if (state === 'email_not_verified' || state === 'not_approved' || state === 'inactive') {
+        setError(STAGE_MESSAGES[state]);
+        return;
+      }
+
+      if (state === 'password_not_set') {
+        if (identifierValue.includes('@')) {
+          await requestPasswordInvite(identifierValue);
+          setNotice(
+            "Your account is approved but has no password yet. We've just e-mailed you a secure link to create one — check your inbox, then sign in.",
+          );
+        } else {
+          setNotice(
+            'Your account is approved but has no password yet. Enter your registered e-mail above and tap “Forgot password?” to get the setup link.',
+          );
+        }
+        return;
+      }
+
+      const res = await signIn('credentials', {
+        redirect: false,
+        email: identifierValue,
+        mobile: identifierValue,
+        password: passwordValue,
+      });
+
+      if (!res || res.error) {
+        setError('Invalid credentials. Please check your e-mail / mobile and password.');
+        return;
+      }
+
       setSuccessMessage('Pranam! Welcome back to your console.');
-      setTimeout(() => router.push('/dashboard'), 1000);
+      setTimeout(() => router.push('/dashboard'), 900);
+    } catch {
+      setError('Sign-in failed. Please check your connection and try again.');
+    } finally {
+      setIsSubmitting(false);
     }
   };
 
   const handleForgot = async () => {
     setError('');
     setNotice('');
+
     const value = identifier.current.trim();
     if (!value || !value.includes('@')) {
       setError('Enter your registered e-mail above to receive a password link.');
       return;
     }
-    try {
-      const res = await fetch(
-        `${API_BASE}/api/v1/area-manager/auth/forgot-password`,
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email: value }),
-        },
-      );
-      const data = (await res.json().catch(() => ({}))) as { message?: string };
-      setNotice(
-        data?.message ??
-          'If this e-mail is registered, a password setup link has been sent.',
-      );
-    } catch {
-      setError('Network error. Please check your connection and try again.');
-    }
+
+    setNotice(await requestPasswordInvite(value));
   };
 
   const promo = PROMOS[promoIndex] ?? PROMOS[0];

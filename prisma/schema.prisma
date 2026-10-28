@@ -393,6 +393,7 @@ model Category {
   description String
   // moduleId    String?  @db.ObjectId
   icon        String? // icon URL or path
+  color       String? // storefront card background, e.g. "#FDE2E4"
   isDeleted   Boolean  @default(false)
   isPromoted  Boolean  @default(false)
   createdBy   String?
@@ -422,6 +423,7 @@ model Module {
   business    Business @relation(fields: [businessId], references: [id]) // Super Admin who created it
 
   icon       String? // optional URL
+  color      String? // storefront card background, e.g. "#DFE7FD"
   isActive   Boolean @default(true)
   isFeatured Boolean @default(true)
   version    String  @default("1.0")
@@ -581,9 +583,16 @@ model User {
   roleId String @db.ObjectId
   role   Role   @relation(fields: [roleId], references: [id])
 
-  isVerified Boolean @default(false)
-  isActive   Boolean @default(true)
-  isDeleted  Boolean @default(false)
+  // Customer web push token (written by the customer web app).
+  fcmToken String?
+
+  // Customer app stores this as a plain boolean (set when the e-mail link is
+  // used). Vendors/DPs/managers use the channel Verification object.
+  isVerified Boolean?
+  isActive   Boolean      @default(true)
+  isDeleted  Boolean      @default(false)
+
+  loyaltyPoints Int @default(0)
 
   createdAt    DateTime       @default(now())
   updatedAt    DateTime       @updatedAt
@@ -592,6 +601,14 @@ model User {
   AuditLog     AuditLog[]
   // Lead         Lead[]
   // Address      Address[]
+}
+
+// Channel-level verification: email confirms flip `email`; mobile OTP flows
+// flip `mobile`. `isVerified` is shared by User, Vendor, DeliveryPartner, and
+// AreaManager.
+type Verification {
+  email  Boolean @default(false)
+  mobile Boolean @default(false)
 }
 
 // type UserAddress {
@@ -872,9 +889,14 @@ model DeliveryPartner {
   aadharNumber   String?
   panNumber      String?
 
-  isVerified Boolean @default(false)
-  isActive   Boolean @default(true)
-  isDeleted  Boolean @default(false)
+  isVerified Verification?
+  isApproved Boolean?     @default(false)
+  emailVerifiedAt DateTime?
+  emailVerifiedBy String?
+  emailVerificationSource String?
+  emailVerificationNote String?
+  isActive   Boolean      @default(true)
+  isDeleted  Boolean      @default(false)
 
   createdAt            DateTime         @default(now())
   updatedAt            DateTime         @updatedAt
@@ -956,9 +978,14 @@ model Vendor {
   roleId String @db.ObjectId
   role   Role   @relation(fields: [roleId], references: [id])
 
-  isVerified Boolean @default(false)
-  isActive   Boolean @default(true)
-  isDeleted  Boolean @default(false)
+  isVerified Verification?
+  emailVerifiedAt DateTime?
+  emailVerifiedBy String?
+  emailVerificationSource String?
+  emailVerificationNote String?
+  isApproved Boolean      @default(false)
+  isActive   Boolean      @default(true)
+  isDeleted  Boolean      @default(false)
 
   documents   VendorDocument[]
   locationLat Float?
@@ -1010,6 +1037,16 @@ enum OnboardingStatus {
 }
 
 // ======================================= area manager model =================================
+model ManagedArea {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  city       String   @unique
+  pincodes   String[]
+  locationLat Float
+  locationLng Float
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+}
+
 model AreaManager {
   id              String   @id @default(auto()) @map("_id") @db.ObjectId
   fullName        String
@@ -1019,9 +1056,19 @@ model AreaManager {
   role            Role?    @relation(fields: [roleId], references: [id])
   password        String
   assignedRegions String[] // array of strings
+  assignedAreaIds String[] @default([]) // ManagedArea ids
+  assignedPincodes String[] @default([]) // ManagedArea id:pincode pairs
 
   employeeCode String? @unique
   isActive     Boolean @default(true)
+  isDeleted    Boolean? @default(false)
+  isVerified   Verification?
+
+  // E-mail verification provenance (webhook / Patra sync / audited override).
+  emailVerifiedAt         DateTime?
+  emailVerifiedBy         String?
+  emailVerificationSource String?
+  emailVerificationNote   String?
 
   // Approval gate + password lifecycle (mirrors the vendor flow).
   isApproved    Boolean?  @default(false)
@@ -1574,6 +1621,7 @@ model NotificationCampaign {
   title           String
   message         String
   target          String
+  link            String?
   status          NotificationCampaignStatus @default(draft)
   scheduledAt     DateTime?
   sentAt          DateTime?
@@ -1627,4 +1675,89 @@ model Blog {
   updatedAt       DateTime   @updatedAt
 
   @@index([status, scheduledAt])
+}
+
+// ─── Omnipost newsletter webhooks (shared: every app's receiver writes here) ───
+// Subscriber keyed by Omnipost subscriber UUID (stable cross-system key — NOT email).
+model NewsletterSubscriber {
+  uuid        String    @id @map("_id")
+  email       String
+  name        String?
+  listUuids   String[]  @default([])
+  status      String    @default("confirmed")
+  confirmedAt DateTime?
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+
+  @@index([email])
+}
+
+// Idempotency guard: one row per processed Omnipost idempotency_key.
+// Unique PK makes duplicate deliveries safe under races (P2002 → treat as duplicate).
+model OmnipostProcessedKey {
+  key        String   @id @map("_id")
+  receivedAt DateTime @default(now())
+}
+
+
+// ================= CUSTOMER REVIEWS =================
+model ProductReview {
+  id                 String   @id @default(auto()) @map("_id") @db.ObjectId
+  productId          String   @db.ObjectId
+  userId             String   @db.ObjectId
+  userName           String
+  rating             Int
+  title              String?
+  comment            String
+  status             String   @default("approved") // approved | pending | rejected
+  isVerifiedPurchase Boolean  @default(false)
+  helpfulCount       Int      @default(0)
+  createdAt          DateTime @default(now())
+  updatedAt          DateTime @updatedAt
+
+  @@unique([userId, productId])
+  @@index([productId])
+  @@index([status])
+}
+
+// ================= LOYALTY =================
+model LoyaltyTransaction {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  points    Int
+  type      String   // earn | redeem | adjust
+  reason    String
+  orderId   String?  @db.ObjectId
+  createdAt DateTime @default(now())
+
+  @@index([userId])
+}
+
+// ================= SUPPORT =================
+model SupportTicket {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  userId    String   @db.ObjectId
+  userName  String
+  userEmail String
+  subject   String
+  category  String
+  message   String
+  status    String   @default("open") // open | in_progress | resolved | closed
+  priority  String   @default("normal")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@index([userId])
+  @@index([status])
+}
+
+model SupportMessage {
+  id         String   @id @default(auto()) @map("_id") @db.ObjectId
+  ticketId   String   @db.ObjectId
+  senderRole String   // customer | support
+  senderName String
+  message    String
+  createdAt  DateTime @default(now())
+
+  @@index([ticketId])
 }

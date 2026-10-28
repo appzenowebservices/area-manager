@@ -24,8 +24,8 @@ export default function InputField({
   placeholder,
   icon,
   error,
-  suffix,
-  maxLength,
+  suffix = null,
+  maxLength = undefined,
   disabled = false,
   autoComplete,
 }) {

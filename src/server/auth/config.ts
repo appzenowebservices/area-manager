@@ -12,8 +12,11 @@ export const authConfig = {
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const identifier = (credentials?.email ?? "").trim();
-        const password = credentials?.password ?? "";
+        const creds = credentials as
+          | { email?: string; password?: string }
+          | undefined;
+        const identifier = (creds?.email ?? "").trim();
+        const password = creds?.password ?? "";
         if (!identifier || !password) return null;
 
         // E-mail: the shared stage-gated flow (verify → approve → PIN → login).
@@ -43,7 +46,9 @@ export const authConfig = {
         if (!manager || manager.isDeleted === true || manager.isActive === false) {
           return null;
         }
+        if (manager.isVerified?.email !== true) return null;
         if (!manager.isApproved) return null;
+        if (!manager.passwordSetAt) return null;
         const valid = await compare(password, manager.password);
         if (!valid) return null;
         return {

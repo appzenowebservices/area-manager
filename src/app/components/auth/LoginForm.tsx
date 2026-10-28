@@ -6,7 +6,11 @@ import { signIn } from "next-auth/react";
 import useAuthStore from "../../hooks/authStore";
 import InputField from "../../components/ui/InputField";
 import Button from "../../components/ui/Button";
-import { api } from "~/trpc/react";
+import {
+  fetchLoginStage,
+  requestPasswordInvite,
+  STAGE_MESSAGES,
+} from "../auth/authClient";
 
 /* --- Icons --- */
 const MailIcon = () => (
@@ -34,11 +38,9 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [remember, setRemember] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [sendingReset, setSendingReset] = useState(false);
   const [errors, setErrors] = useState<Record<string, string>>({});
   const [notice, setNotice] = useState("");
-
-  const requestPassword = api.areaManagerAuth.requestPassword.useMutation();
-  const utils = api.useUtils();
 
   useEffect(() => {
     return () => clearError();
@@ -65,31 +67,25 @@ export default function LoginPage() {
     try {
       // State-first: the e-mail alone tells us which stage the manager is at,
       // so we can show the right prompt before attempting a password check.
-      const stage = await utils.areaManagerAuth.stage.fetch({ email });
+      const state = await fetchLoginStage(email.trim());
 
-      if (stage.state === "email_not_verified") {
-        showError(
-          "Please confirm your email first — we sent you a confirmation link. Open it, then come back and sign in.",
-        );
+      if (
+        state === "email_not_verified" ||
+        state === "not_approved" ||
+        state === "inactive"
+      ) {
+        showError(STAGE_MESSAGES[state]);
         return;
       }
-      if (stage.state === "not_approved") {
-        showError(
-          "Your account is verified, but it is not approved yet. The admin team will review it shortly — you can sign in once it is approved.",
-        );
-        return;
-      }
-      if (stage.state === "password_not_set") {
-        await requestPassword.mutateAsync({ email });
-        showError(
-          "Your account is approved! We've just emailed you a link to create your password — check your inbox, then sign in.",
-        );
+      if (state === "password_not_set") {
+        const message = await requestPasswordInvite(email.trim());
+        setNotice(message);
         return;
       }
 
       const result = await signIn("credentials", {
         redirect: false,
-        email,
+        email: email.trim(),
         password,
       });
 
@@ -117,7 +113,7 @@ export default function LoginPage() {
     }
   };
 
-  /** Self-service PIN reset: emails the set-password link when eligible. */
+  /** Self-service password reset: emails the set-password link when eligible. */
   const handleForgotPassword = async () => {
     clearError();
     setNotice("");
@@ -126,13 +122,11 @@ export default function LoginPage() {
       return;
     }
     setErrors({});
+    setSendingReset(true);
     try {
-      await requestPassword.mutateAsync({ email });
-      setNotice(
-        "If your account is verified and approved, a password setup link is on its way. Check your inbox.",
-      );
-    } catch {
-      setNotice("Could not send the link right now. Please try again in a moment.");
+      setNotice(await requestPasswordInvite(email.trim()));
+    } finally {
+      setSendingReset(false);
     }
   };
 
@@ -198,9 +192,9 @@ export default function LoginPage() {
             type="button"
             style={styles.forgotBtn}
             onClick={handleForgotPassword}
-            disabled={requestPassword.isPending}
+            disabled={sendingReset}
           >
-            {requestPassword.isPending ? "Sending…" : "Forgot password?"}
+            {sendingReset ? "Sending…" : "Forgot password?"}
           </button>
         </div>
 

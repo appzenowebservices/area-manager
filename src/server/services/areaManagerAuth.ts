@@ -28,6 +28,9 @@ const EMAIL_NOT_VERIFIED =
 const PASSWORD_NOT_SET =
   "Your account is approved! We've just emailed you a link to create your password — check your inbox, then sign in.";
 
+const INACTIVE =
+  "This account has been deactivated. Please contact the admin team to restore access.";
+
 const genericInvite = {
   ok: true,
   status: 200,
@@ -134,16 +137,38 @@ const appUrl = () =>
     ""
   ).replace(/\/+$/, "");
 
-/** Which stage an e-mail is at — used by the login form for prompts. */
-export async function stage(email: string): Promise<{
-  state: "unknown" | "email_not_verified" | "not_approved" | "password_not_set" | "ready";
-}> {
+/** Which stage an e-mail or mobile number is at — used by the login forms. */
+export type LoginStageState =
+  | "unknown"
+  | "email_not_verified"
+  | "not_approved"
+  | "inactive"
+  | "password_not_set"
+  | "ready";
+
+export interface LoginStage {
+  state: LoginStageState;
+}
+
+/** E-mail or mobile → the Prisma lookup for that identifier. */
+function managerWhere(identifier: string) {
+  const value = identifier.trim();
+  return value.includes("@")
+    ? { email: value.toLowerCase() }
+    : { phoneNumber: value };
+}
+
+export async function stage(identifier: string): Promise<LoginStage> {
+  const value = identifier.trim();
+  if (!value) return { state: "unknown" };
+
   const manager = await db.areaManager.findFirst({
-    where: { email: email.trim().toLowerCase() },
+    where: managerWhere(value),
   });
   if (!manager || manager.isDeleted === true) return { state: "unknown" };
   if (manager.isVerified?.email !== true) return { state: "email_not_verified" };
   if (!manager.isApproved) return { state: "not_approved" };
+  if (manager.isActive === false) return { state: "inactive" };
   if (!manager.passwordSetAt) return { state: "password_not_set" };
   return { state: "ready" };
 }
@@ -164,12 +189,12 @@ export async function login(input: {
   if (!manager.isApproved) {
     return { ok: false, status: 403, code: "not_approved", message: NOT_APPROVED };
   }
+  if (manager.isActive === false) {
+    return { ok: false, status: 403, code: "inactive", message: INACTIVE };
+  }
   if (!manager.passwordSetAt) {
     await requestPassword(manager.email);
     return { ok: false, status: 403, code: "password_not_set", message: PASSWORD_NOT_SET };
-  }
-  if (manager.isActive === false) {
-    return { ok: false, status: 403, code: "not_approved", message: NOT_APPROVED };
   }
 
   const matches = await bcrypt.compare(input.password ?? "", manager.password);
@@ -201,7 +226,8 @@ export async function requestPassword(email: string): Promise<AreaManagerAuthRes
     !manager ||
     manager.isDeleted === true ||
     manager.isVerified?.email !== true ||
-    !manager.isApproved
+    !manager.isApproved ||
+    manager.isActive === false
   ) {
     // No link before verification + approval; never leak account existence.
     return { ...genericInvite };
@@ -255,6 +281,12 @@ export async function setPassword(input: {
   }
   if (!manager.isApproved) {
     return { ok: false, status: 403, code: "not_approved", message: NOT_APPROVED };
+  }
+  if (manager.isActive === false) {
+    return { ok: false, status: 403, code: "inactive", message: INACTIVE };
+  }
+  if (manager.isVerified?.email !== true) {
+    return { ok: false, status: 403, code: "email_not_verified", message: EMAIL_NOT_VERIFIED };
   }
   if (fingerprint(manager.password) !== payload.ph) {
     return {
