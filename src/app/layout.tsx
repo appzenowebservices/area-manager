@@ -2,6 +2,7 @@ import "./styles/globals.css";
 
 import { type Metadata } from "next";
 import { Poppins } from "next/font/google";
+import AreaManagerShell from "./components/layout/AreaManagerShell";
 
 // import { TRPCReactProvider } from "~/trpc/react";
 import { SessionProvider } from 'next-auth/react';
@@ -85,12 +86,7 @@ export default function RootLayout({
         <link rel="apple-touch-icon" href="/icons/logo.webp" />
         <meta name="theme-color" content="#ae2012" />
       <body>
-        {/* <SessionProvider > */}
-          {/* <TRPCReactProvider> */}
-            {/* <FcmBootstrap /> */}
-            {children}
-          {/* </TRPCReactProvider> */}
-        {/* </SessionProvider> */}
+        <AreaManagerShell>{children}</AreaManagerShell>
       </body>
     </html>
   );

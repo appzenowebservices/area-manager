@@ -63,8 +63,8 @@ export const inputCss = `
   .si-input {
     width: 100%;
     padding: 0.65rem 0.9rem;
-    border: 1.5px solid #e9d8bf;
-    border-radius: 10px;
+    border: 2px solid #e9d8bf;
+    border-radius: 24px;
     font-size: 0.88rem;
     color: #2d241e;
     background: #fff;
@@ -86,8 +86,8 @@ export const inputCss = `
   .si-select {
     width: 100%;
     padding: 0.65rem 0.9rem;
-    border: 1.5px solid #e9d8bf;
-    border-radius: 10px;
+    border: 2px solid #e9d8bf;
+    border-radius: 24px;
     font-size: 0.88rem;
     color: #2d241e;
     background: #fff;
@@ -103,16 +103,16 @@ export const inputCss = `
 const cardCss = `
   .sc-card {
     background: #fff;
-    border: 1px solid #e9d8bf;
-    border-radius: 14px;
-    padding: 1.3rem 1.4rem;
+    border: 2px solid #2d241e;
+    border-radius: 24px;
+    padding: 1.3rem 1.4rem; box-shadow: 6px 6px 0px #2d241e;
     display: flex;
     flex-direction: column;
     gap: 1rem;
   }
   .sc-header { border-bottom: 1px solid #f5ebe0; padding-bottom: 0.85rem; }
   .sc-title {
-    font-family: 'Sora', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 0.95rem; font-weight: 700;
     color: #2d241e; margin: 0 0 3px;
   }
@@ -139,13 +139,14 @@ const saveCss = `
   .sb-saved { font-size: 0.82rem; color: #0c831f; font-weight: 600; }
   .sb-btn {
     padding: 0.65rem 1.5rem;
-    background: #ae2012; color: #fff;
-    border: none; border-radius: 10px;
+    background: #ae2012; color: #fff; border: 2px solid #8b150e;
+    border: none; border-radius: 24px;
     font-size: 0.88rem; font-weight: 700;
     font-family: inherit; cursor: pointer;
-    box-shadow: 0 4px 12px rgba(12, 131, 31,0.3);
+    box-shadow: 4px 4px 0px #2d241e;
     transition: background 0.15s, transform 0.12s;
   }
   .sb-btn:hover:not(:disabled) { background: #8b150e; transform: translateY(-1px); }
   .sb-btn:disabled { background: #d3ebd8; cursor: not-allowed; transform: none; box-shadow: none; }
 `;
+

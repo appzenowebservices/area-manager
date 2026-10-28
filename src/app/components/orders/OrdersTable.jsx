@@ -1,66 +1,103 @@
-// src/components/orders/OrdersTable.jsx
-import OrderStatusBadge from "./OrderStatusBadge";
+import { Eye } from "lucide-react";
+import { BrandBadge, statusTone } from "../brand/BrandBadge";
 
-/**
- * OrdersTable — Desktop table view
- * Props:
- *   orders   array
- *   onView   fn(order)   ← opens drawer
- */
+const paymentTone = (status) => {
+  const value = String(status).toLowerCase();
+  if (/(paid|success)/.test(value)) return "fresh";
+  if (/(fail|cancel)/.test(value)) return "primary";
+  return "accent";
+};
+
 export default function OrdersTable({ orders, onView }) {
   return (
-    <>
-      <style>{css}</style>
-      <div className="ot-wrap">
-        <table className="ot-table">
+    <div className="overflow-hidden rounded-3xl border-2 border-secondary-900 bg-background-section shadow-[6px_6px_0px_var(--color-secondary-900)]">
+      <div className="overflow-x-auto">
+        <table className="w-full min-w-[1050px] border-collapse text-sm">
           <thead>
-            <tr>
-              {["Order ID","Date & Time","Customer","Area","Items","Amount","Payment","Status","Vendor","Delivery","Action"].map(h => (
-                <th key={h} className="ot-th">{h}</th>
+            <tr className="bg-secondary-900 text-left text-[10px] font-black uppercase tracking-[0.12em] text-accent-300">
+              {[
+                "Order ID",
+                "Date & Time",
+                "Customer",
+                "Area",
+                "Items",
+                "Amount",
+                "Payment",
+                "Status",
+                "Vendor",
+                "Delivery",
+                "Action",
+              ].map((heading) => (
+                <th key={heading} className="whitespace-nowrap px-4 py-3">
+                  {heading}
+                </th>
               ))}
             </tr>
           </thead>
-          <tbody>
+          <tbody className="divide-y divide-secondary-100">
             {orders.length === 0 ? (
               <tr>
-                <td colSpan={11} className="ot-empty">
-                  <span style={{ fontSize: "2rem" }}>📭</span>
-                  <p>No orders found for selected filters</p>
+                <td colSpan={11} className="px-4 py-14 text-center">
+                  <span className="text-4xl">📭</span>
+                  <p className="mt-2 text-sm font-semibold text-secondary-500">
+                    No orders found for selected filters
+                  </p>
                 </td>
               </tr>
             ) : (
-              orders.map(order => (
-                <tr key={order.id} className="ot-tr">
-                  <td className="ot-td"><span className="ot-id">{order.id}</span></td>
-                  <td className="ot-td">
-                    <div className="ot-date">{order.date}</div>
-                    <div className="ot-time-small">{order.time}</div>
+              orders.map((order) => (
+                <tr key={order.id} className="transition-colors hover:bg-secondary-50">
+                  <td className="whitespace-nowrap px-4 py-3">
+                    <span className="font-display text-xs font-black text-primary-600">
+                      {order.id}
+                    </span>
                   </td>
-                  <td className="ot-td">
-                    <div className="ot-customer">{order.customer.name}</div>
-                    <div className="ot-phone">📞 {order.customer.phone}</div>
+                  <td className="whitespace-nowrap px-4 py-3">
+                    <p className="text-xs font-bold text-secondary-800">{order.date}</p>
+                    <p className="text-[10px] font-semibold text-secondary-400">{order.time}</p>
                   </td>
-                  <td className="ot-td"><span className="ot-area">📍 {order.area}</span></td>
-                  <td className="ot-td">
-                    <span className="ot-items-count">{order.items.length} item{order.items.length > 1 ? "s" : ""}</span>
+                  <td className="whitespace-nowrap px-4 py-3">
+                    <p className="text-sm font-bold text-secondary-900">{order.customer.name}</p>
+                    <p className="text-[10px] font-semibold text-secondary-400">📞 {order.customer.phone}</p>
                   </td>
-                  <td className="ot-td">
-                    <div className="ot-amount">₹{order.finalAmount.toLocaleString()}</div>
-                    {order.discount > 0 && <div className="ot-discount">-₹{order.discount} off</div>}
+                  <td className="whitespace-nowrap px-4 py-3 text-xs font-semibold text-secondary-600">
+                    📍 {order.area}
                   </td>
-                  <td className="ot-td">
-                    <div className="ot-pay-method">{order.payment}</div>
-                    <OrderStatusBadge status={order.paymentStatus} type="payment" size="sm" />
+                  <td className="whitespace-nowrap px-4 py-3">
+                    <span className="rounded-full bg-secondary-100 px-2.5 py-1 text-[11px] font-bold text-primary-600">
+                      {order.items.length} item{order.items.length > 1 ? "s" : ""}
+                    </span>
                   </td>
-                  <td className="ot-td"><OrderStatusBadge status={order.status} /></td>
-                  <td className="ot-td">
-                    <span className={order.vendor.id ? "ot-assigned" : "ot-unassigned"}>{order.vendor.name}</span>
+                  <td className="whitespace-nowrap px-4 py-3">
+                    <p className="font-display text-sm font-black text-secondary-900">
+                      ₹{order.finalAmount.toLocaleString("en-IN")}
+                    </p>
+                    {order.discount > 0 && (
+                      <p className="text-[10px] font-semibold text-fresh-600">-₹{order.discount} off</p>
+                    )}
                   </td>
-                  <td className="ot-td">
-                    <span className={order.delivery.id ? "ot-assigned" : "ot-unassigned"}>{order.delivery.name}</span>
+                  <td className="whitespace-nowrap px-4 py-3">
+                    <p className="mb-1 text-xs font-bold text-secondary-700">{order.payment}</p>
+                    <BrandBadge tone={paymentTone(order.paymentStatus)}>
+                      {order.paymentStatus}
+                    </BrandBadge>
                   </td>
-                  <td className="ot-td">
-                    <button className="ot-view-btn" onClick={() => onView(order)}>👁 View</button>
+                  <td className="whitespace-nowrap px-4 py-3">
+                    <BrandBadge tone={statusTone(order.status)}>{order.status}</BrandBadge>
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-3 text-xs font-semibold text-secondary-700">
+                    {order.vendor.name}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-3 text-xs font-semibold text-secondary-700">
+                    {order.delivery.name}
+                  </td>
+                  <td className="whitespace-nowrap px-4 py-3">
+                    <button
+                      onClick={() => onView(order)}
+                      className="inline-flex items-center gap-1 rounded-full border-2 border-secondary-900 bg-background-section px-3 py-1.5 text-[11px] font-black text-primary-600 transition-colors hover:bg-accent-400"
+                    >
+                      <Eye className="h-3.5 w-3.5" /> View
+                    </button>
                   </td>
                 </tr>
               ))
@@ -68,34 +105,6 @@ export default function OrdersTable({ orders, onView }) {
           </tbody>
         </table>
       </div>
-    </>
+    </div>
   );
 }
-
-const css = `
-  .ot-wrap { overflow-x: auto; border-radius: 14px; border: 1px solid #e9d8bf; }
-  .ot-table { width: 100%; border-collapse: collapse; font-size: 0.83rem; min-width: 1050px; }
-  .ot-th { text-align: left; padding: 0.65rem 0.9rem; background: #fdfbf7; color: #a68b66; font-size: 0.69rem; font-weight: 700; text-transform: uppercase; letter-spacing: 0.06em; border-bottom: 1px solid #e9d8bf; white-space: nowrap; }
-  .ot-th:first-child { border-radius: 14px 0 0 0; }
-  .ot-th:last-child  { border-radius: 0 14px 0 0; }
-  .ot-tr { transition: background 0.12s; }
-  .ot-tr:hover .ot-td { background: #fdfbf7; }
-  .ot-td { padding: 0.75rem 0.9rem; border-bottom: 1px solid #f5ebe0; vertical-align: middle; white-space: nowrap; background: #fff; transition: background 0.12s; }
-  .ot-tr:last-child .ot-td { border-bottom: none; }
-  .ot-id { font-family: 'Sora', sans-serif; font-weight: 700; color: #ae2012; font-size: 0.82rem; }
-  .ot-date { font-weight: 600; color: #4a3f35; font-size: 0.82rem; }
-  .ot-time-small { font-size: 0.7rem; color: #a68b66; margin-top: 2px; }
-  .ot-customer { font-weight: 700; color: #2d241e; }
-  .ot-phone { font-size: 0.72rem; color: #a68b66; margin-top: 2px; }
-  .ot-area { font-size: 0.78rem; color: #7d6b5d; }
-  .ot-items-count { background: #fdfbf7; color: #ae2012; padding: 2px 8px; border-radius: 99px; font-size: 0.73rem; font-weight: 700; }
-  .ot-amount { font-weight: 800; color: #2d241e; font-size: 0.92rem; font-family: 'Sora', sans-serif; }
-  .ot-discount { font-size: 0.68rem; color: #0c831f; font-weight: 600; margin-top: 2px; }
-  .ot-pay-method { font-size: 0.75rem; color: #7d6b5d; font-weight: 600; margin-bottom: 3px; }
-  .ot-assigned { color: #4a3f35; font-size: 0.82rem; font-weight: 500; }
-  .ot-unassigned { color: #e9c46a; font-weight: 700; font-size: 0.8rem; }
-  .ot-view-btn { display: inline-flex; align-items: center; gap: 5px; padding: 0.35rem 0.85rem; background: #fdfbf7; color: #ae2012; border: none; border-radius: 8px; font-size: 0.78rem; font-weight: 700; cursor: pointer; font-family: inherit; transition: background 0.15s; white-space: nowrap; }
-  .ot-view-btn:hover { background: #f5ebe0; }
-  .ot-empty { text-align: center; padding: 3rem 1rem; color: #a68b66; }
-  .ot-empty p { margin-top: 8px; font-size: 0.88rem; }
-`;

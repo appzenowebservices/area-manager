@@ -51,13 +51,15 @@ const css = `
     flex-direction: column;
     align-items: center;
     gap: 2px;
-    padding: 0.55rem 1rem;
-    border-radius: 12px;
+    padding: 0.65rem 1rem;
+    border-radius: 16px;
     flex: 1;
     min-width: 80px;
+    border: 2px solid #2d241e;
+    box-shadow: 3px 3px 0px #2d241e;
   }
   .dsb-val {
-    font-family: 'Sora', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.2rem;
     font-weight: 800;
     line-height: 1;

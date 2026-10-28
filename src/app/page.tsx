@@ -6,6 +6,8 @@ import { signIn } from 'next-auth/react';
 import {
   MapPin,
   Lock,
+  Eye,
+  EyeOff,
   User,
   ArrowRight,
   Store,
@@ -21,6 +23,7 @@ import {
   Headset,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
+import useAuthStore from './hooks/authStore';
 import {
   fetchLoginStage,
   requestPasswordInvite,
@@ -64,6 +67,7 @@ const AreaManagerLogin = () => {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState('');
   const [promoIndex, setPromoIndex] = useState(0);
+  const [showPassword, setShowPassword] = useState(false);
 
   useEffect(() => {
     const t = setInterval(() => setPromoIndex((i) => (i + 1) % PROMOS.length), 4200);
@@ -130,6 +134,18 @@ const AreaManagerLogin = () => {
       }
 
       setSuccessMessage('Pranam! Welcome back to your console.');
+      useAuthStore.setState({
+        user: {
+          id: '',
+          name: identifierValue.includes('@')
+            ? identifierValue.split('@')[0]
+            : identifierValue,
+          email: identifierValue,
+          role: 'area_manager',
+        },
+        isAuthenticated: true,
+        loginError: null,
+      });
       setTimeout(() => router.push('/dashboard'), 900);
     } catch {
       setError('Sign-in failed. Please check your connection and try again.');
@@ -339,25 +355,34 @@ const AreaManagerLogin = () => {
                 <div className="space-y-2">
                   <div className="flex justify-between items-center ml-1">
                     <label className="text-xs font-bold text-secondary-700 uppercase tracking-widest">
-                      Password
+                      Security Pin
                     </label>
                     <button
                       type="button"
                       onClick={handleForgot}
                       className="text-xs text-primary-600 hover:text-primary-700 hover:underline font-bold"
                     >
-                      Forgot password?
+                      Forgot Pin?
                     </button>
                   </div>
                   <div className="relative group">
                     <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-text-muted group-focus-within:text-primary-600 transition-colors" />
                     <input
                       required
-                      type="password"
+                      type={showPassword ? 'text' : 'password'}
                       onChange={(e) => (password.current = e.target.value)}
                       placeholder="••••••••"
-                      className="w-full pl-12 pr-4 py-3.5 bg-secondary-50 border-2 border-secondary-200 rounded-2xl text-primary-text outline-none focus:border-primary-600 focus:bg-background-section transition-all placeholder:text-text-muted font-semibold"
+                      className="w-full pl-12 pr-12 py-3.5 bg-secondary-50 border-2 border-secondary-200 rounded-2xl text-primary-text outline-none focus:border-primary-600 focus:bg-background-section transition-all placeholder:text-text-muted font-semibold"
                     />
+                    <button
+                      type="button"
+                      onClick={() => setShowPassword((value) => !value)}
+                      aria-label={showPassword ? 'Hide password' : 'Show password'}
+                      title={showPassword ? 'Hide password' : 'Show password'}
+                      className="absolute right-3 top-1/2 -translate-y-1/2 p-1.5 rounded-xl text-text-muted hover:text-primary-600 hover:bg-secondary-100 transition-colors"
+                    >
+                      {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    </button>
                   </div>
                 </div>
 

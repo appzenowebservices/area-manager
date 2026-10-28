@@ -1,5 +1,5 @@
 import { useState } from "react";
-import useAuthStore from "../../store/authStore";
+import useAuthStore from "../../hooks/authStore";
 import { SettingsCard, FormField, SaveBar, inputCss } from "./SettingsUI";
 
 /**
@@ -160,3 +160,4 @@ const css = `
   .pf-textarea { resize:vertical; min-height:70px; }
   @media (max-width:520px) { .pf-grid { grid-template-columns:minmax(0,1fr); } }
 `;
+

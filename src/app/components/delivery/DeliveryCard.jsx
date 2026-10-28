@@ -1,155 +1,67 @@
-import DeliveryStatusBadge from "./DeliveryStatusBadge";
+import { Eye, Star } from "lucide-react";
+import { BrandBadge } from "../brand/BrandBadge";
 import { getDeliveryStats } from "../../data/deliveryData";
 
-/**
- * DeliveryCard
- * File: src/components/delivery/DeliveryCard.jsx
- *
- * Mobile card view for one delivery partner.
- * Props:  partner, onView fn(partner)
- */
+const statusTone = (status) => {
+  const value = String(status).toLowerCase();
+  if (value === "available") return "fresh";
+  if (value === "busy") return "accent";
+  if (value === "inactive") return "primary";
+  return "neutral";
+};
 
-const StarIcon = () => (
-  <svg width="12" height="12" viewBox="0 0 24 24" fill="#e9c46a" stroke="none">
-    <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/>
-  </svg>
-);
-
-export default function DeliveryCard({ partner: p, onView }) {
-  const stats = getDeliveryStats(p.id);
+export default function DeliveryCard({ partner, onView }) {
+  const stats = getDeliveryStats(partner.id);
 
   return (
-    <>
-      <style>{css}</style>
-      <div className="dc-card">
-        {/* Top */}
-        <div className="dc-top">
-          <div className="dc-left">
-            <div className="dc-avatar">{p.avatar}</div>
-            <div>
-              <div className="dc-name">{p.name}</div>
-              <div className="dc-id">{p.id} · {p.area}</div>
-            </div>
+    <div className="rounded-3xl border-2 border-secondary-900 bg-background-section p-4 shadow-[5px_5px_0px_var(--color-secondary-900)]">
+      <div className="flex items-center justify-between gap-2">
+        <div className="flex items-center gap-3">
+          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-secondary-900 bg-secondary-900 text-xs font-black text-accent-300">
+            {partner.avatar}
           </div>
-          <DeliveryStatusBadge status={p.status} size="sm" />
-        </div>
-
-        {/* Meta */}
-        <div className="dc-meta-row">
-          <span className="dc-meta">📞 {p.phone}</span>
-          <span className="dc-meta">🚗 {p.vehicle}</span>
-          <span className="dc-meta">
-            <StarIcon /> {p.rating}
-          </span>
-        </div>
-
-        <div className="dc-divider" />
-
-        {/* Stats grid */}
-        <div className="dc-stats">
-          <div className="dc-stat">
-            <span className="dc-stat-val">{p.totalDeliveries}</span>
-            <span className="dc-stat-label">Total</span>
-          </div>
-          <div className="dc-stat">
-            <span className="dc-stat-val" style={{ color: "#ae2012" }}>{stats.pending}</span>
-            <span className="dc-stat-label">Active</span>
-          </div>
-          <div className="dc-stat">
-            <span className="dc-stat-val" style={{ color: "#0c831f" }}>{stats.delivered}</span>
-            <span className="dc-stat-label">Delivered</span>
-          </div>
-          <div className="dc-stat">
-            <span className="dc-stat-val" style={{ color: "#0c831f" }}>
-              ₹{stats.revenue.toLocaleString("en-IN")}
-            </span>
-            <span className="dc-stat-label">Revenue</span>
+          <div>
+            <p className="text-sm font-bold text-secondary-900">{partner.name}</p>
+            <p className="text-[10px] font-semibold text-secondary-400">
+              {partner.id} · {partner.area}
+            </p>
           </div>
         </div>
-
-        <button className="dc-btn" onClick={() => onView(p)}>
-          View Full Profile →
-        </button>
+        <BrandBadge tone={statusTone(partner.status)}>{partner.status}</BrandBadge>
       </div>
-    </>
+
+      <div className="mt-2 flex flex-wrap gap-3 text-[11px] font-semibold text-secondary-500">
+        <span>📞 {partner.phone}</span>
+        <span>🚗 {partner.vehicle}</span>
+        <span className="inline-flex items-center gap-1">
+          <Star className="h-3 w-3 fill-accent-400 text-accent-400" /> {partner.rating}
+        </span>
+      </div>
+
+      <div className="my-3 h-px bg-secondary-100" />
+
+      <div className="grid grid-cols-4 gap-2">
+        {[
+          { label: "Total", value: partner.totalDeliveries, cls: "text-secondary-900" },
+          { label: "Active", value: stats.pending, cls: "text-primary-600" },
+          { label: "Delivered", value: stats.delivered, cls: "text-fresh-600" },
+          { label: "Revenue", value: `₹${stats.revenue.toLocaleString("en-IN")}`, cls: "text-fresh-600" },
+        ].map((item) => (
+          <div key={item.label}>
+            <p className={`font-display text-sm font-black ${item.cls}`}>{item.value}</p>
+            <p className="text-[9px] font-black uppercase tracking-widest text-secondary-400">
+              {item.label}
+            </p>
+          </div>
+        ))}
+      </div>
+
+      <button
+        onClick={() => onView(partner)}
+        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-secondary-900 bg-secondary-50 px-4 py-2.5 text-xs font-black text-primary-600 transition-colors hover:bg-accent-400"
+      >
+        <Eye className="h-4 w-4" /> View Full Profile →
+      </button>
+    </div>
   );
 }
-
-const css = `
-  .dc-card {
-    background: #fff;
-    border: 1px solid #e9d8bf;
-    border-radius: 14px;
-    padding: 1rem 1.1rem;
-    box-shadow: 0 1px 4px rgba(45, 36, 30,0.04);
-    transition: box-shadow 0.18s;
-  }
-  .dc-card:hover { box-shadow: 0 4px 14px rgba(12, 131, 31,0.1); }
-  .dc-top {
-    display: flex;
-    justify-content: space-between;
-    align-items: flex-start;
-    margin-bottom: 8px;
-  }
-  .dc-left { display: flex; align-items: center; gap: 10px; }
-  .dc-avatar {
-    width: 38px; height: 38px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, #ae2012, #2d241e);
-    color: #fff;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 0.78rem; font-weight: 700;
-    flex-shrink: 0;
-  }
-  .dc-name { font-weight: 700; color: #2d241e; font-size: 0.92rem; }
-  .dc-id   { font-size: 0.72rem; color: #a68b66; margin-top: 2px; }
-  .dc-meta-row {
-    display: flex; flex-wrap: wrap; gap: 10px;
-    margin-bottom: 4px;
-  }
-  .dc-meta {
-    display: inline-flex; align-items: center; gap: 4px;
-    font-size: 0.76rem; color: #7d6b5d;
-  }
-  .dc-divider { height: 1px; background: #f5ebe0; margin: 10px 0; }
-  .dc-stats {
-    display: grid;
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: 6px;
-    margin-bottom: 10px;
-  }
-  .dc-stat {
-    display: flex; flex-direction: column;
-    align-items: center; gap: 2px;
-    background: #fdfbf7;
-    border-radius: 10px;
-    padding: 0.5rem 0.25rem;
-  }
-  .dc-stat-val {
-    font-family: 'Sora', sans-serif;
-    font-size: 0.95rem;
-    font-weight: 800;
-    color: #2d241e;
-  }
-  .dc-stat-label {
-    font-size: 0.62rem;
-    color: #a68b66;
-    font-weight: 600;
-    text-transform: uppercase;
-    letter-spacing: 0.04em;
-  }
-  .dc-btn {
-    width: 100%;
-    padding: 0.6rem;
-    background: #fdfbf7;
-    color: #ae2012;
-    border: none;
-    border-radius: 9px;
-    font-size: 0.83rem;
-    font-weight: 700;
-    font-family: inherit;
-    cursor: pointer;
-    transition: background 0.15s;
-  }
-  .dc-btn:hover { background: #f5ebe0; }
-`;

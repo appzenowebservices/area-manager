@@ -1,11 +1,14 @@
+"use client";
+
 // src/pages/reports/ReportsPage.jsx
 import { useState, useMemo, useRef } from "react";
-import PageWrapper    from "../../components/layout/PageWrapper";
-import { BarChart, LineChart, DonutChart } from "../../components/reports/ReportCharts";
+import PageWrapper    from "../components/layout/PageWrapper";
+import { PageHeader } from "../components/brand/PageHeader";
+import { BarChart, LineChart, DonutChart } from "../components/reports/ReportCharts";
 import {
   PERIODS, buildOrdersReport, buildRevenueReport,
   buildVendorReport, buildDeliveryReport, exportCSV,
-} from "../../data/reportsData";
+} from "../data/reportsData";
 
 // ─── Section tabs ─────────────────────────────────────────────────────────────
 const SECTIONS = [
@@ -64,16 +67,27 @@ export default function ReportsPage() {
       <style>{css}</style>
 
       {/* ── Header ── */}
-      <div className="rp-header">
-        <div>
-          <h1 className="rp-title">Reports</h1>
-          <p className="rp-sub">Performance analytics — {periodLabel}</p>
-        </div>
-        <div className="rp-actions">
-          <button className="rp-export-btn rp-csv" onClick={handleCSV}>⬇ CSV</button>
-          <button className="rp-export-btn rp-pdf" onClick={handlePDF}>🖨 PDF</button>
-        </div>
-      </div>
+      <PageHeader
+        kicker="Analytics"
+        title="Reports"
+        subtitle={`Performance analytics — ${periodLabel}`}
+        actions={
+          <>
+            <button
+              className="inline-flex items-center gap-2 bg-background-section text-secondary-900 border-2 border-secondary-900 rounded-2xl px-4 py-2.5 text-xs font-display font-black hover:bg-accent-400 transition-colors"
+              onClick={handleCSV}
+            >
+              ⬇ CSV
+            </button>
+            <button
+              className="inline-flex items-center gap-2 bg-accent-400 text-secondary-900 border-2 border-secondary-950 rounded-2xl px-4 py-2.5 text-xs font-display font-black hover:bg-accent-300 transition-colors"
+              onClick={handlePDF}
+            >
+              🖨 PDF
+            </button>
+          </>
+        }
+      />
 
       {/* ── Period Selector ── */}
       <div className="rp-period-row">
@@ -393,7 +407,7 @@ function RankBadge({ n }) {
 const css = `
   /* Header */
   .rp-header { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:1.2rem; flex-wrap:wrap; gap:12px; }
-  .rp-title { font-family:'Sora',sans-serif; font-size:clamp(1.2rem,3vw,1.5rem); font-weight:800; color:#2d241e; letter-spacing:-0.02em; margin:0; }
+  .rp-title { font-family:'Poppins',sans-serif; font-size:clamp(1.2rem,3vw,1.5rem); font-weight:800; color:#2d241e; letter-spacing:-0.02em; margin:0; }
   .rp-sub { font-size:0.82rem; color:#a68b66; margin-top:3px; }
   .rp-actions { display:flex; gap:8px; }
   .rp-export-btn { display:inline-flex; align-items:center; gap:6px; padding:0.55rem 1.1rem; border:none; border-radius:10px; font-size:0.84rem; font-weight:700; font-family:inherit; cursor:pointer; transition:opacity 0.15s; }
@@ -418,17 +432,17 @@ const css = `
 
   /* KPI row */
   .rp-kpi-row { display:grid; grid-template-columns:repeat(5,minmax(0,1fr)); gap:10px; }
-  .rp-kpi { background:#fff; border:1px solid #e9d8bf; border-radius:14px; padding:1rem 1.1rem; display:flex; flex-direction:column; gap:4px; }
-  .rp-kpi-val { font-family:'Sora',sans-serif; font-size:clamp(1.1rem,2.5vw,1.5rem); font-weight:800; letter-spacing:-0.02em; line-height:1; }
+  .rp-kpi { background:#fff; border:2px solid #2d241e; border-radius:20px; padding:1rem 1.1rem; display:flex; flex-direction:column; gap:4px; box-shadow:4px 4px 0px #2d241e; }
+  .rp-kpi-val { font-family:'Poppins',sans-serif; font-size:clamp(1.1rem,2.5vw,1.5rem); font-weight:800; letter-spacing:-0.02em; line-height:1; }
   .rp-kpi-label { font-size:0.7rem; font-weight:600; color:#a68b66; text-transform:uppercase; letter-spacing:0.05em; }
 
   /* Charts grid */
   .rp-charts-grid { display:grid; grid-template-columns:repeat(2,minmax(0,1fr)); gap:14px; }
 
   /* Card */
-  .rp-card { background:#fff; border:1px solid #e9d8bf; border-radius:14px; padding:1.1rem 1.2rem; }
+  .rp-card { background:#fff; border:2px solid #2d241e; border-radius:24px; padding:1.1rem 1.2rem; box-shadow:6px 6px 0px #2d241e; }
   .rp-card-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:14px; flex-wrap:wrap; gap:6px; }
-  .rp-card-title { font-family:'Sora',sans-serif; font-size:0.88rem; font-weight:700; color:#2d241e; }
+  .rp-card-title { font-family:'Poppins',sans-serif; font-size:0.88rem; font-weight:700; color:#2d241e; }
   .rp-card-sub { font-size:0.72rem; color:#a68b66; }
 
   /* Table */
@@ -461,3 +475,7 @@ const css = `
     .rp-period-btn { font-size:0.74rem; padding:0.38rem 0.8rem; }
   }
 `;
+
+
+
+

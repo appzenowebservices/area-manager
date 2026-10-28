@@ -1,10 +1,10 @@
 // src/pages/orders/OrderDetailPage.jsx
 import { useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
-import PageWrapper from "../../components/layout/PageWrapper";
-import OrderStatusBadge from "../../components/orders/OrderStatusBadge";
-import AssignModal      from "../../components/orders/AssignModal";
-import { ORDERS, ORDER_STATUSES } from "../../data/ordersData";
+import PageWrapper from "../components/layout/PageWrapper";
+import OrderStatusBadge from "../components/orders/OrderStatusBadge";
+import AssignModal      from "../components/orders/AssignModal";
+import { ORDERS, ORDER_STATUSES } from "../data/ordersData";
 
 /**
  * OrderDetailPage
@@ -484,3 +484,5 @@ const css = `
     .od-section { padding: 1rem; }
   }
 `;
+
+

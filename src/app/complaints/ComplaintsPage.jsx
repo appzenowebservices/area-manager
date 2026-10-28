@@ -1,101 +1,119 @@
-import { useState, useMemo } from "react";
-import PageWrapper           from "../../components/layout/PageWrapper";
-import ComplaintsStatsBar    from "../../components/complaints/ComplaintsStatsBar";
-import ComplaintsFilters     from "../../components/complaints/ComplaintsFilters";
-import ComplaintsTable       from "../../components/complaints/ComplaintsTable";
-import ComplaintCard         from "../../components/complaints/ComplaintCard";
-import ComplaintDrawer       from "../../components/complaints/ComplaintDrawer";
-import { COMPLAINTS }        from "../../data/complaintsData";
+"use client";
 
-/**
- * ComplaintsPage
- * File: src/pages/complaints/ComplaintsPage.jsx
- *
- * Desktop: table view
- * Mobile:  card list
- * Click → right-side ComplaintDrawer with full timeline + actions
- */
+import { useMemo, useState } from "react";
+import PageWrapper from "../components/layout/PageWrapper";
+import { PageHeader } from "../components/brand/PageHeader";
+import { BrandStatStrip } from "../components/brand/BrandStatStrip";
+import ComplaintsFilters from "../components/complaints/ComplaintsFilters";
+import ComplaintsTable from "../components/complaints/ComplaintsTable";
+import ComplaintCard from "../components/complaints/ComplaintCard";
+import ComplaintDrawer from "../components/complaints/ComplaintDrawer";
+import { COMPLAINTS } from "../data/complaintsData";
+
 export default function ComplaintsPage() {
   const [complaints, setComplaints] = useState(COMPLAINTS);
-  const [search,     setSearch]     = useState("");
-  const [source,     setSource]     = useState("All");
-  const [priority,   setPriority]   = useState("All");
-  const [status,     setStatus]     = useState("All");
-  const [selected,   setSelected]   = useState(null);
+  const [search, setSearch] = useState("");
+  const [source, setSource] = useState("All");
+  const [priority, setPriority] = useState("All");
+  const [status, setStatus] = useState("All");
+  const [selected, setSelected] = useState(null);
 
   const filtered = useMemo(() => {
-    const q = search.toLowerCase();
-    return complaints.filter(c => {
+    const query = search.toLowerCase();
+    return complaints.filter((complaint) => {
       const matchSearch =
         !search ||
-        c.id.toLowerCase().includes(q) ||
-        c.subject.toLowerCase().includes(q) ||
-        c.type.toLowerCase().includes(q) ||
-        c.reportedBy.name.toLowerCase().includes(q) ||
-        c.area.toLowerCase().includes(q);
-      const matchSource   = source   === "All" || c.source   === source;
-      const matchPriority = priority === "All" || c.priority === priority;
-      const matchStatus   = status   === "All" || c.status   === status;
+        complaint.id.toLowerCase().includes(query) ||
+        complaint.subject.toLowerCase().includes(query) ||
+        complaint.type.toLowerCase().includes(query) ||
+        complaint.reportedBy.name.toLowerCase().includes(query) ||
+        complaint.area.toLowerCase().includes(query);
+      const matchSource = source === "All" || complaint.source === source;
+      const matchPriority = priority === "All" || complaint.priority === priority;
+      const matchStatus = status === "All" || complaint.status === status;
       return matchSearch && matchSource && matchPriority && matchStatus;
     });
   }, [search, source, priority, status, complaints]);
 
   const handleReset = () => {
-    setSearch(""); setSource("All"); setPriority("All"); setStatus("All");
+    setSearch("");
+    setSource("All");
+    setPriority("All");
+    setStatus("All");
   };
 
   const handleUpdate = (updated) => {
-    setComplaints(prev => prev.map(c => c.id === updated.id ? updated : c));
+    setComplaints((prev) =>
+      prev.map((complaint) => (complaint.id === updated.id ? updated : complaint)),
+    );
     setSelected(updated);
   };
 
+  const open = complaints.filter((complaint) => complaint.status === "Open").length;
+  const inProgress = complaints.filter((complaint) => complaint.status === "In Progress").length;
+  const resolved = complaints.filter((complaint) => complaint.status === "Resolved").length;
+  const critical = complaints.filter((complaint) => complaint.priority === "Critical").length;
+
   return (
     <PageWrapper>
-      <style>{css}</style>
+      <PageHeader
+        kicker="Support Desk"
+        title="Complaints"
+        subtitle="Resolve customer, vendor and delivery-partner issues before they escalate"
+        actions={
+          <span className="rounded-2xl border-2 border-secondary-950 bg-accent-400 px-4 py-2 text-xs font-display font-black uppercase tracking-widest text-secondary-900">
+            {complaints.length} total
+          </span>
+        }
+      />
 
-      {/* Header */}
-      <div className="cp-header">
-        <div>
-          <h1 className="cp-title">Complaints</h1>
-          <p className="cp-sub">Manage and resolve all complaints from customers, vendors and delivery partners</p>
-        </div>
-      </div>
+      <BrandStatStrip
+        items={[
+          { label: "Total", value: complaints.length, tone: "primary" },
+          { label: "Open", value: open, tone: "danger" },
+          { label: "In Progress", value: inProgress, tone: "accent" },
+          { label: "Resolved", value: resolved, tone: "fresh" },
+          { label: "Critical", value: critical, tone: "danger" },
+          { label: "Escalated", value: complaints.filter((c) => c.status === "Escalated").length, tone: "danger" },
+        ]}
+      />
 
-      {/* Stats */}
-      <ComplaintsStatsBar />
-
-      {/* Filters */}
       <ComplaintsFilters
-        search={search}     onSearch={setSearch}
-        source={source}     onSource={setSource}
-        priority={priority} onPriority={setPriority}
-        status={status}     onStatus={setStatus}
+        search={search}
+        onSearch={setSearch}
+        source={source}
+        onSource={setSource}
+        priority={priority}
+        onPriority={setPriority}
+        status={status}
+        onStatus={setStatus}
         total={filtered.length}
         onReset={handleReset}
       />
 
-      {/* Desktop table */}
-      <div className="cp-desktop">
+      <div className="hidden md:block">
         <ComplaintsTable complaints={filtered} onView={setSelected} />
       </div>
 
-      {/* Mobile cards */}
-      <div className="cp-mobile">
+      <div className="md:hidden">
         {filtered.length === 0 ? (
-          <div className="cp-empty">
-            <span style={{ fontSize: "2.5rem" }}>✅</span>
-            <p>No complaints found</p>
+          <div className="flex flex-col items-center justify-center gap-2 rounded-3xl border-2 border-dashed border-secondary-300 px-4 py-14 text-secondary-500">
+            <span className="text-4xl">✅</span>
+            <p className="text-sm font-semibold">No complaints found</p>
           </div>
         ) : (
-          <div className="cp-card-list">
-            {filtered.map(c => (
-              <ComplaintCard key={c.id} complaint={c} onView={setSelected} />
+          <div className="flex flex-col gap-3">
+            {filtered.map((complaint) => (
+              <ComplaintCard
+                key={complaint.id}
+                complaint={complaint}
+                onView={setSelected}
+              />
             ))}
           </div>
         )}
       </div>
 
-      {/* Drawer */}
       <ComplaintDrawer
         complaint={selected}
         onClose={() => setSelected(null)}
@@ -105,30 +123,4 @@ export default function ComplaintsPage() {
   );
 }
 
-const css = `
-  .cp-header {
-    display: flex; justify-content: space-between;
-    align-items: flex-start; margin-bottom: 1.2rem;
-    flex-wrap: wrap; gap: 10px;
-  }
-  .cp-title {
-    font-family: 'Sora', sans-serif;
-    font-size: clamp(1.2rem, 3vw, 1.5rem);
-    font-weight: 800; color: #2d241e;
-    letter-spacing: -0.02em; margin: 0;
-  }
-  .cp-sub { font-size: 0.82rem; color: #a68b66; margin-top: 3px; }
-  .cp-desktop { display: block; }
-  .cp-mobile  { display: none; }
-  .cp-card-list { display: flex; flex-direction: column; gap: 10px; }
-  .cp-empty {
-    display: flex; flex-direction: column;
-    align-items: center; justify-content: center;
-    gap: 10px; padding: 4rem 1rem;
-    color: #a68b66; font-size: 0.88rem;
-  }
-  @media (max-width: 768px) {
-    .cp-desktop { display: none; }
-    .cp-mobile  { display: block; }
-  }
-`;
+

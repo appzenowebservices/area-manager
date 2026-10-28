@@ -74,6 +74,9 @@ const useAuthStore = create(
 
       clearError: () => set({ loginError: null }),
 
+      updateUser: (partial) =>
+        set((state) => ({ user: { ...(state.user || {}), ...partial } })),
+
       // Check lock status (call on mount)
       refreshLockStatus: () => {
         const lockStatus = checkLoginLock();

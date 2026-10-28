@@ -78,19 +78,19 @@ export default function StatCard({
 const css = `
   .sc-card {
     background: #fff;
-    border: 1px solid #e9d8bf;
-    border-radius: 16px;
+    border: 2px solid #2d241e;
+    border-radius: 24px;
     padding: 1.2rem 1.3rem;
     display: flex;
     flex-direction: column;
     gap: 10px;
-    box-shadow: 0 1px 4px rgba(45, 36, 30,0.05);
+    box-shadow: 6px 6px 0px #2d241e;
     animation: scIn 0.45s cubic-bezier(0.22,1,0.36,1) both;
     transition: box-shadow 0.2s, transform 0.2s;
   }
   .sc-card:hover {
-    box-shadow: 0 6px 20px rgba(12, 131, 31,0.1);
-    transform: translateY(-2px);
+    box-shadow: 4px 4px 0px #2d241e;
+    transform: translate(-1px, -1px);
   }
   @keyframes scIn {
     from { opacity: 0; transform: translateY(18px); }
@@ -102,22 +102,24 @@ const css = `
     align-items: flex-start;
   }
   .sc-label {
-    font-size: 0.78rem;
-    font-weight: 600;
+    font-size: 0.7rem;
+    font-weight: 800;
     color: #7d6b5d;
     text-transform: uppercase;
-    letter-spacing: 0.06em;
+    letter-spacing: 0.12em;
+    max-width: 65%;
   }
   .sc-icon-wrap {
-    width: 40px; height: 40px;
-    border-radius: 12px;
+    width: 44px; height: 44px;
+    border-radius: 16px;
+    border: 2px solid #2d241e;
     display: flex;
     align-items: center;
     justify-content: center;
     flex-shrink: 0;
   }
   .sc-value {
-    font-family: 'Sora', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: clamp(1.5rem, 3vw, 1.9rem);
     font-weight: 800;
     color: #2d241e;
@@ -142,13 +144,15 @@ const css = `
     display: inline-flex;
     align-items: center;
     gap: 3px;
-    padding: 2px 8px;
+    padding: 3px 9px;
     border-radius: 99px;
-    font-size: 0.75rem;
-    font-weight: 700;
+    border: 1px solid rgba(45,36,30,0.18);
+    font-size: 0.7rem;
+    font-weight: 800;
   }
   .sc-trend-label {
-    font-size: 0.73rem;
+    font-size: 0.7rem;
     color: #a68b66;
+    font-weight: 600;
   }
 `;

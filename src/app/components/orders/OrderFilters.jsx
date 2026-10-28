@@ -1,124 +1,98 @@
+import { Search, X } from "lucide-react";
+import { BrandCard } from "../brand/BrandCard";
 import { ORDER_STATUSES } from "../../data/ordersData";
 
-/**
- * OrderFilters
- * File: src/components/orders/OrderFilters.jsx
- *
- * Props:
- *  search, onSearch
- *  status, onStatus
- *  area, onArea, areas[]
- *  dateFrom, onDateFrom
- *  dateTo, onDateTo
- *  total (filtered count)
- *  onReset
- */
-
-const SearchIcon = () => (
-  <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-    <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
-  </svg>
-);
+const fieldCls =
+  "h-11 rounded-2xl border-2 border-secondary-200 bg-secondary-50 px-3 text-sm font-bold text-secondary-800 outline-none transition-colors focus:border-primary-600";
 
 export default function OrderFilters({
-  search, onSearch,
-  status, onStatus,
-  area, onArea, areas,
-  dateFrom, onDateFrom,
-  dateTo, onDateTo,
+  search,
+  onSearch,
+  status,
+  onStatus,
+  area,
+  onArea,
+  areas,
+  dateFrom,
+  onDateFrom,
+  dateTo,
+  onDateTo,
   total,
   onReset,
 }) {
-  const hasFilters = search || status !== "All" || area !== "All" || dateFrom || dateTo;
+  const hasFilters =
+    search || status !== "All" || area !== "All" || dateFrom || dateTo;
 
   return (
-    <>
-      <style>{css}</style>
-      <div className="of-wrap">
-        {/* Row 1: search + dropdowns */}
-        <div className="of-row">
-          {/* Search */}
-          <div className="of-search-wrap">
-            <span className="of-search-icon"><SearchIcon /></span>
-            <input
-              className="of-search"
-              type="text"
-              placeholder="Search order ID, customer name, phone..."
-              value={search}
-              onChange={e => onSearch(e.target.value)}
-            />
-            {search && (
-              <button className="of-clear-btn" onClick={() => onSearch("")}>✕</button>
-            )}
-          </div>
-
-          {/* Status dropdown */}
-          <select className="of-select" value={status} onChange={e => onStatus(e.target.value)}>
-            {ORDER_STATUSES.map(s => (
-              <option key={s} value={s}>{s === "All" ? "All Statuses" : s}</option>
-            ))}
-          </select>
-
-          {/* Area dropdown */}
-          <select className="of-select" value={area} onChange={e => onArea(e.target.value)}>
-            <option value="All">All Areas</option>
-            {areas.map(a => <option key={a} value={a}>{a}</option>)}
-          </select>
-
-          {/* Date from */}
+    <BrandCard className="p-4">
+      <div className="flex flex-wrap items-center gap-2.5">
+        <div className="relative min-w-52 flex-1">
+          <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-secondary-400" />
           <input
-            className="of-date"
-            type="date"
-            value={dateFrom}
-            onChange={e => onDateFrom(e.target.value)}
-            title="From date"
+            type="text"
+            placeholder="Search order ID, customer, phone…"
+            value={search}
+            onChange={(event) => onSearch(event.target.value)}
+            className="h-11 w-full rounded-2xl border-2 border-secondary-200 bg-secondary-50 pl-10 pr-9 text-sm font-semibold text-secondary-900 outline-none transition-colors placeholder:text-text-muted focus:border-primary-600 focus:bg-background-section"
           />
-
-          {/* Date to */}
-          <input
-            className="of-date"
-            type="date"
-            value={dateTo}
-            onChange={e => onDateTo(e.target.value)}
-            title="To date"
-          />
-        </div>
-
-        {/* Row 2: result count + reset */}
-        <div className="of-meta-row">
-          <span className="of-count">
-            Showing <strong>{total}</strong> order{total !== 1 ? "s" : ""}
-          </span>
-          {hasFilters && (
-            <button className="of-reset" onClick={onReset}>
-              ✕ Clear filters
+          {search && (
+            <button
+              onClick={() => onSearch("")}
+              aria-label="Clear search"
+              className="absolute right-3 top-1/2 -translate-y-1/2 text-secondary-400 hover:text-primary-600"
+            >
+              <X className="h-4 w-4" />
             </button>
           )}
         </div>
+
+        <select className={fieldCls} value={status} onChange={(event) => onStatus(event.target.value)}>
+          {ORDER_STATUSES.map((value) => (
+            <option key={value} value={value}>
+              {value === "All" ? "All Statuses" : value}
+            </option>
+          ))}
+        </select>
+
+        <select className={fieldCls} value={area} onChange={(event) => onArea(event.target.value)}>
+          <option value="All">All Areas</option>
+          {areas.map((value) => (
+            <option key={value} value={value}>
+              {value}
+            </option>
+          ))}
+        </select>
+
+        <input
+          className={fieldCls}
+          type="date"
+          value={dateFrom}
+          onChange={(event) => onDateFrom(event.target.value)}
+          title="From date"
+        />
+        <input
+          className={fieldCls}
+          type="date"
+          value={dateTo}
+          onChange={(event) => onDateTo(event.target.value)}
+          title="To date"
+        />
       </div>
-    </>
+
+      <div className="flex items-center justify-between gap-3 pt-1">
+        <span className="text-xs font-bold text-secondary-600">
+          Showing <strong className="text-primary-600">{total}</strong> order
+          {total !== 1 ? "s" : ""}
+        </span>
+        {hasFilters && (
+          <button
+            onClick={onReset}
+            className="text-xs font-black text-primary-600 hover:underline"
+          >
+            ✕ Clear filters
+          </button>
+        )}
+      </div>
+    </BrandCard>
   );
 }
-
-const css = `
-  .of-wrap { background:#fff; border:1px solid #e9d8bf; border-radius:14px; padding:1rem 1.1rem; margin-bottom:1.1rem; display:flex; flex-direction:column; gap:10px; }
-  .of-row { display:flex; gap:8px; flex-wrap:wrap; align-items:center; }
-  .of-search-wrap { display:flex; align-items:center; flex:1; min-width:200px; position:relative; background:#fdfbf7; border:1.5px solid #e9d8bf; border-radius:10px; padding:0 0.75rem; transition:border-color 0.2s; }
-  .of-search-wrap:focus-within { border-color:#ae2012; box-shadow:0 0 0 3px rgba(12, 131, 31,0.1); }
-  .of-search-icon { color:#a68b66; display:flex; align-items:center; flex-shrink:0; }
-  .of-search { flex:1; height:40px; border:none; outline:none; background:transparent; font-size:0.85rem; color:#2d241e; font-family:inherit; padding:0 8px; }
-  .of-search::placeholder { color:#bbb; }
-  .of-clear-btn { background:none; border:none; color:#a68b66; cursor:pointer; font-size:0.8rem; padding:2px 4px; }
-  .of-select { height:42px; padding:0 0.75rem; border:1.5px solid #e9d8bf; border-radius:10px; background:#fdfbf7; font-size:0.84rem; color:#4a3f35; font-family:inherit; outline:none; cursor:pointer; transition:border-color 0.2s; min-width:130px; }
-  .of-select:focus { border-color:#ae2012; }
-  .of-date { height:42px; padding:0 0.75rem; border:1.5px solid #e9d8bf; border-radius:10px; background:#fdfbf7; font-size:0.82rem; color:#4a3f35; font-family:inherit; outline:none; cursor:pointer; transition:border-color 0.2s; }
-  .of-date:focus { border-color:#ae2012; }
-  .of-meta-row { display:flex; justify-content:space-between; align-items:center; }
-  .of-count { font-size:0.8rem; color:#7d6b5d; }
-  .of-count strong { color:#ae2012; }
-  .of-reset { background:none; border:none; color:#d32f2f; font-size:0.78rem; font-weight:600; cursor:pointer; font-family:inherit; padding:0; }
-  @media (max-width:680px) {
-    .of-search-wrap { min-width:100%; }
-    .of-select, .of-date { flex:1; min-width:120px; }
-  }
-`;

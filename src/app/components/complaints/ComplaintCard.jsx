@@ -1,101 +1,51 @@
-import ComplaintSourceBadge   from "./ComplaintSourceBadge";
+import { Eye } from "lucide-react";
+import ComplaintSourceBadge from "./ComplaintSourceBadge";
 import ComplaintPriorityBadge from "./ComplaintPriorityBadge";
-import ComplaintStatusBadge   from "./ComplaintStatusBadge";
+import ComplaintStatusBadge from "./ComplaintStatusBadge";
 
-/**
- * ComplaintCard
- * File: src/components/complaints/ComplaintCard.jsx
- *
- * Props: complaint, onView fn(complaint)
- */
-export default function ComplaintCard({ complaint: c, onView }) {
+export default function ComplaintCard({ complaint, onView }) {
   return (
-    <>
-      <style>{css}</style>
-      <div className="cc-card">
-        {/* Top row */}
-        <div className="cc-top">
-          <span className="cc-id">{c.id}</span>
-          <ComplaintStatusBadge status={c.status} size="sm" />
-        </div>
-
-        {/* Subject */}
-        <div className="cc-subject">{c.subject}</div>
-
-        {/* Badges row */}
-        <div className="cc-badges">
-          <ComplaintSourceBadge source={c.source} size="sm" />
-          <ComplaintPriorityBadge priority={c.priority} size="sm" />
-        </div>
-
-        <div className="cc-divider" />
-
-        {/* Info grid */}
-        <div className="cc-info-grid">
-          <div className="cc-info">
-            <span className="cc-info-label">Type</span>
-            <span className="cc-info-val">{c.type}</span>
-          </div>
-          <div className="cc-info">
-            <span className="cc-info-label">Reported By</span>
-            <span className="cc-info-val">{c.reportedBy.name}</span>
-          </div>
-          <div className="cc-info">
-            <span className="cc-info-label">Area</span>
-            <span className="cc-info-val">📍 {c.area}</span>
-          </div>
-          <div className="cc-info">
-            <span className="cc-info-label">Date</span>
-            <span className="cc-info-val">{c.createdDate}</span>
-          </div>
-          <div className="cc-info">
-            <span className="cc-info-label">Timeline</span>
-            <span className="cc-info-val">🕐 {c.timeline.length} updates</span>
-          </div>
-          <div className="cc-info">
-            <span className="cc-info-label">Ref</span>
-            <span className="cc-info-val">{c.reportedBy.ref}</span>
-          </div>
-        </div>
-
-        <button className="cc-btn" onClick={() => onView(c)}>
-          View Full Details →
-        </button>
+    <div className="rounded-3xl border-2 border-secondary-900 bg-background-section p-4 shadow-[5px_5px_0px_var(--color-secondary-900)]">
+      <div className="flex items-center justify-between gap-2">
+        <span className="font-display text-xs font-black text-primary-600">
+          {complaint.id}
+        </span>
+        <ComplaintStatusBadge status={complaint.status} size="sm" />
       </div>
-    </>
+
+      <p className="mt-2 text-sm font-bold text-secondary-900">{complaint.subject}</p>
+
+      <div className="mt-2 flex flex-wrap gap-2">
+        <ComplaintSourceBadge source={complaint.source} size="sm" />
+        <ComplaintPriorityBadge priority={complaint.priority} size="sm" />
+      </div>
+
+      <div className="my-3 h-px bg-secondary-100" />
+
+      <div className="grid grid-cols-3 gap-2">
+        {[
+          { label: "Type", value: complaint.type },
+          { label: "Reported By", value: complaint.reportedBy.name },
+          { label: "Area", value: `📍 ${complaint.area}` },
+          { label: "Date", value: complaint.createdDate },
+          { label: "Timeline", value: `🕐 ${complaint.timeline.length}` },
+          { label: "Ref", value: complaint.reportedBy.ref },
+        ].map((item) => (
+          <div key={item.label}>
+            <p className="text-[9px] font-black uppercase tracking-widest text-secondary-400">
+              {item.label}
+            </p>
+            <p className="truncate text-xs font-bold text-secondary-700">{item.value}</p>
+          </div>
+        ))}
+      </div>
+
+      <button
+        onClick={() => onView(complaint)}
+        className="mt-4 inline-flex w-full items-center justify-center gap-2 rounded-2xl border-2 border-secondary-900 bg-secondary-50 px-4 py-2.5 text-xs font-black text-primary-600 transition-colors hover:bg-accent-400"
+      >
+        <Eye className="h-4 w-4" /> View Full Details →
+      </button>
+    </div>
   );
 }
-
-const css = `
-  .cc-card {
-    background: #fff; border: 1px solid #e9d8bf;
-    border-radius: 14px; padding: 1rem 1.1rem;
-    box-shadow: 0 1px 4px rgba(45, 36, 30,0.04);
-    transition: box-shadow 0.18s;
-  }
-  .cc-card:hover { box-shadow: 0 4px 14px rgba(12, 131, 31,0.1); }
-  .cc-top { display: flex; justify-content: space-between; align-items: center; margin-bottom: 6px; }
-  .cc-id { font-family: 'Sora', sans-serif; font-size: 0.82rem; font-weight: 700; color: #ae2012; }
-  .cc-subject { font-size: 0.9rem; font-weight: 700; color: #2d241e; margin-bottom: 8px; line-height: 1.3; }
-  .cc-badges { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 4px; }
-  .cc-divider { height: 1px; background: #f5ebe0; margin: 10px 0; }
-  .cc-info-grid {
-    display: grid; grid-template-columns: repeat(3, minmax(0,1fr));
-    gap: 8px 10px; margin-bottom: 10px;
-  }
-  .cc-info { display: flex; flex-direction: column; gap: 2px; }
-  .cc-info-label { font-size: 0.62rem; color: #a68b66; font-weight: 700; text-transform: uppercase; letter-spacing: 0.04em; }
-  .cc-info-val { font-size: 0.78rem; color: #4a3f35; font-weight: 600; }
-  .cc-btn {
-    width: 100%; padding: 0.6rem;
-    background: #fdfbf7; color: #ae2012;
-    border: none; border-radius: 9px;
-    font-size: 0.83rem; font-weight: 700;
-    font-family: inherit; cursor: pointer;
-    transition: background 0.15s;
-  }
-  .cc-btn:hover { background: #f5ebe0; }
-  @media (max-width: 360px) {
-    .cc-info-grid { grid-template-columns: repeat(2, minmax(0,1fr)); }
-  }
-`;

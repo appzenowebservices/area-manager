@@ -46,11 +46,13 @@ const css = `
   .csb-chip {
     display: flex; flex-direction: column;
     align-items: center; gap: 2px;
-    padding: 0.5rem 0.85rem;
-    border-radius: 12px; flex: 1; min-width: 68px;
+    padding: 0.6rem 0.85rem;
+    border-radius: 16px; flex: 1; min-width: 68px;
+    border: 2px solid #2d241e;
+    box-shadow: 3px 3px 0px #2d241e;
   }
   .csb-val {
-    font-family: 'Sora', sans-serif;
+    font-family: 'Poppins', sans-serif;
     font-size: 1.15rem; font-weight: 800; line-height: 1;
   }
   .csb-label {

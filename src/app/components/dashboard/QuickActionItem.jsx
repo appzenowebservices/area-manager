@@ -1,95 +1,37 @@
-/**
- * QuickActionItem
- * File: src/components/dashboard/QuickActionItem.jsx
- *
- * Single action card button.
- * Props:
- *   emoji   string
- *   label   string
- *   desc    string
- *   bg      string  (icon bg color)
- *   color   string  (hover border + icon color)
- *   onClick fn
- */
-export default function QuickActionItem({ emoji, label, desc, bg, color, onClick }) {
+const TONES = {
+  primary: "bg-primary-50",
+  fresh: "bg-fresh-50",
+  accent: "bg-accent-50",
+  mehndi: "bg-mehndi-50",
+  danger: "bg-primary-50",
+  neutral: "bg-secondary-50",
+};
+
+export default function QuickActionItem({
+  emoji,
+  label,
+  desc,
+  tone = "neutral",
+  onClick,
+}) {
   return (
-    <>
-      <style>{css}</style>
-      <button
-        className="qai-btn"
-        onClick={onClick}
-        style={{ "--qai-hover-bg": bg, "--qai-color": color }}
+    <button
+      onClick={onClick}
+      className="flex w-full items-center gap-3 rounded-2xl border-2 border-secondary-900 bg-background-section p-3 text-left shadow-[3px_3px_0px_var(--color-secondary-900)] transition-all hover:-translate-y-0.5 hover:bg-accent-50 active:translate-y-0 active:shadow-none"
+    >
+      <span
+        className={`flex h-9 w-9 shrink-0 items-center justify-center rounded-xl border-2 border-secondary-900 text-base ${TONES[tone]}`}
       >
-        <span className="qai-icon" style={{ background: bg }}>
-          {emoji}
+        {emoji}
+      </span>
+      <span className="min-w-0">
+        <span className="block truncate text-xs font-black text-secondary-900">
+          {label}
         </span>
-        <span className="qai-text">
-          <span className="qai-label">{label}</span>
-          <span className="qai-desc">{desc}</span>
+        <span className="block truncate text-[10px] font-semibold text-secondary-500">
+          {desc}
         </span>
-      </button>
-    </>
+      </span>
+    </button>
   );
 }
-
-const css = `
-  .qai-btn {
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    width: 100%;
-    padding: 0.7rem 0.8rem;
-    background: #fdfbf7;
-    border: 1.5px solid #e9d8bf;
-    border-radius: 12px;
-    cursor: pointer;
-    font-family: inherit;
-    text-align: left;
-    transition: background 0.18s, border-color 0.18s, transform 0.15s, box-shadow 0.18s;
-    min-width: 0;
-    box-sizing: border-box;
-  }
-  .qai-btn:hover {
-    background: var(--qai-hover-bg);
-    border-color: var(--qai-color);
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0,0,0,0.07);
-  }
-  .qai-btn:active {
-    transform: translateY(0);
-  }
-  .qai-icon {
-    width: 34px;
-    height: 34px;
-    border-radius: 9px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 1rem;
-    flex-shrink: 0;
-  }
-  .qai-text {
-    display: flex;
-    flex-direction: column;
-    gap: 1px;
-    min-width: 0;
-    overflow: hidden;
-  }
-  .qai-label {
-    font-size: 0.78rem;
-    font-weight: 700;
-    color: #2d241e;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: block;
-  }
-  .qai-desc {
-    font-size: 0.67rem;
-    color: #a68b66;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    display: block;
-  }
-`;
