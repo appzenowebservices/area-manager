@@ -9,7 +9,6 @@ import {
   ShoppingBag,
   Store,
   Bike,
-  Users,
   IndianRupee,
   FileText,
   AlertTriangle,
@@ -38,8 +37,6 @@ const menuItems = [
   {
     group: "Growth",
     items: [
-      { label: "Vendor Leads", href: "/leads/vendors", icon: Users, badgeKey: "leads" },
-      { label: "Delivery Leads", href: "/leads", icon: Bike },
       { label: "Earnings", href: "/earnings", icon: IndianRupee },
       { label: "Reports", href: "/reports", icon: FileText },
     ],
