@@ -69,7 +69,7 @@ export default function AreaManagerSidebar() {
   }, [pathname]);
 
   const name = user?.name || "Area Manager";
-  const businessName = "Area Manager Console";
+  const businessName = "AM Panel";
 
   const confirmLogout = async () => {
     setLoggingOut(true);

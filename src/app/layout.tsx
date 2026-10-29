@@ -13,8 +13,8 @@ import { SessionProvider } from 'next-auth/react';
 
 export const metadata: Metadata = {
   title: {
-    default: "Apni Desi Dukaan",
-    template: "%s | Apni Desi Dukaan",
+    default: "AM Panel",
+    template: "%s | AM Panel",
   },
   description:
     "Apni Desi Dukaan – Apni ghar ki dukaan, sab kuch milega yahan. Order groceries, medicines, daily essentials, food and more from your trusted local vendors, delivered fast to your doorstep.",
