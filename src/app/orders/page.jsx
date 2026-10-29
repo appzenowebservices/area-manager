@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PageWrapper from "../components/layout/PageWrapper";
 import { PageHeader } from "../components/brand/PageHeader";
 import { BrandStatStrip } from "../components/brand/BrandStatStrip";
@@ -8,16 +8,23 @@ import OrderFilters from "../components/orders/OrderFilters";
 import OrdersTable from "../components/orders/OrdersTable";
 import OrderCard from "../components/orders/OrderCard";
 import OrderDrawer from "../components/orders/OrderDrawer";
-import { ORDERS } from "../data/ordersData";
+import { api } from "~/trpc/react";
 
 export default function OrdersPage() {
+  const { data: apiOrders, isLoading, error } = api.areaManagerData.orders.list.useQuery();
+  const updateStatus = api.areaManagerData.orders.updateStatus.useMutation();
+  const utils = api.useUtils();
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("All");
   const [dateFrom, setDateFrom] = useState("");
   const [dateTo, setDateTo] = useState("");
   const [area, setArea] = useState("All");
   const [selectedOrder, setSelectedOrder] = useState(null);
-  const [orders, setOrders] = useState(ORDERS);
+  const [orders, setOrders] = useState([]);
+
+  useEffect(() => {
+    if (apiOrders) setOrders(apiOrders);
+  }, [apiOrders]);
 
   const areas = useMemo(
     () => [...new Set(orders.map((order) => order.area))].sort(),
@@ -53,6 +60,21 @@ export default function OrdersPage() {
       prev.map((order) => (order.id === updated.id ? updated : order)),
     );
     setSelectedOrder(updated);
+
+    const rawStatus =
+      {
+        Pending: "created",
+        Processing: "preparing",
+        Delivered: "delivered",
+        Cancelled: "cancelled",
+      }[updated.status] ?? updated.rawStatus;
+
+    if (rawStatus && updated.dbId) {
+      updateStatus.mutate(
+        { id: updated.dbId, status: rawStatus },
+        { onSuccess: () => utils.areaManagerData.orders.list.invalidate() },
+      );
+    }
   };
 
   const counts = {

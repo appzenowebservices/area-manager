@@ -1,6 +1,7 @@
 import { createHash, createHmac } from "node:crypto";
 import bcrypt from "bcryptjs";
 import { db } from "~/server/db";
+import { logManagerAction } from "~/server/api/areaManagerScope";
 
 /**
  * Area-manager auth, owned by this app (same architecture as the vendor
@@ -204,6 +205,8 @@ export async function login(input: {
   if (!matches) {
     return { ok: false, status: 401, code: "invalid_credentials", message: "Invalid email or password." };
   }
+
+  await logManagerAction(manager.id, "LOGIN", "Area manager signed in");
 
   return {
     ok: true,

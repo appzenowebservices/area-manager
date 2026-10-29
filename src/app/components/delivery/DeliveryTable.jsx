@@ -1,6 +1,5 @@
 import { Eye, Star } from "lucide-react";
 import { BrandBadge } from "../brand/BrandBadge";
-import { getDeliveryStats } from "../../data/deliveryData";
 
 const statusTone = (status) => {
   const value = String(status).toLowerCase();
@@ -47,7 +46,11 @@ export default function DeliveryTable({ partners, onView }) {
               </tr>
             ) : (
               partners.map((partner) => {
-                const stats = getDeliveryStats(partner.id);
+                const stats = partner.stats ?? {
+                  delivered: partner.totalDeliveries ?? 0,
+                  pending: 0,
+                  revenue: 0,
+                };
                 return (
                   <tr key={partner.id} className="transition-colors hover:bg-secondary-50">
                     <td className="whitespace-nowrap px-4 py-3">

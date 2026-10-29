@@ -4,10 +4,14 @@ import { useEffect, useState } from "react";
 import Link from "next/link";
 import { Bell, Search, User, Calendar } from "lucide-react";
 import useAuthStore from "../../hooks/authStore";
+import { api } from "~/trpc/react";
 
 export default function AreaManagerHeader() {
   const [currentTime, setCurrentTime] = useState(new Date());
   const user = useAuthStore((state) => state.user);
+  const { data: badges } = api.areaManagerData.badges.useQuery(undefined, {
+    refetchInterval: 60_000,
+  });
 
   useEffect(() => {
     const timer = setInterval(() => setCurrentTime(new Date()), 1000);
@@ -65,9 +69,11 @@ export default function AreaManagerHeader() {
             className="relative w-10 h-10 flex items-center justify-center bg-background-section border-2 border-secondary-900 rounded-2xl text-secondary-900 hover:bg-accent-400 transition-colors shadow-[3px_3px_0px_var(--color-secondary-900)]"
           >
             <Bell className="h-5 w-5" />
-            <span className="absolute -top-2 -right-2 bg-primary-600 text-white text-[10px] font-black min-w-5 h-5 px-1 rounded-full flex items-center justify-center border-2 border-secondary-900">
-              3
-            </span>
+            {(badges?.complaints ?? 0) > 0 && (
+              <span className="absolute -top-2 -right-2 bg-primary-600 text-white text-[10px] font-black min-w-5 h-5 px-1 rounded-full flex items-center justify-center border-2 border-secondary-900">
+                {(badges?.complaints ?? 0) > 9 ? "9+" : badges?.complaints}
+              </span>
+            )}
           </Link>
 
           <Link

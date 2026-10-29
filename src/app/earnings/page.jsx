@@ -1,26 +1,42 @@
 'use client';
-import { useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PageWrapper from "../components/layout/PageWrapper";
 import { PageHeader } from "../components/brand/PageHeader";
 import WithdrawalModal from "../components/earnings/WithdrawalModal";
-import {
-  buildOrderEarnings, buildEarningsSummary,
-  PAYOUT_HISTORY, getCurrentMonthPayouts, MAX_PAYOUTS_PER_MONTH,
-} from "../data/earningsData";
+import { api } from "~/trpc/react";
+
+const MAX_PAYOUTS_PER_MONTH = 2;
 
 export default function EarningsPage() {
-  const [payouts, setPayouts] = useState(PAYOUT_HISTORY);
+  const { data, isLoading, error } = api.areaManagerData.earnings.summary.useQuery();
+  const [payouts, setPayouts] = useState([]);
   const [showModal, setShowModal] = useState(false);
   const [activeTab, setActiveTab] = useState("orders"); // "orders" | "vendors" | "payouts"
   const [orderFilter, setOrderFilter] = useState("All");
   const [successMsg, setSuccessMsg] = useState("");
 
-  const orderEarnings = useMemo(() => buildOrderEarnings(), []);
-  const summary = useMemo(() => buildEarningsSummary(orderEarnings), [orderEarnings]);
+  const orderEarnings = data?.orderEarnings ?? [];
+  const summary = data?.summary ?? {
+    totalLifetime: 0,
+    totalPaidOut: 0,
+    pendingPayout: 0,
+    availableBalance: 0,
+    thisMonthEarnings: 0,
+    thisWeekEarnings: 0,
+    vendorBreakdown: [],
+    orderCount: 0,
+  };
 
-  const usedThisMonth = useMemo(() => 
-    getCurrentMonthPayouts().filter(p => p.status === "Paid" || p.status === "Pending").length, 
-    [payouts]
+  useEffect(() => {
+    if (data?.payouts) setPayouts(data.payouts);
+  }, [data]);
+
+  const usedThisMonth = useMemo(
+    () =>
+      payouts.filter(
+        (payout) => payout.status === "Paid" || payout.status === "Pending",
+      ).length,
+    [payouts],
   );
   
   const canWithdraw = summary.availableBalance >= 100 && usedThisMonth < MAX_PAYOUTS_PER_MONTH;
@@ -51,7 +67,7 @@ export default function EarningsPage() {
     setTimeout(() => setSuccessMsg(""), 5000);
   };
 
-  const maxVendorEarned = Math.max(...summary.vendorBreakdown.map(v => v.earned));
+  const maxVendorEarned = Math.max(1, ...summary.vendorBreakdown.map((vendor) => vendor.earned));
 
   return (
     <PageWrapper>

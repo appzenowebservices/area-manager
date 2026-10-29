@@ -9,6 +9,7 @@ import {
   PERIODS, buildOrdersReport, buildRevenueReport,
   buildVendorReport, buildDeliveryReport, exportCSV,
 } from "../data/reportsData";
+import { api } from "~/trpc/react";
 
 // ─── Section tabs ─────────────────────────────────────────────────────────────
 const SECTIONS = [
@@ -23,10 +24,13 @@ export default function ReportsPage() {
   const [section, setSection] = useState("orders");
   const printRef = useRef(null);
 
-  const ordersReport   = useMemo(() => buildOrdersReport(period),   [period]);
-  const revenueReport  = useMemo(() => buildRevenueReport(period),  [period]);
-  const vendorReport   = useMemo(() => buildVendorReport(period),   [period]);
-  const deliveryReport = useMemo(() => buildDeliveryReport(period), [period]);
+  const { data: apiOrders = [], isLoading, error } = api.areaManagerData.orders.list.useQuery();
+  const { data: apiVendors = [] } = api.areaManagerData.vendors.list.useQuery();
+
+  const ordersReport   = useMemo(() => buildOrdersReport(period, apiOrders),   [period, apiOrders]);
+  const revenueReport  = useMemo(() => buildRevenueReport(period, apiOrders),  [period, apiOrders]);
+  const vendorReport   = useMemo(() => buildVendorReport(period, apiOrders, apiVendors), [period, apiOrders, apiVendors]);
+  const deliveryReport = useMemo(() => buildDeliveryReport(period, apiOrders), [period, apiOrders]);
 
   const periodLabel = PERIODS.find(p => p.key === period)?.label || "";
 

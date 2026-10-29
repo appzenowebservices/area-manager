@@ -1,6 +1,7 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import useAuthStore from "../../hooks/authStore";
 import { SettingsCard, FormField, SaveBar, inputCss } from "./SettingsUI";
+import { api } from "~/trpc/react";
 
 /**
  * ProfileSection
@@ -8,6 +9,9 @@ import { SettingsCard, FormField, SaveBar, inputCss } from "./SettingsUI";
  */
 export default function ProfileSection() {
   const { user, updateUser } = useAuthStore();
+  const { data: profile } = api.areaManagerData.profile.get.useQuery();
+  const updateProfile = api.areaManagerData.profile.update.useMutation();
+  const utils = api.useUtils();
 
   const [form, setForm] = useState({
     name:     user?.name     || "Area Manager",
@@ -25,6 +29,17 @@ export default function ProfileSection() {
   const [loading, setLoading] = useState(false);
   const [saved,   setSaved]   = useState(false);
 
+  useEffect(() => {
+    if (!profile) return;
+    setForm((current) => ({
+      ...current,
+      name: profile.name,
+      email: profile.email,
+      phone: profile.phone,
+      area: profile.regions?.join(", ") || current.area,
+    }));
+  }, [profile]);
+
   const set = (k, v) => setForm(f => ({ ...f, [k]: v }));
 
   const validate = () => {
@@ -40,11 +55,19 @@ export default function ProfileSection() {
   const handleSave = async () => {
     if (!validate()) return;
     setLoading(true);
-    await new Promise(r => setTimeout(r, 800));
-    updateUser(form);
-    setLoading(false);
-    setSaved(true);
-    setTimeout(() => setSaved(false), 3000);
+    try {
+      await updateProfile.mutateAsync({
+        name: form.name,
+        email: form.email,
+        phone: form.phone,
+      });
+      updateUser(form);
+      setSaved(true);
+      setTimeout(() => setSaved(false), 3000);
+      void utils.areaManagerData.profile.get.invalidate();
+    } finally {
+      setLoading(false);
+    }
   };
 
   const initials = form.name.split(" ").map(w => w[0]).join("").toUpperCase().slice(0, 2);

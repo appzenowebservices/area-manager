@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import {
   AlertTriangle,
   ClipboardList,
@@ -13,13 +13,14 @@ import PageWrapper from "../components/layout/PageWrapper";
 import { PageHeader } from "../components/brand/PageHeader";
 import { BrandStatStrip } from "../components/brand/BrandStatStrip";
 import { BrandCard } from "../components/brand/BrandCard";
-import { getLogs, clearLogs } from "../../store/activityStore";
 import { buildDailyDigest, formatDigestEmail } from "../../store/sessionStore";
+import { api } from "~/trpc/react";
 
-const CATEGORIES = ["All", "auth", "orders", "vendors", "leads", "earnings", "navigation", "reports"];
+const CATEGORIES = ["All", "audit", "auth", "orders", "vendors", "leads", "earnings", "navigation", "reports"];
 const SEVERITIES = ["All", "info", "warning", "critical"];
 
 const CAT_STYLES = {
+  audit: "bg-secondary-100 text-secondary-700",
   auth: "bg-primary-50 text-primary-700",
   orders: "bg-secondary-100 text-primary-600",
   vendors: "bg-fresh-50 text-fresh-700",
@@ -36,12 +37,19 @@ const SEV_STYLES = {
 };
 
 export default function ActivityLogPage() {
-  const [logs, setLogs] = useState(getLogs());
+  const { data: apiLogs } = api.areaManagerData.activity.list.useQuery();
+  const clearMutation = api.areaManagerData.activity.clear.useMutation();
+  const utils = api.useUtils();
+  const [logs, setLogs] = useState([]);
   const [category, setCategory] = useState("All");
   const [severity, setSeverity] = useState("All");
   const [search, setSearch] = useState("");
   const [dateFilter, setDateFilter] = useState("today");
   const [showClear, setShowClear] = useState(false);
+
+  useEffect(() => {
+    if (apiLogs) setLogs(apiLogs);
+  }, [apiLogs]);
 
   const filtered = useMemo(() => {
     const now = new Date();
@@ -77,9 +85,13 @@ export default function ActivityLogPage() {
   }, [logs, category, severity, search, dateFilter]);
 
   const handleClear = () => {
-    clearLogs();
-    setLogs([]);
-    setShowClear(false);
+    clearMutation.mutate(undefined, {
+      onSuccess: () => {
+        setLogs([]);
+        setShowClear(false);
+        void utils.areaManagerData.activity.list.invalidate();
+      },
+    });
   };
 
   const handleExportCSV = () => {

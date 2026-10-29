@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useMemo } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PageWrapper from "../components/layout/PageWrapper";
 import { PageHeader } from "../components/brand/PageHeader";
 import { BrandStatStrip } from "../components/brand/BrandStatStrip";
@@ -9,16 +9,24 @@ import VendorsTable from "../components/vendors/VendorsTable";
 import VendorCard from "../components/vendors/VendorCard";
 import VendorDrawer from "../components/vendors/VendorDrawer";
 import AddVendorModal from "../components/vendors/AddVendorModal";
-import { VENDORS } from "../data/vendorsData";
+import { api } from "~/trpc/react";
 
 export default function VendorsPage() {
-  const [vendors, setVendors] = useState(VENDORS);
+  const { data: apiVendors, isLoading, error } = api.areaManagerData.vendors.list.useQuery();
+  const setActive = api.areaManagerData.vendors.setActive.useMutation();
+  const createVendor = api.areaManagerData.vendors.create.useMutation();
+  const utils = api.useUtils();
+  const [vendors, setVendors] = useState([]);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("All");
   const [category, setCategory] = useState("All");
   const [area, setArea] = useState("All");
   const [selected, setSelected] = useState(null);
   const [showAdd, setShowAdd] = useState(false);
+
+  useEffect(() => {
+    if (apiVendors) setVendors(apiVendors);
+  }, [apiVendors]);
 
   const filtered = useMemo(
     () =>
@@ -50,11 +58,32 @@ export default function VendorsPage() {
       prev.map((vendor) => (vendor.id === updated.id ? updated : vendor)),
     );
     setSelected(updated);
+
+    if (updated.status === "Active" || updated.status === "Inactive") {
+      setActive.mutate(
+        { id: updated.id, active: updated.status === "Active" },
+        { onSuccess: () => utils.areaManagerData.vendors.list.invalidate() },
+      );
+    }
   };
 
   const handleAdd = (newVendor) => {
-    setVendors((prev) => [newVendor, ...prev]);
-    setShowAdd(false);
+    createVendor.mutate(
+      {
+        name: newVendor.name,
+        phone: newVendor.phone,
+        email: newVendor.email || "",
+        area: newVendor.area,
+        address: newVendor.address || newVendor.area,
+        category: newVendor.category,
+      },
+      {
+        onSuccess: () => {
+          setShowAdd(false);
+          void utils.areaManagerData.vendors.list.invalidate();
+        },
+      },
+    );
   };
 
   const total = vendors.length;

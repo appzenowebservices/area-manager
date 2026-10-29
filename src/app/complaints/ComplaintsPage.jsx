@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PageWrapper from "../components/layout/PageWrapper";
 import { PageHeader } from "../components/brand/PageHeader";
 import { BrandStatStrip } from "../components/brand/BrandStatStrip";
@@ -8,15 +8,22 @@ import ComplaintsFilters from "../components/complaints/ComplaintsFilters";
 import ComplaintsTable from "../components/complaints/ComplaintsTable";
 import ComplaintCard from "../components/complaints/ComplaintCard";
 import ComplaintDrawer from "../components/complaints/ComplaintDrawer";
-import { COMPLAINTS } from "../data/complaintsData";
+import { api } from "~/trpc/react";
 
 export default function ComplaintsPage() {
-  const [complaints, setComplaints] = useState(COMPLAINTS);
+  const { data: apiComplaints, isLoading, error } = api.areaManagerData.complaints.list.useQuery();
+  const setStatusMutation = api.areaManagerData.complaints.setStatus.useMutation();
+  const utils = api.useUtils();
+  const [complaints, setComplaints] = useState([]);
   const [search, setSearch] = useState("");
   const [source, setSource] = useState("All");
   const [priority, setPriority] = useState("All");
   const [status, setStatus] = useState("All");
   const [selected, setSelected] = useState(null);
+
+  useEffect(() => {
+    if (apiComplaints) setComplaints(apiComplaints);
+  }, [apiComplaints]);
 
   const filtered = useMemo(() => {
     const query = search.toLowerCase();
@@ -47,6 +54,13 @@ export default function ComplaintsPage() {
       prev.map((complaint) => (complaint.id === updated.id ? updated : complaint)),
     );
     setSelected(updated);
+
+    if (updated?.status) {
+      setStatusMutation.mutate(
+        { id: updated.id, status: updated.status },
+        { onSuccess: () => utils.areaManagerData.complaints.list.invalidate() },
+      );
+    }
   };
 
   const open = complaints.filter((complaint) => complaint.status === "Open").length;

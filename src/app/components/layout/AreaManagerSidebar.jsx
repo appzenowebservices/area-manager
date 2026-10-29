@@ -23,13 +23,14 @@ import {
 } from "lucide-react";
 import useAuthStore from "../../hooks/authStore";
 import { LogoutDialog } from "../brand/LogoutDialog";
+import { api } from "~/trpc/react";
 
 const menuItems = [
   {
     group: "Main",
     items: [
       { label: "Dashboard", href: "/dashboard", icon: LayoutDashboard },
-      { label: "Orders", href: "/orders", icon: ShoppingBag, badge: "5" },
+      { label: "Orders", href: "/orders", icon: ShoppingBag, badgeKey: "orders" },
       { label: "Vendors", href: "/vendors", icon: Store },
       { label: "Delivery", href: "/delivery", icon: Bike },
     ],
@@ -37,7 +38,7 @@ const menuItems = [
   {
     group: "Growth",
     items: [
-      { label: "Vendor Leads", href: "/leads/vendors", icon: Users, badge: "3" },
+      { label: "Vendor Leads", href: "/leads/vendors", icon: Users, badgeKey: "leads" },
       { label: "Delivery Leads", href: "/leads", icon: Bike },
       { label: "Earnings", href: "/earnings", icon: IndianRupee },
       { label: "Reports", href: "/reports", icon: FileText },
@@ -45,7 +46,7 @@ const menuItems = [
   },
   {
     group: "Support",
-    items: [{ label: "Complaints", href: "/complaints", icon: AlertTriangle, badge: "2" }],
+    items: [{ label: "Complaints", href: "/complaints", icon: AlertTriangle, badgeKey: "complaints" }],
   },
   {
     group: "Account",
@@ -59,6 +60,9 @@ const menuItems = [
 export default function AreaManagerSidebar() {
   const pathname = usePathname();
   const { user, logout } = useAuthStore();
+  const { data: badges } = api.areaManagerData.badges.useQuery(undefined, {
+    refetchInterval: 60_000,
+  });
   const [collapsed, setCollapsed] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
   const [logoutOpen, setLogoutOpen] = useState(false);
@@ -152,6 +156,9 @@ export default function AreaManagerSidebar() {
                       ? pathname === "/leads"
                       : pathname === item.href ||
                         pathname.startsWith(`${item.href}/`);
+                  const badge = item.badgeKey
+                    ? badges?.[item.badgeKey]
+                    : item.badge;
 
                   return (
                     <Link
@@ -172,7 +179,7 @@ export default function AreaManagerSidebar() {
                           {item.label}
                         </span>
                       )}
-                      {item.badge && (
+                      {badge > 0 && (
                         <span
                           className={`
                             ${
@@ -183,7 +190,7 @@ export default function AreaManagerSidebar() {
                             bg-accent-400 text-secondary-900 font-black rounded-full border border-secondary-950
                           `}
                         >
-                          {collapsed && !mobileOpen ? "" : item.badge}
+                          {collapsed && !mobileOpen ? "" : badge}
                         </span>
                       )}
                       {collapsed && !mobileOpen && (

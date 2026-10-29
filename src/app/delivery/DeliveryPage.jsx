@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PageWrapper from "../components/layout/PageWrapper";
 import { PageHeader } from "../components/brand/PageHeader";
 import { BrandStatStrip } from "../components/brand/BrandStatStrip";
@@ -8,14 +8,21 @@ import DeliveryFilters from "../components/delivery/DeliveryFilters";
 import DeliveryTable from "../components/delivery/DeliveryTable";
 import DeliveryCard from "../components/delivery/DeliveryCard";
 import DeliveryDrawer from "../components/delivery/DeliveryDrawer";
-import { DELIVERY_PARTNERS, getDeliveryStats } from "../data/deliveryData";
+import { api } from "~/trpc/react";
 
 export default function DeliveryPage() {
-  const [partners, setPartners] = useState(DELIVERY_PARTNERS);
+  const { data: apiPartners, isLoading, error } = api.areaManagerData.delivery.list.useQuery();
+  const setActive = api.areaManagerData.delivery.setActive.useMutation();
+  const utils = api.useUtils();
+  const [partners, setPartners] = useState([]);
   const [search, setSearch] = useState("");
   const [status, setStatus] = useState("All");
   const [area, setArea] = useState("All");
   const [selected, setSelected] = useState(null);
+
+  useEffect(() => {
+    if (apiPartners) setPartners(apiPartners);
+  }, [apiPartners]);
 
   const areas = useMemo(
     () => [...new Set(partners.map((partner) => partner.area))].sort(),
@@ -50,10 +57,17 @@ export default function DeliveryPage() {
       prev.map((partner) => (partner.id === updated.id ? updated : partner)),
     );
     setSelected(updated);
+
+    if (updated.status) {
+      setActive.mutate(
+        { id: updated.id, active: updated.status !== "Inactive" },
+        { onSuccess: () => utils.areaManagerData.delivery.list.invalidate() },
+      );
+    }
   };
 
   const totalDeliveries = partners.reduce(
-    (sum, partner) => sum + getDeliveryStats(partner.id).delivered,
+    (sum, partner) => sum + (partner.stats?.delivered ?? 0),
     0,
   );
 

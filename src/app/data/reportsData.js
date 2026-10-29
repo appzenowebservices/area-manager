@@ -36,8 +36,8 @@ export function filterByPeriod(orders, period) {
 }
 
 // ─── Orders Report ────────────────────────────────────────────────────────────
-export function buildOrdersReport(period) {
-  const filtered = filterByPeriod(ORDERS, period);
+export function buildOrdersReport(period, orders = ORDERS) {
+  const filtered = filterByPeriod(orders, period);
   const total      = filtered.length;
   const delivered  = filtered.filter(o => o.status === "Delivered").length;
   const pending    = filtered.filter(o => o.status === "Pending").length;
@@ -68,8 +68,8 @@ export function buildOrdersReport(period) {
 }
 
 // ─── Revenue Report ───────────────────────────────────────────────────────────
-export function buildRevenueReport(period) {
-  const filtered   = filterByPeriod(ORDERS, period).filter(o => o.status !== "Cancelled");
+export function buildRevenueReport(period, orders = ORDERS) {
+  const filtered   = filterByPeriod(orders, period).filter(o => o.status !== "Cancelled");
   const total      = filtered.reduce((s, o) => s + o.finalAmount, 0);
   const avgOrder   = filtered.length ? Math.round(total / filtered.length) : 0;
   const maxOrder   = filtered.length ? Math.max(...filtered.map(o => o.finalAmount)) : 0;
@@ -107,15 +107,15 @@ export function buildRevenueReport(period) {
 }
 
 // ─── Vendor Performance ───────────────────────────────────────────────────────
-export function buildVendorReport(period) {
-  const filtered = filterByPeriod(ORDERS, period);
+export function buildVendorReport(period, orders = ORDERS, vendorsList = VENDORS) {
+  const filtered = filterByPeriod(orders, period);
 
   const vendorMap = {};
   filtered.forEach(o => {
     const vn = o.vendor?.name || "Unassigned";
     const vc = o.vendor?.id   || "";
     if (!vendorMap[vn]) {
-      const vInfo = VENDORS.find(v => v.name === vn);
+      const vInfo = vendorsList.find(v => v.name === vn);
       vendorMap[vn] = {
         name: vn, id: vc, orders: 0, revenue: 0,
         delivered: 0, cancelled: 0,
@@ -143,8 +143,8 @@ export function buildVendorReport(period) {
 }
 
 // ─── Delivery Performance ─────────────────────────────────────────────────────
-export function buildDeliveryReport(period) {
-  const filtered = filterByPeriod(ORDERS, period);
+export function buildDeliveryReport(period, orders = ORDERS) {
+  const filtered = filterByPeriod(orders, period);
 
   const boyMap = {};
   filtered.forEach(o => {
@@ -220,3 +220,4 @@ export function exportCSV(data, filename) {
   const a    = document.createElement("a"); a.href = url; a.download = filename; a.click();
   URL.revokeObjectURL(url);
 }
+

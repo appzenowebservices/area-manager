@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PageWrapper from "../components/layout/PageWrapper";
 import { PageHeader } from "../components/brand/PageHeader";
 import { BrandCard } from "../components/brand/BrandCard";
@@ -8,14 +8,22 @@ import LeadsTable from "../components/leads/LeadsTable";
 import LeadCard from "../components/leads/LeadCard";
 import LeadDrawer from "../components/leads/LeadDrawer";
 import LeadStageBadge from "../components/leads/LeadStageBadge";
-import { DELIVERY_LEADS, LEAD_STAGES } from "../data/leadsData";
+import { LEAD_STAGES } from "../data/leadsData";
+import { api } from "~/trpc/react";
 
 export default function DeliveryLeadsPage() {
-  const [leads, setLeads] = useState(DELIVERY_LEADS);
+  const { data: apiLeads, isLoading, error } = api.areaManagerData.leads.list.useQuery();
+  const updateStage = api.areaManagerData.leads.updateStage.useMutation();
+  const utils = api.useUtils();
+  const [leads, setLeads] = useState([]);
   const [selected, setSelected] = useState(null);
   const [stage, setStage] = useState("All");
   const [search, setSearch] = useState("");
   const [area, setArea] = useState("All");
+
+  useEffect(() => {
+    if (apiLeads) setLeads(apiLeads.filter((lead) => lead.type === "delivery"));
+  }, [apiLeads]);
 
   const areas = useMemo(
     () => ["All", ...new Set(leads.map((lead) => lead.area))],
@@ -40,6 +48,21 @@ export default function DeliveryLeadsPage() {
   const handleUpdate = (updated) => {
     setLeads((prev) => prev.map((lead) => (lead.id === updated.id ? updated : lead)));
     setSelected(updated);
+
+    const stageToStatus = {
+      New: "new",
+      Contacted: "contacted",
+      "Docs Pending": "qualified",
+      Approved: "approved",
+      Rejected: "rejected",
+    };
+    const nextStatus = stageToStatus[updated.stage] ?? updated.rawStatus;
+    if (nextStatus) {
+      updateStage.mutate(
+        { id: updated.id, status: nextStatus },
+        { onSuccess: () => utils.areaManagerData.leads.list.invalidate() },
+      );
+    }
   };
 
   const counts = useMemo(() => {

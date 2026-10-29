@@ -1,6 +1,5 @@
 import { Eye, Star } from "lucide-react";
 import { BrandBadge } from "../brand/BrandBadge";
-import { getDeliveryStats } from "../../data/deliveryData";
 
 const statusTone = (status) => {
   const value = String(status).toLowerCase();
@@ -11,7 +10,11 @@ const statusTone = (status) => {
 };
 
 export default function DeliveryCard({ partner, onView }) {
-  const stats = getDeliveryStats(partner.id);
+  const stats = partner.stats ?? {
+    delivered: partner.totalDeliveries ?? 0,
+    pending: 0,
+    revenue: 0,
+  };
 
   return (
     <div className="rounded-3xl border-2 border-secondary-900 bg-background-section p-4 shadow-[5px_5px_0px_var(--color-secondary-900)]">

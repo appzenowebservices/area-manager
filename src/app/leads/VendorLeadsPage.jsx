@@ -1,6 +1,6 @@
 ﻿"use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import PageWrapper from "../components/layout/PageWrapper";
 import { PageHeader } from "../components/brand/PageHeader";
 import { BrandCard } from "../components/brand/BrandCard";
@@ -8,15 +8,22 @@ import LeadsTable from "../components/leads/LeadsTable";
 import LeadCard from "../components/leads/LeadCard";
 import LeadDrawer from "../components/leads/LeadDrawer";
 import LeadStageBadge from "../components/leads/LeadStageBadge";
-import { LEAD_STAGES, VENDOR_LEADS } from "../data/leadsData";
-import { VENDORS } from "../data/vendorsData";
+import { LEAD_STAGES } from "../data/leadsData";
+import { api } from "~/trpc/react";
 
 export default function VendorLeadsPage() {
-  const [leads, setLeads] = useState(VENDOR_LEADS);
+  const { data: apiLeads, isLoading, error } = api.areaManagerData.leads.list.useQuery();
+  const updateStage = api.areaManagerData.leads.updateStage.useMutation();
+  const utils = api.useUtils();
+  const [leads, setLeads] = useState([]);
   const [selected, setSelected] = useState(null);
   const [stage, setStage] = useState("All");
   const [search, setSearch] = useState("");
   const [area, setArea] = useState("All");
+
+  useEffect(() => {
+    if (apiLeads) setLeads(apiLeads.filter((lead) => lead.type === "vendor"));
+  }, [apiLeads]);
 
   const areas = useMemo(
     () => ["All", ...new Set(leads.map((lead) => lead.area))],
@@ -42,36 +49,29 @@ export default function VendorLeadsPage() {
   const handleUpdate = (updated) => {
     setLeads((prev) => prev.map((lead) => (lead.id === updated.id ? updated : lead)));
     setSelected(updated);
+
+    const stageToStatus = {
+      New: "new",
+      Contacted: "contacted",
+      "Docs Pending": "qualified",
+      Approved: "approved",
+      Rejected: "rejected",
+    };
+    const nextStatus = stageToStatus[updated.stage] ?? updated.rawStatus;
+    if (nextStatus) {
+      updateStage.mutate(
+        { id: updated.id, status: nextStatus },
+        { onSuccess: () => utils.areaManagerData.leads.list.invalidate() },
+      );
+    }
   };
 
   const handleApprove = (lead) => {
-    const newVendor = {
-      id: `V-${String(VENDORS.length + 1).padStart(3, "0")}`,
-      name: lead.name,
-      ownerName: lead.ownerName,
-      phone: lead.phone,
-      altPhone: lead.altPhone || "",
-      email: lead.email || "",
-      area: lead.area,
-      address: lead.address,
-      category: lead.category,
-      status: "Active",
-      rating: 0,
-      totalOrders: 0,
-      ordersThisWeek: 0,
-      commission: lead.commission,
-      joinDate: new Date().toLocaleDateString("en-IN", {
-        day: "2-digit",
-        month: "short",
-        year: "numeric",
-      }),
-      kyc: "Pending",
-      documents: lead.documents,
-      revenue: "₹0",
-      avgDeliveryTime: "—",
-      notes: `Onboarded via lead ${lead.id}`,
-    };
-    VENDORS.unshift(newVendor);
+    updateStage.mutate(
+      { id: lead.id, status: "approved" },
+      { onSuccess: () => utils.areaManagerData.leads.list.invalidate() },
+    );
+    setSelected(null);
   };
 
   const counts = useMemo(() => {

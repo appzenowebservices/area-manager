@@ -5,6 +5,7 @@ import { usePathname, useRouter } from "next/navigation";
 import useAuthStore from "../../hooks/authStore";
 import AreaManagerSidebar from "./AreaManagerSidebar";
 import AreaManagerHeader from "./AreaManagerHeader";
+import { api } from "~/trpc/react";
 
 const PUBLIC_PATHS = new Set(["/", "/auth", "/login", "/set-password"]);
 
@@ -12,11 +13,25 @@ export default function AreaManagerShell({ children }) {
   const pathname = usePathname();
   const router = useRouter();
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const updateUser = useAuthStore((state) => state.updateUser);
   const [mounted, setMounted] = useState(false);
+  const { data: profile } = api.areaManagerData.profile.get.useQuery(undefined, {
+    enabled: isAuthenticated,
+  });
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (!profile) return;
+    updateUser({
+      id: profile.id,
+      name: profile.name,
+      email: profile.email,
+      phone: profile.phone,
+    });
+  }, [profile, updateUser]);
 
   const isPublic =
     PUBLIC_PATHS.has(pathname) || pathname.startsWith("/set-password");
