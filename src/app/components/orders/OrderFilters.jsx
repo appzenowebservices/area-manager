@@ -1,18 +1,18 @@
-import { Search, X } from "lucide-react";
-import { BrandCard } from "../brand/BrandCard";
+import { RotateCcw, Search, X } from "lucide-react";
 import { ORDER_STATUSES } from "../../data/ordersData";
 
+const PAYMENT_STATUSES = ["All", "Pending", "Paid", "Failed", "Refunded"];
+
 const fieldCls =
-  "h-11 rounded-2xl border-2 border-secondary-200 bg-secondary-50 px-3 text-sm font-bold text-secondary-800 outline-none transition-colors focus:border-primary-600";
+  "h-11 rounded-2xl border-2 border-secondary-200 bg-secondary-50 px-3 text-sm font-bold text-secondary-800 outline-none transition-colors focus:border-primary-600 focus:bg-background-section";
 
 export default function OrderFilters({
   search,
   onSearch,
   status,
   onStatus,
-  area,
-  onArea,
-  areas,
+  paymentStatus,
+  onPaymentStatus,
   dateFrom,
   onDateFrom,
   dateTo,
@@ -21,19 +21,23 @@ export default function OrderFilters({
   onReset,
 }) {
   const hasFilters =
-    search || status !== "All" || area !== "All" || dateFrom || dateTo;
+    search ||
+    status !== "All" ||
+    paymentStatus !== "All" ||
+    dateFrom ||
+    dateTo;
 
   return (
-    <BrandCard className="p-4">
+    <div className="rounded-3xl border-2 border-secondary-200 bg-background-section p-4">
       <div className="flex flex-wrap items-center gap-2.5">
         <div className="relative min-w-52 flex-1">
           <Search className="pointer-events-none absolute left-3.5 top-1/2 h-4 w-4 -translate-y-1/2 text-secondary-400" />
           <input
             type="text"
-            placeholder="Search order ID, customer, phone…"
+            placeholder="Search order ID, customer, phone, vendor…"
             value={search}
             onChange={(event) => onSearch(event.target.value)}
-            className="h-11 w-full rounded-2xl border-2 border-secondary-200 bg-secondary-50 pl-10 pr-9 text-sm font-semibold text-secondary-900 outline-none transition-colors placeholder:text-text-muted focus:border-primary-600 focus:bg-background-section"
+            className="h-11 w-full rounded-2xl border-2 border-secondary-200 bg-secondary-50 pl-10 pr-9 text-sm font-bold text-secondary-900 outline-none transition-colors placeholder:text-secondary-400 focus:border-primary-600 focus:bg-background-section"
           />
           {search && (
             <button
@@ -46,7 +50,11 @@ export default function OrderFilters({
           )}
         </div>
 
-        <select className={fieldCls} value={status} onChange={(event) => onStatus(event.target.value)}>
+        <select
+          className={fieldCls}
+          value={status}
+          onChange={(event) => onStatus(event.target.value)}
+        >
           {ORDER_STATUSES.map((value) => (
             <option key={value} value={value}>
               {value === "All" ? "All Statuses" : value}
@@ -54,11 +62,14 @@ export default function OrderFilters({
           ))}
         </select>
 
-        <select className={fieldCls} value={area} onChange={(event) => onArea(event.target.value)}>
-          <option value="All">All Areas</option>
-          {areas.map((value) => (
+        <select
+          className={fieldCls}
+          value={paymentStatus}
+          onChange={(event) => onPaymentStatus(event.target.value)}
+        >
+          {PAYMENT_STATUSES.map((value) => (
             <option key={value} value={value}>
-              {value}
+              {value === "All" ? "All Payments" : value}
             </option>
           ))}
         </select>
@@ -79,7 +90,7 @@ export default function OrderFilters({
         />
       </div>
 
-      <div className="flex items-center justify-between gap-3 pt-1">
+      <div className="mt-3 flex flex-wrap items-center justify-between gap-2 border-t border-secondary-100 pt-3">
         <span className="text-xs font-bold text-secondary-600">
           Showing <strong className="text-primary-600">{total}</strong> order
           {total !== 1 ? "s" : ""}
@@ -87,12 +98,12 @@ export default function OrderFilters({
         {hasFilters && (
           <button
             onClick={onReset}
-            className="text-xs font-black text-primary-600 hover:underline"
+            className="inline-flex items-center gap-1 text-xs font-black text-primary-600 hover:underline"
           >
-            ✕ Clear filters
+            <RotateCcw className="h-3 w-3" /> Clear filters
           </button>
         )}
       </div>
-    </BrandCard>
+    </div>
   );
 }

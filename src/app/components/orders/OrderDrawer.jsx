@@ -1,327 +1,312 @@
-'use client'
-import { useState, useEffect, useRef } from "react";
-import OrderStatusBadge from "./OrderStatusBadge";
-import AssignModal      from "./AssignModal";
-import { ORDER_STATUSES } from "../../data/ordersData";
-// import { ORDER_STATUSES } from "../../data/ordersData";
+"use client";
 
-/**
- * OrderDrawer — BUG FIX: null guard added before order.items
- * File: src/components/orders/OrderDrawer.jsx
- *
- * Slide-in panel from RIGHT showing full order detail.
- * Props:
- *   order      object | null
- *   onClose    fn
- *   onUpdate   fn(updatedOrder)
- */
+import { useEffect, useState } from "react";
+import {
+  Calendar,
+  CheckCircle2,
+  CreditCard,
+  Mail,
+  MapPin,
+  Package,
+  Phone,
+  Store,
+  Truck,
+  User,
+  X,
+  XCircle,
+} from "lucide-react";
+import { BrandBadge, statusTone } from "../brand/BrandBadge";
+import { BrandButton } from "../brand/BrandButton";
+
+const formatCurrency = (value) =>
+  new Intl.NumberFormat("en-IN", {
+    style: "currency",
+    currency: "INR",
+    maximumFractionDigits: 2,
+  }).format(value || 0);
+
+const STATUS_ACTIONS = ["Pending", "Processing", "Delivered", "Cancelled"];
+
+function Section({ title, icon: Icon, children }) {
+  return (
+    <section className="rounded-2xl border border-secondary-200 bg-background-section p-4 shadow-sm">
+      <div className="mb-3 flex items-center gap-2 border-b border-secondary-100 pb-2">
+        <Icon className="h-3.5 w-3.5 text-primary-600" />
+        <h3 className="font-display text-[11px] font-black uppercase tracking-widest text-secondary-900">
+          {title}
+        </h3>
+      </div>
+      {children}
+    </section>
+  );
+}
+
+function Row({ label, children }) {
+  return (
+    <div className="flex items-start justify-between gap-3 border-b border-secondary-100 py-1.5 text-xs last:border-0">
+      <span className="shrink-0 pt-0.5 text-[9px] font-black uppercase tracking-wider text-secondary-500">
+        {label}
+      </span>
+      <span className="min-w-0 break-words text-right font-semibold text-secondary-800">
+        {children || "—"}
+      </span>
+    </div>
+  );
+}
+
+function Avatar({ name }) {
+  return (
+    <div className="relative grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-xl border-2 border-secondary-900 bg-fresh-50 font-display text-sm font-black text-secondary-900">
+      {name?.trim().charAt(0).toUpperCase() || "?"}
+    </div>
+  );
+}
+
 export default function OrderDrawer({ order: initialOrder, onClose, onUpdate }) {
-  const [order,   setOrder]   = useState(null);
-  const [modal,   setModal]   = useState(null);   // "vendor" | "delivery"
+  const [order, setOrder] = useState(null);
   const [visible, setVisible] = useState(false);
-  const bodyRef = useRef(null);
 
   useEffect(() => {
     if (initialOrder) {
       setOrder(initialOrder);
-      // Reset scroll to top when new order opens
-      if (bodyRef.current) bodyRef.current.scrollTop = 0;
       requestAnimationFrame(() => setVisible(true));
-      // Lock page scroll when drawer opens
       document.body.style.overflow = "hidden";
     } else {
       setVisible(false);
-      const t = setTimeout(() => setOrder(null), 300);
-      // Restore page scroll when drawer closes
+      const timer = setTimeout(() => setOrder(null), 250);
       document.body.style.overflow = "";
-      return () => clearTimeout(t);
+      return () => clearTimeout(timer);
     }
     return () => {
       document.body.style.overflow = "";
     };
   }, [initialOrder]);
 
-  // ── CRITICAL FIX: guard against null order ──
   if (!order) return null;
-
-  const subtotal = order.items.reduce((s, i) => s + i.qty * i.price, 0);
-
-  const handleAssign = (type, person) => {
-    const updated = {
-      ...order,
-      [type]: { id: person.id, name: person.name, phone: person.phone },
-    };
-    setOrder(updated);
-    onUpdate?.(updated);
-    setModal(null);
-  };
-
-  const handleStatusChange = (newStatus) => {
-    const updated = { ...order, status: newStatus };
-    setOrder(updated);
-    onUpdate?.(updated);
-  };
 
   const handleClose = () => {
     setVisible(false);
-    setTimeout(onClose, 300);
+    setTimeout(onClose, 250);
   };
 
+  const handleStatus = (status) => {
+    const updated = { ...order, status };
+    setOrder(updated);
+    onUpdate?.(updated);
+  };
+
+  const subtotal = order.subtotalAmount ?? order.items.reduce(
+    (sum, item) => sum + item.qty * item.price,
+    0,
+  );
+
   return (
-    <>
-      <style>{css}</style>
-
-      {/* Backdrop */}
-      <div
-        className={`od-backdrop${visible ? " od-backdrop-in" : ""}`}
-        onClick={handleClose}
-      />
-
-      {/* Drawer */}
-      <div className={`od-drawer${visible ? " od-drawer-in" : ""}`}>
-
-        {/* ── Header ── */}
-        <div className="od-dh">
-          <div className="od-dh-left">
-            <span className="od-dh-id">{order.id}</span>
-            <OrderStatusBadge status={order.status} />
+    <div
+      className={`fixed inset-0 z-[2000] bg-secondary-950/45 backdrop-blur-[2px] transition-opacity ${
+        visible ? "opacity-100" : "opacity-0"
+      }`}
+      onClick={handleClose}
+    >
+      <aside
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Order details ${order.id}`}
+        className={`ml-auto flex h-full w-full max-w-[560px] flex-col overflow-hidden border-l-2 border-secondary-900 bg-background shadow-2xl transition-transform duration-300 ${
+          visible ? "translate-x-0" : "translate-x-full"
+        }`}
+        onClick={(event) => event.stopPropagation()}
+      >
+        <header className="flex shrink-0 items-start justify-between gap-3 border-b border-secondary-200 bg-background-section px-4 py-4">
+          <div className="min-w-0">
+            <div className="flex flex-wrap items-center gap-2">
+              <span className="font-display text-base font-black text-primary-600">
+                {order.id}
+              </span>
+              <BrandBadge tone={statusTone(order.status)}>{order.status}</BrandBadge>
+            </div>
+            <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] font-semibold text-secondary-500">
+              <span className="inline-flex items-center gap-1">
+                <Calendar className="h-3 w-3" /> {order.date} · {order.time}
+              </span>
+              <span className="inline-flex items-center gap-1">
+                <Truck className="h-3 w-3" /> {order.payment}
+              </span>
+            </p>
           </div>
-          <button className="od-close-btn" onClick={handleClose} aria-label="Close">✕</button>
-        </div>
-        <div className="od-dh-meta">
-          📅 {order.date} &nbsp;·&nbsp; 🕐 {order.time}
-        </div>
+          <button
+            onClick={handleClose}
+            aria-label="Close order details"
+            className="grid h-8 w-8 shrink-0 place-items-center rounded-lg border border-secondary-200 bg-background text-secondary-500 transition-colors hover:border-primary-300 hover:text-primary-600"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </header>
 
-        {/* ── Scrollable body ── */}
-        <div className="od-body" ref={bodyRef}>
+        <div className="min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain p-4">
+          <Section title="Customer" icon={User}>
+            <div className="flex items-start gap-3">
+              <Avatar name={order.customer.name} />
+              <div className="min-w-0">
+                <p className="truncate text-sm font-bold text-secondary-900">
+                  {order.customer.name}
+                </p>
+                <p className="mt-0.5 flex items-center gap-1 text-[11px] text-secondary-600">
+                  <Phone className="h-3 w-3" /> {order.customer.phone || "—"}
+                </p>
+                {order.customer.email ? (
+                  <p className="mt-0.5 flex items-center gap-1 truncate text-[11px] text-secondary-600">
+                    <Mail className="h-3 w-3" /> {order.customer.email}
+                  </p>
+                ) : null}
+              </div>
+            </div>
+            <div className="mt-3 rounded-xl bg-secondary-50 p-2.5">
+              <p className="text-[9px] font-black uppercase tracking-wider text-secondary-500">
+                Address
+              </p>
+              <p className="mt-0.5 text-[11px] font-semibold leading-relaxed text-secondary-800">
+                {order.customer.address || order.area || "No registered address."}
+              </p>
+            </div>
+          </Section>
 
-          {/* Customer */}
-          <DrawerSection title="👤 Customer">
-            <Row label="Name"    val={order.customer.name} />
-            <Row label="Phone"   val={`📞 ${order.customer.phone}`} />
-            <Row label="Area"    val={`📍 ${order.area}`} />
-            <Row label="Address" val={order.customer.address} full />
-            {order.notes && (
-              <div className="od-note">📝 {order.notes}</div>
-            )}
-          </DrawerSection>
-
-          {/* Items */}
-          <DrawerSection title={`📦 Items (${order.items.length})`}>
-            <div className="od-items">
-              {order.items.map((item, i) => (
-                <div key={i} className="od-item-row">
-                  <span className="od-item-name">{item.name}</span>
-                  <span className="od-item-meta">×{item.qty} × ₹{item.price}</span>
-                  <span className="od-item-total">₹{(item.qty * item.price).toLocaleString()}</span>
+          <Section title={`Items (${order.items.length})`} icon={Package}>
+            <div className="overflow-hidden rounded-xl border border-secondary-200">
+              <table className="w-full min-w-[430px] border-collapse">
+                <thead className="bg-secondary-50 text-left text-[9px] font-black uppercase tracking-widest text-secondary-500">
+                  <tr>
+                    <th className="px-3 py-2">Item</th>
+                    <th className="px-3 py-2 text-center">Qty</th>
+                    <th className="px-3 py-2 text-right">Rate</th>
+                    <th className="px-3 py-2 text-right">Subtotal</th>
+                  </tr>
+                </thead>
+                <tbody className="divide-y divide-secondary-100">
+                  {order.items.map((item, index) => (
+                    <tr key={`${item.name}-${index}`}>
+                      <td className="px-3 py-2">
+                        <p className="truncate text-xs font-bold text-secondary-900">
+                          {item.name}
+                        </p>
+                      </td>
+                      <td className="px-3 py-2 text-center">
+                        <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-secondary-900 text-[10px] font-black text-white">
+                          {item.qty}
+                        </span>
+                      </td>
+                      <td className="px-3 py-2 text-right text-xs text-secondary-600">
+                        {formatCurrency(item.price)}
+                      </td>
+                      <td className="px-3 py-2 text-right text-xs font-black text-secondary-900">
+                        {formatCurrency(item.qty * item.price)}
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+            <div className="mt-3 space-y-1.5 border-t border-dashed border-secondary-200 pt-3">
+              {[
+                ["Subtotal", order.subtotalAmount ?? subtotal],
+                ["Tax", order.taxes],
+                ["Discount", order.discounts],
+                ["Delivery", order.deliveryCharge],
+                ["Surcharge", order.surcharge],
+              ].map(([label, amount]) => (
+                <div key={label} className="flex justify-between text-xs">
+                  <span className="text-secondary-500">{label}</span>
+                  <span className="font-semibold text-secondary-800">
+                    {formatCurrency(amount)}
+                  </span>
                 </div>
               ))}
+              <div className="flex justify-between border-t border-secondary-200 pt-2 text-sm font-black text-secondary-900">
+                <span>Total</span>
+                <span className="text-fresh-700">{formatCurrency(order.finalAmount)}</span>
+              </div>
             </div>
-            {/* Bill */}
-            <div className="od-bill">
-              <BillRow label="Subtotal" val={`₹${subtotal.toLocaleString()}`} />
-              {order.discount > 0 && (
-                <BillRow label="Discount" val={`-₹${order.discount}`} green />
-              )}
-              {order.deliveryCharge > 0 && (
-                <BillRow label="Delivery" val={`+₹${order.deliveryCharge}`} />
-              )}
-              <BillRow label="Total" val={`₹${order.finalAmount.toLocaleString()}`} bold />
-            </div>
-          </DrawerSection>
+          </Section>
 
-          {/* Payment */}
-          <DrawerSection title="💳 Payment">
-            <Row label="Method" val={order.payment} />
-            <Row label="Status" val={<OrderStatusBadge status={order.paymentStatus} type="payment" size="sm" />} />
-          </DrawerSection>
+          <Section title="Payment" icon={CreditCard}>
+            <Row label="Method">{order.payment}</Row>
+            <Row label="Status">
+              <BrandBadge tone={order.paymentStatus === "Paid" ? "fresh" : "accent"}>
+                {order.paymentStatus}
+              </BrandBadge>
+            </Row>
+          </Section>
 
-          {/* Vendor */}
-          <DrawerSection title="🏪 Vendor">
-            {order.vendor.id ? (
-              <>
-                <Row label="Name"  val={order.vendor.name} />
-                <Row label="Phone" val={`📞 ${order.vendor.phone}`} />
-              </>
-            ) : (
-              <p className="od-unassigned">⚠️ No vendor assigned</p>
-            )}
-            {order.status !== "Delivered" && order.status !== "Cancelled" && (
-              <button className="od-assign-btn od-btn-blue" onClick={() => setModal("vendor")}>
-                {order.vendor.id ? "🔄 Reassign Vendor" : "➕ Assign Vendor"}
-              </button>
-            )}
-          </DrawerSection>
+          <Section title="Vendor" icon={Store}>
+            <Row label="Name">{order.vendor.name}</Row>
+            <Row label="Phone">{order.vendor.phone}</Row>
+          </Section>
 
-          {/* Delivery */}
-          <DrawerSection title="🚴 Delivery Boy">
+          <Section title="Delivery" icon={Truck}>
             {order.delivery.id ? (
-              <>
-                <Row label="Name"  val={order.delivery.name} />
-                <Row label="Phone" val={`📞 ${order.delivery.phone}`} />
-              </>
+              <div className="mb-2 flex items-center gap-2.5">
+                <Avatar name={order.delivery.name} />
+                <div className="min-w-0">
+                  <p className="truncate text-xs font-bold text-secondary-900">
+                    {order.delivery.name}
+                  </p>
+                  <p className="text-[10px] text-secondary-500">{order.delivery.phone}</p>
+                </div>
+              </div>
             ) : (
-              <p className="od-unassigned">⚠️ No delivery boy assigned</p>
+              <p className="mb-2 text-xs font-semibold text-accent-600">
+                No delivery partner assigned.
+              </p>
             )}
-            {order.status !== "Delivered" && order.status !== "Cancelled" && (
-              <button className="od-assign-btn od-btn-green" onClick={() => setModal("delivery")}>
-                {order.delivery.id ? "🔄 Reassign Delivery Boy" : "➕ Assign Delivery Boy"}
-              </button>
+            <Row label="Area">
+              <span className="inline-flex items-center gap-1">
+                <MapPin className="h-3 w-3" /> {order.area}
+              </span>
+            </Row>
+          </Section>
+
+          <Section title={`Status history (${order.statusHistory?.length ?? 0})`} icon={CheckCircle2}>
+            {order.statusHistory?.length ? (
+              <ol className="space-y-2">
+                {order.statusHistory.map((entry) => (
+                  <li key={entry.id} className="flex gap-3">
+                    <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 border-secondary-200 bg-secondary-50">
+                      {entry.status === "Cancelled" ? (
+                        <XCircle className="h-3 w-3 text-primary-700" />
+                      ) : (
+                        <CheckCircle2 className="h-3 w-3 text-fresh-600" />
+                      )}
+                    </span>
+                    <div className="min-w-0">
+                      <p className="text-xs font-bold text-secondary-900">{entry.status}</p>
+                      <p className="text-[9px] font-semibold text-secondary-500">
+                        {entry.date} · {entry.time} · {entry.by}
+                      </p>
+                      {entry.remarks ? (
+                        <p className="mt-0.5 text-[11px] text-secondary-600">{entry.remarks}</p>
+                      ) : null}
+                    </div>
+                  </li>
+                ))}
+              </ol>
+            ) : (
+              <p className="text-xs text-secondary-500">No status history recorded.</p>
             )}
-          </DrawerSection>
+          </Section>
 
-          {/* Status Change */}
-          <DrawerSection title="🔄 Change Status">
-            <div className="od-status-grid">
-              {ORDER_STATUSES.filter(s => s !== "All").map(s => (
-                <button
-                  key={s}
-                  className={`od-status-btn${order.status === s ? " od-status-active" : ""}`}
-                  style={order.status === s ? activeStyle(s) : {}}
-                  onClick={() => handleStatusChange(s)}
-                >
-                  {statusEmoji(s)} {s}
-                </button>
-              ))}
-            </div>
-          </DrawerSection>
-
+          <div className="grid grid-cols-2 gap-2">
+            {STATUS_ACTIONS.filter((status) => status !== order.status).map((status) => (
+              <BrandButton
+                key={status}
+                variant={status === "Cancelled" ? "danger" : status === "Delivered" ? "success" : "ghost"}
+                className="py-2 text-xs"
+                onClick={() => handleStatus(status)}
+              >
+                Mark {status}
+              </BrandButton>
+            ))}
+          </div>
         </div>
-      </div>
-
-      {/* Assign Modals */}
-      {modal === "vendor" && (
-        <AssignModal
-          type="vendor"
-          currentId={order.vendor.id}
-          onConfirm={p => handleAssign("vendor", p)}
-          onClose={() => setModal(null)}
-        />
-      )}
-      {modal === "delivery" && (
-        <AssignModal
-          type="delivery"
-          currentId={order.delivery.id}
-          onConfirm={p => handleAssign("delivery", p)}
-          onClose={() => setModal(null)}
-        />
-      )}
-    </>
-  );
-}
-
-/* ── Sub-components ── */
-function DrawerSection({ title, children }) {
-  return (
-    <div className="od-section">
-      <div className="od-section-title">{title}</div>
-      {children}
+      </aside>
     </div>
   );
 }
-function Row({ label, val, full }) {
-  return (
-    <div className={`od-row${full ? " od-row-full" : ""}`}>
-      <span className="od-row-label">{label}</span>
-      <span className="od-row-val">{val}</span>
-    </div>
-  );
-}
-function BillRow({ label, val, bold, green }) {
-  return (
-    <div className={`od-bill-row${bold ? " od-bill-total" : ""}`}>
-      <span>{label}</span>
-      <span style={green ? { color: "#0c831f", fontWeight: 700 } : {}}>{val}</span>
-    </div>
-  );
-}
-function statusEmoji(s) {
-  return { Pending: "⏳", Processing: "🔄", Delivered: "✅", Cancelled: "❌" }[s] || "";
-}
-function activeStyle(s) {
-  const m = {
-    Pending:    { background: "#faedcc", color: "#e9c46a", borderColor: "#faedcc" },
-    Processing: { background: "#f5ebe0", color: "#ae2012", borderColor: "#e9d8bf" },
-    Delivered:  { background: "#d3ebd8", color: "#0c831f", borderColor: "#93d3a0" },
-    Cancelled:  { background: "#fbebe9", color: "#d32f2f", borderColor: "#f6d4ce" },
-  };
-  return m[s] || {};
-}
-
-const css = `
-  .od-backdrop { position:fixed; inset:0; background:rgba(45, 36, 30,0); z-index:1200; transition:background 0.28s ease; pointer-events:none; }
-  .od-backdrop-in { background:rgba(45, 36, 30,0.45); backdrop-filter:blur(2px); pointer-events:all; }
-
-  /* Drawer: above navbar (z-index 1201 beats typical navbar 1000-1100) */
-  .od-drawer {
-    position: fixed;
-    top: 0; right: 0;
-    width: min(480px, 100vw);
-    background: #fdfbf7;
-    z-index: 1201;
-    display: flex;
-    flex-direction: column;
-    height: 100dvh;
-    max-height: 100dvh;
-    overflow: hidden;
-    box-shadow: -8px 0 40px rgba(45, 36, 30,0.15);
-    transform: translateX(100%);
-    transition: transform 0.3s cubic-bezier(0.32,0.72,0,1);
-    border-left: 1px solid #e9d8bf;
-  }
-  .od-drawer-in { transform: translateX(0); }
-
-  /* Header: fixed, never scrolls */
-  .od-dh { display:flex; justify-content:space-between; align-items:center; padding:1.1rem 1.3rem 0.6rem; background:#fff; border-bottom:1px solid #e9d8bf; flex-shrink:0; flex-grow:0; }
-  .od-dh-left { display:flex; align-items:center; gap:10px; flex-wrap:wrap; }
-  .od-dh-id { font-family:'Sora',sans-serif; font-size:1.05rem; font-weight:800; color:#ae2012; letter-spacing:-0.01em; }
-  .od-dh-meta { padding:0.4rem 1.3rem 0.75rem; font-size:0.76rem; color:#a68b66; background:#fff; border-bottom:1px solid #f5ebe0; flex-shrink:0; flex-grow:0; }
-  .od-close-btn { width:32px; height:32px; display:flex; align-items:center; justify-content:center; background:#fdfbf7; border:none; border-radius:8px; font-size:0.9rem; color:#7d6b5d; cursor:pointer; transition:background 0.15s,color 0.15s; flex-shrink:0; }
-  .od-close-btn:hover { background:#fbebe9; color:#d32f2f; }
-
-  /* Body: takes remaining height, scrolls internally */
-  .od-body {
-    flex: 1 1 0;
-    min-height: 0;
-    overflow-y: auto;
-    overflow-x: hidden;
-    overscroll-behavior: contain;
-    padding: 1rem;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    scroll-snap-type: none;
-  }
-  .od-body::-webkit-scrollbar { width: 4px; }
-  .od-body::-webkit-scrollbar-track { background: transparent; }
-  .od-body::-webkit-scrollbar-thumb { background: #e9d8bf; border-radius: 99px; }
-  .od-body::-webkit-scrollbar-thumb:hover { background: #f5dfa6; }
-
-  .od-section { background:#fff; border-radius:14px; border:1px solid #e9d8bf; padding:1rem 1.1rem; box-shadow:0 1px 3px rgba(45, 36, 30,0.04); }
-  .od-section-title { font-family:'Sora',sans-serif; font-size:0.82rem; font-weight:700; color:#2d241e; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid #f5ebe0; }
-  .od-row { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; padding:0.38rem 0; border-bottom:1px solid #fdfbf7; font-size:0.83rem; }
-  .od-row:last-of-type { border-bottom:none; }
-  .od-row-full { flex-direction:column; gap:2px; }
-  .od-row-label { font-size:0.68rem; color:#a68b66; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; flex-shrink:0; padding-top:2px; }
-  .od-row-val { color:#4a3f35; font-weight:500; text-align:right; font-size:0.83rem; }
-  .od-row-full .od-row-val { text-align:left; font-size:0.8rem; color:#7d6b5d; }
-  .od-note { background:#fdf6e4; border:1px solid #faedcc; border-radius:8px; padding:0.4rem 0.7rem; font-size:0.75rem; color:#8a6420; margin-top:6px; }
-  .od-items { display:flex; flex-direction:column; margin-bottom:10px; }
-  .od-item-row { display:flex; align-items:center; gap:8px; padding:0.5rem 0; border-bottom:1px solid #f5ebe0; font-size:0.82rem; }
-  .od-item-row:last-child { border-bottom:none; }
-  .od-item-name { flex:1; color:#4a3f35; font-weight:500; }
-  .od-item-meta { color:#a68b66; font-size:0.74rem; white-space:nowrap; }
-  .od-item-total { font-weight:700; color:#2d241e; white-space:nowrap; min-width:60px; text-align:right; }
-  .od-bill { border-top:1px dashed #e9d8bf; padding-top:8px; display:flex; flex-direction:column; gap:4px; }
-  .od-bill-row { display:flex; justify-content:space-between; font-size:0.8rem; color:#7d6b5d; }
-  .od-bill-total { font-size:0.92rem; font-weight:800; color:#2d241e; border-top:1px solid #e9d8bf; padding-top:6px; margin-top:2px; }
-  .od-unassigned { font-size:0.8rem; color:#e9c46a; font-weight:600; margin-bottom:8px; }
-  .od-assign-btn { width:100%; padding:0.6rem; border:none; border-radius:9px; font-size:0.82rem; font-weight:700; font-family:inherit; cursor:pointer; margin-top:8px; transition:opacity 0.15s; }
-  .od-assign-btn:hover { opacity:0.85; }
-  .od-btn-blue  { background:#fdfbf7; color:#ae2012; }
-  .od-btn-green { background:#d3ebd8; color:#0c831f; }
-  .od-status-grid { display:grid; grid-template-columns:1fr 1fr; gap:7px; }
-  .od-status-btn { padding:0.55rem; border:1.5px solid #e9d8bf; border-radius:9px; background:#fff; color:#7d6b5d; font-size:0.78rem; font-weight:600; font-family:inherit; cursor:pointer; transition:all 0.15s; }
-  .od-status-btn:hover:not(.od-status-active) { background:#fdfbf7; border-color:#e9d8bf; }
-  @media (max-width: 520px) { .od-drawer { width:100vw; } }
-`;

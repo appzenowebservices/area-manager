@@ -32,6 +32,7 @@ const orderInclude = {
   items: true,
   address: true,
   deliveryStatus: { include: { assignedTo: true } },
+  statusHistory: true,
 } as const;
 
 async function ordersForManager(managerId: string) {

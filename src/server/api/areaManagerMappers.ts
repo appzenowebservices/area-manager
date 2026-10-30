@@ -80,6 +80,7 @@ export function mapOrder(order: any) {
     customer: {
       name: order.customer?.name ?? "Customer",
       phone: order.customer?.mobile ?? "",
+      email: order.customer?.email ?? "",
       address: [
         order.address?.street,
         order.address?.locality,
@@ -101,15 +102,42 @@ export function mapOrder(order: any) {
     })),
     finalAmount: order.grandTotal ?? 0,
     discount: order.discounts ?? 0,
+    subtotalAmount: order.subtotalAmount ?? 0,
+    taxes: order.taxes ?? 0,
+    discounts: order.discounts ?? 0,
+    deliveryCharge: order.deliveryCharge ?? 0,
+    surcharge: order.surcharge ?? 0,
+    platformFee: order.platformFee ?? 0,
+    deliveryPartnerFee: order.deliveryPartnerFee ?? 0,
+    totalQuantity: order.totalQuantity ?? 0,
     payment: PAYMENT_METHOD[order.paymentMethod] ?? order.paymentMethod ?? "—",
     paymentStatus:
       PAYMENT_STATUS[order.paymentStatus] ?? order.paymentStatus ?? "—",
+    rawPaymentMethod: order.paymentMethod,
+    rawPaymentStatus: order.paymentStatus,
     status: ORDER_STATUS[order.orderStatus] ?? order.orderStatus ?? "Pending",
     rawStatus: order.orderStatus,
+    statusHistory: (order.statusHistory ?? [])
+      .slice()
+      .sort(
+        (a: any, b: any) =>
+          new Date(a.timestamp).getTime() - new Date(b.timestamp).getTime(),
+      )
+      .map((entry: any) => ({
+        id: entry.id,
+        status: ORDER_STATUS[entry.status] ?? entry.status,
+        rawStatus: entry.status,
+        timestamp: entry.timestamp,
+        date: dateLabel(entry.timestamp),
+        time: timeLabel(entry.timestamp),
+        remarks: entry.remarks ?? "",
+        by: entry.updatedByRole ?? "System",
+      })),
     vendor: {
       id: order.vendor?.id ?? "",
       name: order.vendor?.name ?? "Unassigned",
       phone: order.vendor?.mobile ?? "",
+      email: order.vendor?.email ?? "",
     },
     delivery: {
       id: delivery?.assignedTo?.id ?? "",
