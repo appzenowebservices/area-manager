@@ -1,7 +1,7 @@
 import { Eye, IndianRupee } from "lucide-react";
 import { BrandBadge, statusTone } from "../brand/BrandBadge";
 
-function Avatar({ name, className = "h-9 w-9 rounded-xl text-xs" }) {
+function Avatar({ name, image, className = "h-9 w-9 rounded-xl text-xs" }) {
   return (
     <div
       className={`relative shrink-0 overflow-hidden border-2 border-secondary-900 bg-fresh-50 ${className}`}
@@ -9,6 +9,16 @@ function Avatar({ name, className = "h-9 w-9 rounded-xl text-xs" }) {
       <span className="absolute inset-0 grid place-items-center font-display font-black text-secondary-900">
         {name?.trim().charAt(0).toUpperCase() || "?"}
       </span>
+      {image ? (
+        <img
+          src={image}
+          alt=""
+          className="relative h-full w-full object-cover"
+          onError={(event) => {
+            event.currentTarget.style.display = "none";
+          }}
+        />
+      ) : null}
     </div>
   );
 }
@@ -104,7 +114,7 @@ export default function OrdersTable({ orders, onView }) {
                     </td>
                     <td className="whitespace-nowrap px-4 py-3">
                       <div className="flex items-center gap-2.5">
-                        <Avatar name={order.customer.name} />
+                        <Avatar name={order.customer.name} image={order.customer.image} />
                         <div className="min-w-0">
                           <p className="max-w-[150px] truncate text-sm font-bold text-secondary-900">
                             {order.customer.name}
@@ -153,6 +163,7 @@ export default function OrdersTable({ orders, onView }) {
                         <div className="flex items-center gap-2">
                           <Avatar
                             name={order.delivery.name}
+                            image={order.delivery.image}
                             className="h-7 w-7 rounded-lg text-[9px]"
                           />
                           <div>

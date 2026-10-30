@@ -4,18 +4,22 @@ import { useEffect, useState } from "react";
 import {
   Calendar,
   CheckCircle2,
+  Clock,
   CreditCard,
   Mail,
   MapPin,
   Package,
+  PackageCheck,
   Phone,
+  Receipt,
   Store,
   Truck,
   User,
+  UserCheck,
   X,
   XCircle,
 } from "lucide-react";
-import { BrandBadge, statusTone } from "../brand/BrandBadge";
+import { BrandBadge } from "../brand/BrandBadge";
 import { BrandButton } from "../brand/BrandButton";
 
 const formatCurrency = (value) =>
@@ -26,6 +30,79 @@ const formatCurrency = (value) =>
   }).format(value || 0);
 
 const STATUS_ACTIONS = ["Pending", "Processing", "Delivered", "Cancelled"];
+
+const clean = (value) => String(value ?? "unknown").replace(/_/g, " ");
+
+/** Same icon language as the super-admin order page. */
+function statusMeta(status) {
+  const value = String(status ?? "").toLowerCase().replace(/[\s_-]/g, "");
+
+  if (value === "delivered" || value === "confirmed") {
+    return {
+      icon: CheckCircle2,
+      tile: "border-fresh-200 bg-fresh-50 text-fresh-700",
+    };
+  }
+  if (value === "ready") {
+    return {
+      icon: PackageCheck,
+      tile: "border-fresh-200 bg-fresh-50 text-fresh-700",
+    };
+  }
+  if (value === "preparing" || value === "processing") {
+    return {
+      icon: Package,
+      tile: "border-accent-300 bg-accent-100 text-accent-700",
+    };
+  }
+  if (value === "created" || value === "pending") {
+    return {
+      icon: Clock,
+      tile: "border-accent-300 bg-accent-100 text-accent-700",
+    };
+  }
+  if (value === "checkedout" || value === "paid") {
+    return {
+      icon: Receipt,
+      tile: "border-accent-300 bg-accent-100 text-accent-700",
+    };
+  }
+  if (value === "assigned") {
+    return {
+      icon: UserCheck,
+      tile: "border-secondary-300 bg-secondary-100 text-secondary-700",
+    };
+  }
+  if (value === "arrivedatpickup") {
+    return {
+      icon: MapPin,
+      tile: "border-secondary-300 bg-secondary-100 text-secondary-700",
+    };
+  }
+  if (value === "pickedup") {
+    return {
+      icon: Package,
+      tile: "border-secondary-300 bg-secondary-100 text-secondary-700",
+    };
+  }
+  if (value === "outfordelivery") {
+    return {
+      icon: Truck,
+      tile: "border-secondary-300 bg-secondary-100 text-secondary-700",
+    };
+  }
+  if (value === "cancelled" || value === "failed" || value === "refunded") {
+    return {
+      icon: XCircle,
+      tile: "border-primary-300 bg-primary-50 text-primary-700",
+    };
+  }
+
+  return {
+    icon: Clock,
+    tile: "border-secondary-300 bg-secondary-100 text-secondary-700",
+  };
+}
 
 function Section({ title, icon: Icon, children }) {
   return (
@@ -54,10 +131,22 @@ function Row({ label, children }) {
   );
 }
 
-function Avatar({ name }) {
+function Avatar({ name, image }) {
   return (
     <div className="relative grid h-10 w-10 shrink-0 place-items-center overflow-hidden rounded-xl border-2 border-secondary-900 bg-fresh-50 font-display text-sm font-black text-secondary-900">
-      {name?.trim().charAt(0).toUpperCase() || "?"}
+      <span className="absolute inset-0 grid place-items-center">
+        {name?.trim().charAt(0).toUpperCase() || "?"}
+      </span>
+      {image ? (
+        <img
+          src={image}
+          alt=""
+          className="relative h-full w-full object-cover"
+          onError={(event) => {
+            event.currentTarget.style.display = "none";
+          }}
+        />
+      ) : null}
     </div>
   );
 }
@@ -95,6 +184,9 @@ export default function OrderDrawer({ order: initialOrder, onClose, onUpdate }) 
     onUpdate?.(updated);
   };
 
+  const headerMeta = statusMeta(order.rawStatus ?? order.status);
+  const HeaderIcon = headerMeta.icon;
+
   const subtotal = order.subtotalAmount ?? order.items.reduce(
     (sum, item) => sum + item.qty * item.price,
     0,
@@ -122,7 +214,11 @@ export default function OrderDrawer({ order: initialOrder, onClose, onUpdate }) 
               <span className="font-display text-base font-black text-primary-600">
                 {order.id}
               </span>
-              <BrandBadge tone={statusTone(order.status)}>{order.status}</BrandBadge>
+              <span
+                className={`inline-flex items-center gap-1 rounded-full border-2 px-2.5 py-1 text-[9px] font-black uppercase tracking-wider ${headerMeta.tile}`}
+              >
+                <HeaderIcon className="h-3 w-3" /> {clean(order.rawStatus ?? order.status)}
+              </span>
             </div>
             <p className="mt-1 flex flex-wrap items-center gap-x-3 gap-y-1 text-[10px] font-semibold text-secondary-500">
               <span className="inline-flex items-center gap-1">
@@ -145,7 +241,7 @@ export default function OrderDrawer({ order: initialOrder, onClose, onUpdate }) 
         <div className="min-h-0 flex-1 space-y-3 overflow-y-auto overscroll-contain p-4">
           <Section title="Customer" icon={User}>
             <div className="flex items-start gap-3">
-              <Avatar name={order.customer.name} />
+              <Avatar name={order.customer.name} image={order.customer.image} />
               <div className="min-w-0">
                 <p className="truncate text-sm font-bold text-secondary-900">
                   {order.customer.name}
@@ -185,9 +281,31 @@ export default function OrderDrawer({ order: initialOrder, onClose, onUpdate }) 
                   {order.items.map((item, index) => (
                     <tr key={`${item.name}-${index}`}>
                       <td className="px-3 py-2">
-                        <p className="truncate text-xs font-bold text-secondary-900">
-                          {item.name}
-                        </p>
+                        <div className="flex min-w-0 items-center gap-2">
+                          <span className="relative grid h-8 w-8 shrink-0 place-items-center overflow-hidden rounded-lg bg-secondary-100 text-secondary-600">
+                            <Package className="absolute h-3.5 w-3.5" />
+                            {item.image ? (
+                              <img
+                                src={item.image}
+                                alt=""
+                                className="relative h-full w-full object-cover"
+                                onError={(event) => {
+                                  event.currentTarget.style.display = "none";
+                                }}
+                              />
+                            ) : null}
+                          </span>
+                          <div className="min-w-0">
+                            <p className="truncate text-xs font-bold text-secondary-900">
+                              {item.name}
+                            </p>
+                            {item.variant ? (
+                              <p className="truncate text-[9px] text-secondary-500">
+                                {item.variant}
+                              </p>
+                            ) : null}
+                          </div>
+                        </div>
                       </td>
                       <td className="px-3 py-2 text-center">
                         <span className="inline-flex h-6 w-6 items-center justify-center rounded-full bg-secondary-900 text-[10px] font-black text-white">
@@ -244,7 +362,7 @@ export default function OrderDrawer({ order: initialOrder, onClose, onUpdate }) 
           <Section title="Delivery" icon={Truck}>
             {order.delivery.id ? (
               <div className="mb-2 flex items-center gap-2.5">
-                <Avatar name={order.delivery.name} />
+                <Avatar name={order.delivery.name} image={order.delivery.image} />
                 <div className="min-w-0">
                   <p className="truncate text-xs font-bold text-secondary-900">
                     {order.delivery.name}
@@ -267,26 +385,33 @@ export default function OrderDrawer({ order: initialOrder, onClose, onUpdate }) 
           <Section title={`Status history (${order.statusHistory?.length ?? 0})`} icon={CheckCircle2}>
             {order.statusHistory?.length ? (
               <ol className="space-y-2">
-                {order.statusHistory.map((entry) => (
-                  <li key={entry.id} className="flex gap-3">
-                    <span className="mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 border-secondary-200 bg-secondary-50">
-                      {entry.status === "Cancelled" ? (
-                        <XCircle className="h-3 w-3 text-primary-700" />
-                      ) : (
-                        <CheckCircle2 className="h-3 w-3 text-fresh-600" />
-                      )}
-                    </span>
-                    <div className="min-w-0">
-                      <p className="text-xs font-bold text-secondary-900">{entry.status}</p>
-                      <p className="text-[9px] font-semibold text-secondary-500">
-                        {entry.date} · {entry.time} · {entry.by}
-                      </p>
-                      {entry.remarks ? (
-                        <p className="mt-0.5 text-[11px] text-secondary-600">{entry.remarks}</p>
-                      ) : null}
-                    </div>
-                  </li>
-                ))}
+                {order.statusHistory.map((entry) => {
+                  const meta = statusMeta(entry.rawStatus ?? entry.status);
+                  const Icon = meta.icon;
+
+                  return (
+                    <li key={entry.id} className="flex gap-3">
+                      <span
+                        className={`mt-0.5 grid h-6 w-6 shrink-0 place-items-center rounded-full border-2 ${meta.tile}`}
+                      >
+                        <Icon className="h-3 w-3" />
+                      </span>
+                      <div className="min-w-0">
+                        <p className="text-xs font-bold capitalize text-secondary-900">
+                          {clean(entry.rawStatus ?? entry.status)}
+                        </p>
+                        <p className="text-[9px] font-semibold text-secondary-500">
+                          {entry.date} · {entry.time} · {entry.by}
+                        </p>
+                        {entry.remarks ? (
+                          <p className="mt-0.5 text-[11px] text-secondary-600">
+                            {entry.remarks}
+                          </p>
+                        ) : null}
+                      </div>
+                    </li>
+                  );
+                })}
               </ol>
             ) : (
               <p className="text-xs text-secondary-500">No status history recorded.</p>

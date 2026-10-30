@@ -81,6 +81,7 @@ export function mapOrder(order: any) {
       name: order.customer?.name ?? "Customer",
       phone: order.customer?.mobile ?? "",
       email: order.customer?.email ?? "",
+      image: order.customer?.image ?? "",
       address: [
         order.address?.street,
         order.address?.locality,
@@ -96,9 +97,13 @@ export function mapOrder(order: any) {
       order.address?.zipCode ||
       "—",
     items: (order.items ?? []).map((item: any) => ({
+      id: item.id,
       name: item.name ?? "Item",
+      variant: item.variant ?? "",
+      image: item.image ?? "",
       qty: item.quantity ?? 1,
       price: item.price ?? 0,
+      subtotal: item.subtotal ?? (item.price ?? 0) * (item.quantity ?? 1),
     })),
     finalAmount: order.grandTotal ?? 0,
     discount: order.discounts ?? 0,
@@ -143,6 +148,10 @@ export function mapOrder(order: any) {
       id: delivery?.assignedTo?.id ?? "",
       name: delivery?.assignedTo?.name ?? "Unassigned",
       phone: delivery?.assignedTo?.mobile ?? "",
+      image:
+        delivery?.assignedTo?.profileImage ??
+        delivery?.assignedTo?.avatar ??
+        "",
     },
     notes: typeof order.extraMeta?.notes === "string" ? order.extraMeta.notes : "",
     createdAt: order.createdAt,
