@@ -151,6 +151,40 @@ export const areaManagerDataRouter = createTRPCRouter({
         return mapOrder(order);
       }),
 
+    trip: protectedProcedure
+      .input(z.object({ orderId: z.string().min(1) }))
+      .query(async ({ ctx, input }) => {
+        const managerId = managerIdOf(ctx.session);
+        const order = (await ordersForManager(managerId)).find(
+          (row) => row.id === input.orderId || row.orderId === input.orderId,
+        );
+        if (!order) throw new TRPCError({ code: "NOT_FOUND", message: "Order not found." });
+
+        const trip = await db.trip.findFirst({ where: { order: order.id } });
+        if (!trip) return null;
+
+        return {
+          id: trip.id,
+          tripId: trip.tripId,
+          status: trip.status,
+          pickup: trip.pickupLocation,
+          delivery: trip.deliveryLocation,
+          current: trip.currentLocation,
+          routePath: trip.routePath,
+          assignedAt: trip.assignedAt,
+          acceptedAt: trip.acceptedAt,
+          pickupStartedAt: trip.pickupStartedAt,
+          pickedUpAt: trip.pickedUpAt,
+          deliveryStartedAt: trip.deliveryStartedAt,
+          deliveredAt: trip.deliveredAt,
+          cancelledAt: trip.cancelledAt,
+          estimatedDistanceKm: trip.estimatedDistanceKm,
+          actualDistanceKm: trip.actualDistanceKm,
+          estimatedDurationMin: trip.estimatedDurationMin,
+          actualDurationMin: trip.actualDurationMin,
+        };
+      }),
+
     updateStatus: protectedProcedure
       .input(z.object({ id: z.string().min(1), status: z.string().min(1) }))
       .mutation(async ({ ctx, input }) => {

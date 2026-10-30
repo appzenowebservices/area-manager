@@ -1,5 +1,6 @@
 "use client";
 
+import dynamic from "next/dynamic";
 import { useEffect, useState } from "react";
 import {
   Calendar,
@@ -21,6 +22,16 @@ import {
 } from "lucide-react";
 import { BrandBadge } from "../brand/BrandBadge";
 import { BrandButton } from "../brand/BrandButton";
+import { api } from "~/trpc/react";
+
+const TripMap = dynamic(() => import("./TripMap"), {
+  ssr: false,
+  loading: () => (
+    <div className="grid h-60 place-items-center rounded-2xl border-2 border-dashed border-secondary-200 text-xs font-semibold text-secondary-500">
+      Loading trip map…
+    </div>
+  ),
+});
 
 const formatCurrency = (value) =>
   new Intl.NumberFormat("en-IN", {
@@ -170,6 +181,12 @@ export default function OrderDrawer({ order: initialOrder, onClose, onUpdate }) 
       document.body.style.overflow = "";
     };
   }, [initialOrder]);
+
+  const { data: trip, isLoading: tripLoading } =
+    api.areaManagerData.orders.trip.useQuery(
+      { orderId: initialOrder?.dbId ?? initialOrder?.id ?? "" },
+      { enabled: Boolean(initialOrder?.dbId) },
+    );
 
   if (!order) return null;
 
@@ -382,6 +399,56 @@ export default function OrderDrawer({ order: initialOrder, onClose, onUpdate }) 
                 <MapPin className="h-3 w-3" /> {order.area}
               </span>
             </Row>
+          </Section>
+
+          <Section title="Trip map" icon={MapPin}>
+            {tripLoading ? (
+              <div className="grid h-60 place-items-center rounded-2xl border-2 border-dashed border-secondary-200 text-xs font-semibold text-secondary-500">
+                Loading trip map…
+              </div>
+            ) : trip ? (
+              <>
+                <TripMap trip={trip} />
+                <div className="mt-3 grid grid-cols-2 gap-2">
+                  <div className="rounded-xl border border-secondary-200 bg-secondary-50 px-3 py-2">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-secondary-500">
+                      Trip ID
+                    </p>
+                    <p className="mt-0.5 truncate text-[11px] font-bold text-secondary-900">
+                      {trip.tripId}
+                    </p>
+                  </div>
+                  <div className="rounded-xl border border-secondary-200 bg-secondary-50 px-3 py-2">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-secondary-500">
+                      Status
+                    </p>
+                    <p className="mt-0.5 text-[11px] font-bold capitalize text-secondary-900">
+                      {clean(trip.status)}
+                    </p>
+                  </div>
+                  <div className="rounded-xl border border-secondary-200 bg-secondary-50 px-3 py-2">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-secondary-500">
+                      Distance
+                    </p>
+                    <p className="mt-0.5 text-[11px] font-bold text-secondary-900">
+                      {trip.actualDistanceKm ?? trip.estimatedDistanceKm ?? 0} km
+                    </p>
+                  </div>
+                  <div className="rounded-xl border border-secondary-200 bg-secondary-50 px-3 py-2">
+                    <p className="text-[9px] font-black uppercase tracking-widest text-secondary-500">
+                      Duration
+                    </p>
+                    <p className="mt-0.5 text-[11px] font-bold text-secondary-900">
+                      {Math.round(trip.actualDurationMin ?? trip.estimatedDurationMin ?? 0)} min
+                    </p>
+                  </div>
+                </div>
+              </>
+            ) : (
+              <p className="text-xs text-secondary-500">
+                No trip recorded for this order.
+              </p>
+            )}
           </Section>
 
           <Section title={`Status history (${order.statusHistory?.length ?? 0})`} icon={CheckCircle2}>
