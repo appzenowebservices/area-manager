@@ -20,8 +20,20 @@ export default function DeliveryCard({ partner, onView }) {
     <div className="rounded-3xl border-2 border-secondary-900 bg-background-section p-4 shadow-[5px_5px_0px_var(--color-secondary-900)]">
       <div className="flex items-center justify-between gap-2">
         <div className="flex items-center gap-3">
-          <div className="flex h-10 w-10 shrink-0 items-center justify-center rounded-full border-2 border-secondary-900 bg-secondary-900 text-xs font-black text-accent-300">
-            {partner.avatar}
+          <div className="relative flex h-10 w-10 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-secondary-900 bg-secondary-900 text-xs font-black text-accent-300">
+            <span className="absolute inset-0 grid place-items-center">
+              {partner.avatar}
+            </span>
+            {partner.image ? (
+              <img
+                src={partner.image}
+                alt=""
+                className="relative h-full w-full object-cover"
+                onError={(event) => {
+                  event.currentTarget.style.display = "none";
+                }}
+              />
+            ) : null}
           </div>
           <div>
             <p className="text-sm font-bold text-secondary-900">{partner.name}</p>

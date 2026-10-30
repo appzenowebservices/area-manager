@@ -55,8 +55,20 @@ export default function DeliveryTable({ partners, onView }) {
                   <tr key={partner.id} className="transition-colors hover:bg-secondary-50">
                     <td className="whitespace-nowrap px-4 py-3">
                       <div className="flex items-center gap-3">
-                        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-full border-2 border-secondary-900 bg-secondary-900 text-xs font-black text-accent-300">
-                          {partner.avatar}
+                        <div className="relative flex h-9 w-9 shrink-0 items-center justify-center overflow-hidden rounded-full border-2 border-secondary-900 bg-secondary-900 text-xs font-black text-accent-300">
+                          <span className="absolute inset-0 grid place-items-center">
+                            {partner.avatar}
+                          </span>
+                          {partner.image ? (
+                            <img
+                              src={partner.image}
+                              alt=""
+                              className="relative h-full w-full object-cover"
+                              onError={(event) => {
+                                event.currentTarget.style.display = "none";
+                              }}
+                            />
+                          ) : null}
                         </div>
                         <div>
                           <p className="text-sm font-bold text-secondary-900">{partner.name}</p>

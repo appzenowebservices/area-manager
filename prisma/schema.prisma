@@ -565,6 +565,7 @@ model User {
   mobile       String @unique
   email        String @unique
   passwordHash String
+  image        String?
 
   dob    DateTime?
   gender Gender
@@ -589,6 +590,10 @@ model User {
   // Customer app stores this as a plain boolean (set when the e-mail link is
   // used). Vendors/DPs/managers use the channel Verification object.
   isVerified Boolean?
+  emailVerifiedAt DateTime?
+  emailVerifiedBy String?
+  emailVerificationSource String?
+  emailVerificationNote String?
   isActive   Boolean      @default(true)
   isDeleted  Boolean      @default(false)
 
@@ -871,6 +876,9 @@ model DeliveryPartner {
   role        Role                @relation(fields: [roleId], references: [id])
 
   fcmToken     String?
+  profileImage String?
+  isOnline     Boolean @default(false)
+  documents    Json?
   UPIid        String?
   referralCode String? @unique
 

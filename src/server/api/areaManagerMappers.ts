@@ -152,6 +152,7 @@ export function mapOrder(order: any) {
         delivery?.assignedTo?.profileImage ??
         delivery?.assignedTo?.avatar ??
         "",
+      isOnline: delivery?.assignedTo?.isOnline === true,
     },
     notes: typeof order.extraMeta?.notes === "string" ? order.extraMeta.notes : "",
     createdAt: order.createdAt,
@@ -269,6 +270,8 @@ export function mapDeliveryPartner(partner: any, stats: any) {
       .join("")
       .slice(0, 2)
       .toUpperCase(),
+    image: partner.profileImage ?? "",
+    isOnline: partner.isOnline === true,
     vehicle: partner.vehicleType || "—",
     vehicleNo: partner.vehicleRegNumber || "N/A",
     status: partner.isActive === false ? "Inactive" : "Available",

@@ -171,7 +171,7 @@ export default function OrdersTable({ orders, onView }) {
                               {order.delivery.name}
                             </p>
                             <p className="text-[9px] font-semibold text-secondary-400">
-                              Assigned
+                              {order.delivery.isOnline ? "Online" : "Offline"}
                             </p>
                           </div>
                         </div>

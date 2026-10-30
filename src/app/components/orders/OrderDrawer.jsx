@@ -367,7 +367,9 @@ export default function OrderDrawer({ order: initialOrder, onClose, onUpdate }) 
                   <p className="truncate text-xs font-bold text-secondary-900">
                     {order.delivery.name}
                   </p>
-                  <p className="text-[10px] text-secondary-500">{order.delivery.phone}</p>
+                  <p className="text-[10px] text-secondary-500">
+                    {order.delivery.phone} · {order.delivery.isOnline ? "Online" : "Offline"}
+                  </p>
                 </div>
               </div>
             ) : (
