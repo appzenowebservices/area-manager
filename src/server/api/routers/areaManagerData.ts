@@ -38,7 +38,7 @@ const orderInclude = {
 async function ordersForManager(managerId: string) {
   const { vendorIds } = await getScopedVendorIds(managerId);
   return db.order.findMany({
-    where: { vendorId: { in: vendorIds } },
+    where: { OR: [{ areaManagerId: managerId }, { vendorId: { in: vendorIds } }] },
     include: orderInclude,
     orderBy: { createdAt: "desc" },
     take: 500,
@@ -52,7 +52,7 @@ export const areaManagerDataRouter = createTRPCRouter({
       const { manager, vendorIds } = await getScopedVendorIds(managerId);
 
       const orders = await db.order.findMany({
-        where: { vendorId: { in: vendorIds } },
+        where: { OR: [{ areaManagerId: managerId }, { vendorId: { in: vendorIds } }] },
         include: orderInclude,
         orderBy: { createdAt: "desc" },
         take: 500,
@@ -577,7 +577,7 @@ export const areaManagerDataRouter = createTRPCRouter({
       const { vendorIds } = await getScopedVendorIds(managerId);
       const [orders, config] = await Promise.all([
         db.order.findMany({
-          where: { vendorId: { in: vendorIds }, isCancelled: false },
+          where: { OR: [{ areaManagerId: managerId }, { vendorId: { in: vendorIds } }], isCancelled: false },
           include: orderInclude,
           orderBy: { createdAt: "desc" },
           take: 500,
@@ -674,7 +674,7 @@ export const areaManagerDataRouter = createTRPCRouter({
     const [orders, complaints] = await Promise.all([
       db.order.count({
         where: {
-          vendorId: { in: vendorIds },
+          OR: [{ areaManagerId: managerId }, { vendorId: { in: vendorIds } }],
           orderStatus: { in: ["created", "confirmed", "preparing", "ready"] },
         },
       }),

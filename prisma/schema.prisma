@@ -680,6 +680,12 @@ model Order {
   vendorId   String @db.ObjectId
   vendor     Vendor @relation(fields: [vendorId], references: [id])
 
+  // Area-manager routing snapshot (see shared areaRouting service).
+  areaManagerId String? @db.ObjectId
+  areaManagerAssignmentMethod String?
+  areaManagerAssignedAt DateTime?
+  areaManagerAssignmentReason String?
+
   // 🛒 Items
   items          OrderItem[]
   addressId      String      @db.ObjectId
