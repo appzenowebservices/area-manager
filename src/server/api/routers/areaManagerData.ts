@@ -307,12 +307,64 @@ export const areaManagerDataRouter = createTRPCRouter({
         if (!vendorIds.includes(input.id)) {
           throw new TRPCError({ code: "NOT_FOUND", message: "Vendor not found." });
         }
-        const vendor = await db.vendor.findUnique({
-          where: { id: input.id },
-          include: { Store: true, documents: true },
-        });
+
+        const [vendor, config] = await Promise.all([
+          db.vendor.findUnique({
+            where: { id: input.id },
+            include: { Store: true, documents: true },
+          }),
+          db.platformConfig.findFirst(),
+        ]);
         if (!vendor) throw new TRPCError({ code: "NOT_FOUND" });
-        return mapVendor(vendor, { totalOrders: 0, ordersThisWeek: 0, revenue: 0 }, 10);
+
+        const orders = await db.order.findMany({
+          where: { vendorId: input.id },
+          include: orderInclude,
+          orderBy: { createdAt: "desc" },
+          take: 100,
+        });
+        const mappedOrders = orders.map(mapOrder);
+        const activeOrders = mappedOrders.filter(
+          (order) => order.status !== "Cancelled",
+        );
+        const weekStart = new Date();
+        weekStart.setDate(weekStart.getDate() - 7);
+        const commissionPct = Math.round((config?.vendorMargin ?? 0.1) * 100);
+
+        return {
+          vendor: mapVendor(
+            vendor,
+            {
+              totalOrders: mappedOrders.length,
+              ordersThisWeek: mappedOrders.filter(
+                (order) => new Date(order.createdAt) >= weekStart,
+              ).length,
+              revenue: activeOrders.reduce(
+                (sum, order) => sum + order.finalAmount,
+                0,
+              ),
+            },
+            commissionPct,
+          ),
+          orders: mappedOrders,
+          documents: (vendor.documents ?? []).map((document: any) => ({
+            id: document.id,
+            type: document.type,
+            fileUrl: document.fileUrl,
+            verified: document.verified === true,
+          })),
+          store: vendor.Store?.[0]
+            ? {
+                id: vendor.Store[0].id,
+                name: vendor.Store[0].name,
+                mobile: vendor.Store[0].mobile,
+                address: vendor.Store[0].address,
+                ratings: vendor.Store[0].ratings,
+                operatingHours: vendor.Store[0].operating_hours,
+                status: vendor.Store[0].status,
+              }
+            : null,
+        };
       }),
 
     setActive: protectedProcedure

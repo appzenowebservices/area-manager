@@ -1,345 +1,407 @@
-// src/components/vendors/VendorDrawer.jsx
-import { useState, useEffect, useRef } from "react";
-import VendorStatusBadge from "./VendorStatusBadge";
+"use client";
 
-/**
- * VendorDrawer — Slide-in panel showing full vendor detail
- * Props: vendor object|null, onClose fn, onUpdate fn(updatedVendor)
- */
-export default function VendorDrawer({ vendor: initialVendor, onClose, onUpdate }) {
-  const [vendor,  setVendor]  = useState(null);
+import { useEffect, useState } from "react";
+import {
+  BadgeCheck,
+  CheckCircle2,
+  Clock,
+  FileText,
+  IndianRupee,
+  LayoutDashboard,
+  Mail,
+  MapPin,
+  Package,
+  Phone,
+  ShoppingBag,
+  Star,
+  Store,
+  User,
+  X,
+} from "lucide-react";
+import { BrandBadge } from "../brand/BrandBadge";
+import { api } from "~/trpc/react";
+
+const TABS = [
+  { id: "overview", label: "Overview", icon: LayoutDashboard },
+  { id: "orders", label: "Orders", icon: ShoppingBag },
+  { id: "business", label: "Business", icon: Store },
+  { id: "store", label: "Store", icon: Store },
+  { id: "documents", label: "Documents", icon: FileText },
+];
+
+const statusTone = (status) => {
+  if (status === "Active") return "fresh";
+  if (status === "Inactive") return "primary";
+  if (status === "Pending KYC") return "accent";
+  return "neutral";
+};
+
+const formatMoney = (value) =>
+  `₹${Number(value ?? 0).toLocaleString("en-IN")}`;
+
+const docLabel = (value) =>
+  String(value ?? "document")
+    .replace(/[_-]/g, " ")
+    .replace(/\b\w/g, (char) => char.toUpperCase());
+
+function Row({ label, children }) {
+  return (
+    <div className="flex items-start justify-between gap-4 border-b border-secondary-100 py-2 text-xs last:border-0">
+      <span className="shrink-0 pt-0.5 text-[9px] font-black uppercase tracking-wider text-secondary-500">
+        {label}
+      </span>
+      <span className="min-w-0 break-words text-right font-semibold text-secondary-800">
+        {children || "—"}
+      </span>
+    </div>
+  );
+}
+
+function Stat({ label, value, icon: Icon, tone = "text-primary-600" }) {
+  return (
+    <div className="rounded-2xl border-2 border-secondary-900 bg-background-section px-3.5 py-3 shadow-[4px_4px_0px_var(--color-secondary-900)]">
+      <div className="flex items-center justify-between gap-2">
+        <p className={`font-display text-xl font-black leading-none ${tone}`}>
+          {value}
+        </p>
+        <Icon className={`h-4 w-4 ${tone}`} />
+      </div>
+      <p className="mt-1 text-[9px] font-black uppercase tracking-[0.14em] text-secondary-600">
+        {label}
+      </p>
+    </div>
+  );
+}
+
+export default function VendorDrawer({ vendor: initialVendor, onClose }) {
+  const [vendor, setVendor] = useState(null);
   const [visible, setVisible] = useState(false);
-  const [editing, setEditing] = useState(false);
-  const [editData, setEditData] = useState({});
-  const bodyRef = useRef(null);
+  const [activeTab, setActiveTab] = useState("overview");
 
   useEffect(() => {
     if (initialVendor) {
       setVendor(initialVendor);
-      setEditing(false);
-      if (bodyRef.current) bodyRef.current.scrollTop = 0;
+      setActiveTab("overview");
       requestAnimationFrame(() => setVisible(true));
       document.body.style.overflow = "hidden";
     } else {
       setVisible(false);
-      const t = setTimeout(() => setVendor(null), 300);
+      const timer = setTimeout(() => setVendor(null), 250);
       document.body.style.overflow = "";
-      return () => clearTimeout(t);
+      return () => clearTimeout(timer);
     }
-    return () => { document.body.style.overflow = ""; };
+    return () => {
+      document.body.style.overflow = "";
+    };
   }, [initialVendor]);
+
+  const { data, isLoading } = api.areaManagerData.vendors.byId.useQuery(
+    { id: initialVendor?.id ?? "" },
+    { enabled: Boolean(initialVendor?.id) },
+  );
 
   if (!vendor) return null;
 
+  const detail = data?.vendor ?? vendor;
+  const orders = data?.orders ?? [];
+  const documents = data?.documents ?? [];
+  const store = data?.store ?? null;
+  const kycFields = Object.entries(vendor.documents ?? {});
+
   const handleClose = () => {
     setVisible(false);
-    setTimeout(onClose, 300);
+    setTimeout(onClose, 250);
   };
 
-  const handleStatusChange = (newStatus) => {
-    const updated = { ...vendor, status: newStatus };
-    setVendor(updated);
-    onUpdate?.(updated);
-  };
-
-  const handleEditSave = () => {
-    const updated = { ...vendor, ...editData };
-    setVendor(updated);
-    onUpdate?.(updated);
-    setEditing(false);
-    setEditData({});
-  };
-
-  const startEdit = () => {
-    setEditData({
-      commission: vendor.commission,
-      notes: vendor.notes,
-      phone: vendor.phone,
-    });
-    setEditing(true);
-  };
-
-  const docCount = Object.values(vendor.documents).filter(Boolean).length;
-  const docTotal = Object.keys(vendor.documents).length;
-
-  return (
-    <>
-      <style>{css}</style>
-
-      <div className={`vd-backdrop${visible ? " vd-backdrop-in" : ""}`} onClick={handleClose} />
-
-      <div className={`vd-drawer${visible ? " vd-drawer-in" : ""}`}>
-
-        {/* Header */}
-        <div className="vd-dh">
-          <div className="vd-dh-left">
-            <div className="vd-dh-avatar" style={{ background: avatarBg(vendor.category) }}>
-              {vendor.name.charAt(0)}
-            </div>
-            <div>
-              <div className="vd-dh-name">{vendor.name}</div>
-              <div className="vd-dh-id">{vendor.id} &nbsp;·&nbsp; {vendor.category}</div>
-            </div>
+  const tabContent = {
+    overview: (
+      <div className="space-y-4">
+        <section className="rounded-2xl border border-secondary-200 bg-background-section p-4">
+          <h3 className="mb-2 border-b border-secondary-100 pb-2 font-display text-[11px] font-black uppercase tracking-widest text-secondary-900">
+            Owner details
+          </h3>
+          <Row label="Name">{detail.ownerName}</Row>
+          <Row label="Phone">{detail.phone ? `📞 ${detail.phone}` : "—"}</Row>
+          <Row label="Email">{detail.email || "—"}</Row>
+          <Row label="Area">📍 {detail.area}</Row>
+          <Row label="Address">{detail.address}</Row>
+        </section>
+        <section className="rounded-2xl border border-secondary-200 bg-background-section p-4">
+          <h3 className="mb-2 border-b border-secondary-100 pb-2 font-display text-[11px] font-black uppercase tracking-widest text-secondary-900">
+            Account
+          </h3>
+          <Row label="Category">{detail.category}</Row>
+          <Row label="Commission">{detail.commission}%</Row>
+          <Row label="KYC">{detail.kyc}</Row>
+          <Row label="Joined">{detail.joinDate}</Row>
+          <Row label="Rating">
+            {detail.rating > 0 ? (
+              <span className="inline-flex items-center gap-1">
+                <Star className="h-3 w-3 fill-accent-400 text-accent-400" />
+                {detail.rating.toFixed(1)}
+              </span>
+            ) : (
+              "—"
+            )}
+          </Row>
+        </section>
+      </div>
+    ),
+    orders: (
+      <div className="overflow-hidden rounded-2xl border-2 border-secondary-900">
+        <table className="w-full min-w-[560px] border-collapse text-sm">
+          <thead>
+            <tr className="bg-secondary-900 text-left text-[9px] font-black uppercase tracking-[0.12em] text-accent-300">
+              {["Order", "Customer", "Amount", "Status", "Date"].map((heading) => (
+                <th key={heading} className="px-3 py-2.5">
+                  {heading}
+                </th>
+              ))}
+            </tr>
+          </thead>
+          <tbody className="divide-y divide-secondary-100">
+            {orders.length === 0 ? (
+              <tr>
+                <td colSpan={5} className="px-3 py-10 text-center text-xs text-secondary-500">
+                  No orders recorded for this vendor.
+                </td>
+              </tr>
+            ) : (
+              orders.map((order) => (
+                <tr key={order.id} className="hover:bg-secondary-50">
+                  <td className="whitespace-nowrap px-3 py-2.5 text-[11px] font-black text-primary-600">
+                    {order.id}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-2.5 text-xs font-bold text-secondary-800">
+                    {order.customer.name}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-2.5 font-display text-xs font-black text-secondary-900">
+                    {formatMoney(order.finalAmount)}
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-2.5">
+                    <BrandBadge tone={order.status === "Cancelled" ? "primary" : order.status === "Delivered" ? "fresh" : "accent"}>
+                      {order.status}
+                    </BrandBadge>
+                  </td>
+                  <td className="whitespace-nowrap px-3 py-2.5 text-[10px] font-semibold text-secondary-500">
+                    {order.date}
+                  </td>
+                </tr>
+              ))
+            )}
+          </tbody>
+        </table>
+      </div>
+    ),
+    business: (
+      <section className="rounded-2xl border border-secondary-200 bg-background-section p-4">
+        <h3 className="mb-2 border-b border-secondary-100 pb-2 font-display text-[11px] font-black uppercase tracking-widest text-secondary-900">
+          Business details
+        </h3>
+        <Row label="Business category">{detail.category}</Row>
+        <Row label="Commission">{detail.commission}%</Row>
+        <Row label="This week">{detail.ordersThisWeek} orders</Row>
+        <Row label="Total orders">{detail.totalOrders}</Row>
+        <Row label="Revenue">{detail.revenue}</Row>
+        <Row label="KYC status">{detail.kyc}</Row>
+        <Row label="Store">{store?.name || "—"}</Row>
+      </section>
+    ),
+    store: (
+      <section className="rounded-2xl border border-secondary-200 bg-background-section p-4">
+        <h3 className="mb-2 border-b border-secondary-100 pb-2 font-display text-[11px] font-black uppercase tracking-widest text-secondary-900">
+          Store
+        </h3>
+        {store ? (
+          <>
+            <Row label="Name">{store.name}</Row>
+            <Row label="Mobile">{store.mobile}</Row>
+            <Row label="Address">
+              {[
+                store.address?.street,
+                store.address?.locality,
+                store.address?.city,
+                store.address?.pincode,
+              ]
+                .filter(Boolean)
+                .join(", ")}
+            </Row>
+            <Row label="Rating">
+              {store.ratings?.average
+                ? `${store.ratings.average} / 5 (${store.ratings.total_reviews ?? 0})`
+                : "—"}
+            </Row>
+            <Row label="Hours">
+              {store.operatingHours
+                ? `${store.operatingHours.open} – ${store.operatingHours.close}`
+                : "—"}
+            </Row>
+            <Row label="Open">
+              {store.status?.isOpen === true ? "Open" : "Closed"}
+            </Row>
+          </>
+        ) : (
+          <p className="text-xs text-secondary-500">No store record linked.</p>
+        )}
+      </section>
+    ),
+    documents: (
+      <section className="rounded-2xl border border-secondary-200 bg-background-section p-4">
+        <h3 className="mb-3 border-b border-secondary-100 pb-2 font-display text-[11px] font-black uppercase tracking-widest text-secondary-900">
+          Documents
+        </h3>
+        {documents.length > 0 ? (
+          <div className="space-y-2">
+            {documents.map((document) => (
+              <a
+                key={document.id}
+                href={document.fileUrl}
+                target="_blank"
+                rel="noreferrer"
+                className="flex items-center justify-between gap-3 rounded-xl border-2 border-secondary-200 bg-secondary-50 px-3 py-2.5 transition-colors hover:border-secondary-900"
+              >
+                <span className="flex items-center gap-2 text-xs font-bold text-secondary-900">
+                  <FileText className="h-4 w-4 text-primary-600" />
+                  {docLabel(document.type)}
+                </span>
+                <span className="inline-flex items-center gap-1 text-[10px] font-black uppercase tracking-widest">
+                  {document.verified ? (
+                    <span className="text-fresh-600">
+                      <CheckCircle2 className="inline h-3.5 w-3.5" /> Verified
+                    </span>
+                  ) : (
+                    <span className="text-accent-600">
+                      <Clock className="inline h-3.5 w-3.5" /> Pending
+                    </span>
+                  )}
+                </span>
+              </a>
+            ))}
           </div>
-          <button className="vd-close-btn" onClick={handleClose} aria-label="Close">✕</button>
-        </div>
-        <div className="vd-dh-meta">
-          <VendorStatusBadge status={vendor.status} size="sm" />
-          &nbsp;&nbsp;
-          <span style={{ fontSize: "0.74rem", color: "#a68b66" }}>Joined {vendor.joinDate}</span>
-        </div>
-
-        {/* Body */}
-        <div className="vd-body" ref={bodyRef}>
-
-          {/* Quick Stats */}
-          <div className="vd-stats-row">
-            {[
-              { label: "Total Orders", val: vendor.totalOrders, color: "#ae2012" },
-              { label: "Revenue",      val: vendor.revenue,     color: "#0c831f" },
-              { label: "Rating",       val: vendor.rating > 0 ? `⭐ ${vendor.rating}` : "—", color: "#e9c46a" },
-              { label: "Avg Delivery", val: vendor.avgDeliveryTime, color: "#7d6b5d" },
-            ].map(s => (
-              <div key={s.label} className="vd-stat-chip">
-                <div className="vd-stat-val" style={{ color: s.color }}>{s.val}</div>
-                <div className="vd-stat-label">{s.label}</div>
+        ) : kycFields.length ? (
+          <div className="grid grid-cols-2 gap-2">
+            {kycFields.map(([key, ok]) => (
+              <div
+                key={key}
+                className={`rounded-xl border-2 px-3 py-2 text-xs font-bold ${
+                  ok
+                    ? "border-fresh-200 bg-fresh-50 text-fresh-700"
+                    : "border-primary-200 bg-primary-50 text-primary-700"
+                }`}
+              >
+                {ok ? "✓" : "✗"} {docLabel(key)}
               </div>
             ))}
           </div>
+        ) : (
+          <p className="text-xs text-secondary-500">No documents uploaded.</p>
+        )}
+      </section>
+    ),
+  };
 
-          {/* Owner Info */}
-          <Section title="👤 Owner Details">
-            <Row label="Owner Name" val={vendor.ownerName} />
-            {editing ? (
-              <div className="vd-edit-row">
-                <span className="vd-row-label">PHONE</span>
-                <input className="vd-edit-input" value={editData.phone} onChange={e => setEditData(p => ({ ...p, phone: e.target.value }))} />
-              </div>
-            ) : (
-              <Row label="Phone" val={`📞 ${vendor.phone}`} />
-            )}
-            {vendor.altPhone && <Row label="Alt Phone" val={`📞 ${vendor.altPhone}`} />}
-            {vendor.email && <Row label="Email" val={`✉️ ${vendor.email}`} />}
-            <Row label="Area" val={`📍 ${vendor.area}`} />
-            <Row label="Address" val={vendor.address} full />
-          </Section>
-
-          {/* Business Info */}
-          <Section title="🏪 Business Details">
-            <Row label="Category" val={vendor.category} />
-            {editing ? (
-              <div className="vd-edit-row">
-                <span className="vd-row-label">COMMISSION</span>
-                <div style={{ display: "flex", alignItems: "center", gap: 6 }}>
-                  <input className="vd-edit-input" style={{ width: 70 }} type="number" value={editData.commission} onChange={e => setEditData(p => ({ ...p, commission: Number(e.target.value) }))} />
-                  <span style={{ fontSize: "0.8rem", color: "#7d6b5d" }}>%</span>
-                </div>
-              </div>
-            ) : (
-              <Row label="Commission" val={<span style={{ color: "#4a5d23", fontWeight: 700 }}>{vendor.commission}%</span>} />
-            )}
-            <Row label="This Week" val={`${vendor.ordersThisWeek} orders`} />
-            <Row label="Avg Delivery" val={vendor.avgDeliveryTime} />
-          </Section>
-
-          {/* KYC & Documents */}
-          <Section title={`📄 KYC & Documents (${docCount}/${docTotal})`}>
-            <div className="vd-kyc-status">
-              <span className={vendor.kyc === "Verified" ? "vd-kyc-badge-ok" : "vd-kyc-badge-pending"}>
-                {vendor.kyc === "Verified" ? "✓ KYC Verified" : "⏳ KYC Pending"}
-              </span>
+  return (
+    <div
+      className={`fixed inset-0 z-[2000] bg-secondary-950/45 backdrop-blur-[2px] transition-opacity ${
+        visible ? "opacity-100" : "opacity-0"
+      }`}
+      onClick={handleClose}
+    >
+      <aside
+        role="dialog"
+        aria-modal="true"
+        aria-label={`Vendor details ${detail.name}`}
+        onClick={(event) => event.stopPropagation()}
+        className={`ml-auto flex h-full w-full max-w-[980px] flex-col overflow-hidden border-l-2 border-secondary-900 bg-background shadow-2xl transition-transform duration-300 ${
+          visible ? "translate-x-0" : "translate-x-full"
+        }`}
+      >
+        {/* Header */}
+        <header className="flex shrink-0 items-start justify-between gap-4 border-b-2 border-secondary-900 bg-background-section px-5 py-4">
+          <div className="flex min-w-0 items-center gap-3">
+            <div className="grid h-11 w-11 shrink-0 place-items-center rounded-2xl border-2 border-secondary-900 bg-primary-600 font-display text-lg font-black text-white">
+              {detail.name?.charAt(0)?.toUpperCase() || "V"}
             </div>
-            <div className="vd-docs-grid">
-              {Object.entries(vendor.documents).map(([doc, ok]) => (
-                <div key={doc} className={`vd-doc-chip ${ok ? "vd-doc-ok" : "vd-doc-missing"}`}>
-                  {ok ? "✓" : "✗"} {docLabels[doc]}
-                </div>
-              ))}
+            <div className="min-w-0">
+              <div className="flex flex-wrap items-center gap-2">
+                <h2 className="truncate font-display text-lg font-black text-secondary-900">
+                  {detail.name}
+                </h2>
+                <BrandBadge tone={statusTone(detail.status)}>{detail.status}</BrandBadge>
+                <BrandBadge tone={detail.kyc === "Verified" ? "fresh" : "accent"}>
+                  <BadgeCheck className="h-3 w-3" /> {detail.kyc}
+                </BrandBadge>
+              </div>
+              <p className="mt-0.5 truncate text-[11px] font-semibold text-secondary-500">
+                {detail.id} · {detail.category} · Joined {detail.joinDate}
+              </p>
             </div>
-            {vendor.kyc !== "Verified" && (
-              <button className="vd-action-btn vd-btn-yellow" style={{ marginTop: 10 }}>
-                📤 Request Documents
-              </button>
-            )}
-          </Section>
+          </div>
+          <button
+            onClick={handleClose}
+            aria-label="Close vendor details"
+            className="grid h-9 w-9 shrink-0 place-items-center rounded-xl border-2 border-secondary-200 bg-background text-secondary-500 transition-colors hover:border-primary-300 hover:text-primary-600"
+          >
+            <X className="h-4 w-4" />
+          </button>
+        </header>
 
-          {/* Notes */}
-          <Section title="📝 Notes">
-            {editing ? (
-              <textarea
-                className="vd-edit-textarea"
-                value={editData.notes}
-                onChange={e => setEditData(p => ({ ...p, notes: e.target.value }))}
-                placeholder="Add notes about this vendor..."
-                rows={3}
-              />
-            ) : (
-              vendor.notes
-                ? <div className="vd-note-text">{vendor.notes}</div>
-                : <div className="vd-no-notes">No notes added.</div>
-            )}
-          </Section>
+        {/* Stats */}
+        <div className="grid shrink-0 grid-cols-2 gap-2.5 border-b-2 border-secondary-100 bg-background p-4 sm:grid-cols-4">
+          <Stat label="Total orders" value={detail.totalOrders} icon={ShoppingBag} />
+          <Stat label="Revenue" value={detail.revenue} icon={IndianRupee} tone="text-fresh-600" />
+          <Stat
+            label="Rating"
+            value={detail.rating > 0 ? detail.rating.toFixed(1) : "—"}
+            icon={Star}
+            tone="text-accent-600"
+          />
+          <Stat label="Commission" value={`${detail.commission}%`} icon={Package} tone="text-mehndi-700" />
+        </div>
 
-          {/* Status Change */}
-          <Section title="🔄 Change Status">
-            <div className="vd-status-grid">
-              {["Active", "Inactive", "Pending KYC"].map(s => (
+        {/* Tab shell */}
+        <div className="flex min-h-0 flex-1 flex-col lg:flex-row">
+          <nav className="flex shrink-0 gap-2 overflow-x-auto border-b-2 border-secondary-100 bg-secondary-50 p-3 lg:w-56 lg:flex-col lg:overflow-visible lg:border-b-0 lg:border-r-2 lg:p-4">
+            {TABS.map((tab) => {
+              const Icon = tab.icon;
+              const active = activeTab === tab.id;
+              return (
                 <button
-                  key={s}
-                  className={`vd-status-btn${vendor.status === s ? " vd-status-active" : ""}`}
-                  style={vendor.status === s ? activeStyle(s) : {}}
-                  onClick={() => handleStatusChange(s)}
+                  key={tab.id}
+                  onClick={() => setActiveTab(tab.id)}
+                  className={`flex shrink-0 items-center gap-2.5 whitespace-nowrap rounded-xl border-2 px-3 py-2.5 text-xs font-black transition-all lg:w-full ${
+                    active
+                      ? "border-secondary-900 bg-primary-600 text-white shadow-[3px_3px_0px_var(--color-accent-400)]"
+                      : "border-transparent bg-background-section text-secondary-600 hover:border-secondary-300"
+                  }`}
                 >
-                  {statusEmoji(s)} {s}
+                  <Icon className="h-4 w-4 shrink-0" />
+                  {tab.label}
+                  {tab.id === "orders" && (
+                    <span
+                      className={`ml-auto rounded-full px-1.5 py-0.5 text-[9px] ${
+                        active ? "bg-white/20 text-white" : "bg-secondary-100 text-secondary-600"
+                      }`}
+                    >
+                      {orders.length}
+                    </span>
+                  )}
                 </button>
-              ))}
-            </div>
-          </Section>
+              );
+            })}
+          </nav>
 
-          {/* Action Buttons */}
-          <div className="vd-actions">
-            {editing ? (
-              <>
-                <button className="vd-action-btn vd-btn-green" onClick={handleEditSave}>✓ Save Changes</button>
-                <button className="vd-action-btn vd-btn-gray" onClick={() => setEditing(false)}>✕ Cancel</button>
-              </>
+          <div className="min-h-0 flex-1 overflow-y-auto overscroll-contain p-4 sm:p-5">
+            {isLoading ? (
+              <div className="grid min-h-[240px] place-items-center rounded-2xl border-2 border-dashed border-secondary-200 text-xs font-semibold text-secondary-500">
+                Loading vendor details…
+              </div>
             ) : (
-              <>
-                <button className="vd-action-btn vd-btn-blue" onClick={startEdit}>✏️ Edit Vendor</button>
-                <button className="vd-action-btn vd-btn-red">🗑 Remove Vendor</button>
-              </>
+              tabContent[activeTab]
             )}
           </div>
-
         </div>
-      </div>
-    </>
-  );
-}
-
-/* Sub-components */
-function Section({ title, children }) {
-  return (
-    <div className="vd-section">
-      <div className="vd-section-title">{title}</div>
-      {children}
+      </aside>
     </div>
   );
 }
-function Row({ label, val, full }) {
-  return (
-    <div className={`vd-row${full ? " vd-row-full" : ""}`}>
-      <span className="vd-row-label">{label}</span>
-      <span className="vd-row-val">{val}</span>
-    </div>
-  );
-}
-
-function avatarBg(category) {
-  const m = {
-    "Grocery": "linear-gradient(135deg,#ae2012,#2d241e)",
-    "Dairy": "linear-gradient(135deg,#2196f3,#2196f3)",
-    "Bakery": "linear-gradient(135deg,#e9c46a,#a67a22)",
-    "Meat & Fish": "linear-gradient(135deg,#d32f2f,#8b150e)",
-    "Fruits & Vegetables": "linear-gradient(135deg,#0c831f,#0a671a)",
-    "Pharmacy": "linear-gradient(135deg,#4a5d23,#4a5d23)",
-    "General Store": "linear-gradient(135deg,#7d6b5d,#4a3f35)",
-  };
-  return m[category] || "linear-gradient(135deg,#a68b66,#7d6b5d)";
-}
-
-const docLabels = { aadhaar: "Aadhaar", pan: "PAN", gst: "GST", fssai: "FSSAI" };
-
-function statusEmoji(s) {
-  return { Active: "✅", Inactive: "❌", "Pending KYC": "⏳" }[s] || "";
-}
-function activeStyle(s) {
-  return {
-    Active:        { background: "#d3ebd8", color: "#0c831f", borderColor: "#93d3a0" },
-    Inactive:      { background: "#fbebe9", color: "#d32f2f", borderColor: "#f6d4ce" },
-    "Pending KYC": { background: "#faedcc", color: "#e9c46a", borderColor: "#faedcc" },
-  }[s] || {};
-}
-
-const css = `
-  .vd-backdrop { position:fixed; inset:0; background:rgba(45, 36, 30,0); z-index:1200; transition:background 0.28s ease; pointer-events:none; }
-  .vd-backdrop-in { background:rgba(45, 36, 30,0.45); backdrop-filter:blur(2px); pointer-events:all; }
-
-  .vd-drawer {
-    position:fixed; top:0; right:0;
-    width:min(500px,100vw);
-    background:#fdfbf7;
-    z-index:1201;
-    display:flex; flex-direction:column;
-    height:100dvh; max-height:100dvh;
-    overflow:hidden;
-    box-shadow:-8px 0 40px rgba(45, 36, 30,0.15);
-    transform:translateX(100%);
-    transition:transform 0.3s cubic-bezier(0.32,0.72,0,1);
-    border-left:1px solid #e9d8bf;
-  }
-  .vd-drawer-in { transform:translateX(0); }
-
-  .vd-dh { display:flex; justify-content:space-between; align-items:center; padding:1rem 1.3rem 0.6rem; background:#fff; border-bottom:1px solid #e9d8bf; flex-shrink:0; }
-  .vd-dh-left { display:flex; align-items:center; gap:10px; min-width:0; }
-  .vd-dh-avatar { width:38px; height:38px; border-radius:10px; display:flex; align-items:center; justify-content:center; color:#fff; font-size:1rem; font-weight:800; font-family:'Sora',sans-serif; flex-shrink:0; }
-  .vd-dh-name { font-family:'Sora',sans-serif; font-size:0.98rem; font-weight:800; color:#2d241e; white-space:nowrap; overflow:hidden; text-overflow:ellipsis; }
-  .vd-dh-id { font-size:0.72rem; color:#a68b66; margin-top:1px; }
-  .vd-dh-meta { padding:0.4rem 1.3rem 0.7rem; background:#fff; border-bottom:1px solid #f5ebe0; flex-shrink:0; display:flex; align-items:center; }
-  .vd-close-btn { width:32px; height:32px; display:flex; align-items:center; justify-content:center; background:#fdfbf7; border:none; border-radius:8px; font-size:0.9rem; color:#7d6b5d; cursor:pointer; transition:background 0.15s; flex-shrink:0; }
-  .vd-close-btn:hover { background:#fbebe9; color:#d32f2f; }
-
-  .vd-body { flex:1 1 0; min-height:0; overflow-y:auto; overflow-x:hidden; padding:1rem; display:flex; flex-direction:column; gap:10px; }
-  .vd-body::-webkit-scrollbar { width:4px; }
-  .vd-body::-webkit-scrollbar-thumb { background:#e9d8bf; border-radius:99px; }
-
-  /* Quick stats */
-  .vd-stats-row { display:grid; grid-template-columns:repeat(4,1fr); gap:8px; }
-  .vd-stat-chip { background:#fff; border:1px solid #e9d8bf; border-radius:12px; padding:0.7rem 0.6rem; text-align:center; }
-  .vd-stat-val { font-family:'Sora',sans-serif; font-size:0.95rem; font-weight:800; line-height:1; margin-bottom:4px; }
-  .vd-stat-label { font-size:0.62rem; color:#a68b66; font-weight:600; text-transform:uppercase; letter-spacing:0.04em; }
-
-  .vd-section { background:#fff; border-radius:14px; border:1px solid #e9d8bf; padding:1rem 1.1rem; }
-  .vd-section-title { font-family:'Sora',sans-serif; font-size:0.82rem; font-weight:700; color:#2d241e; margin-bottom:10px; padding-bottom:8px; border-bottom:1px solid #f5ebe0; }
-  .vd-row { display:flex; justify-content:space-between; align-items:flex-start; gap:8px; padding:0.38rem 0; border-bottom:1px solid #fdfbf7; font-size:0.83rem; }
-  .vd-row:last-of-type { border-bottom:none; }
-  .vd-row-full { flex-direction:column; gap:2px; }
-  .vd-row-label { font-size:0.68rem; color:#a68b66; font-weight:700; text-transform:uppercase; letter-spacing:0.05em; flex-shrink:0; padding-top:2px; }
-  .vd-row-val { color:#4a3f35; font-weight:500; text-align:right; font-size:0.83rem; }
-  .vd-row-full .vd-row-val { text-align:left; font-size:0.8rem; color:#7d6b5d; }
-
-  /* Edit inline */
-  .vd-edit-row { display:flex; justify-content:space-between; align-items:center; gap:8px; padding:0.38rem 0; border-bottom:1px solid #fdfbf7; }
-  .vd-edit-input { border:1.5px solid #ae2012; border-radius:7px; padding:0.3rem 0.6rem; font-size:0.82rem; font-family:inherit; color:#2d241e; outline:none; background:#fdfbf7; }
-  .vd-edit-textarea { width:100%; border:1.5px solid #ae2012; border-radius:9px; padding:0.6rem 0.75rem; font-size:0.82rem; font-family:inherit; color:#2d241e; outline:none; background:#fdfbf7; resize:vertical; box-sizing:border-box; }
-
-  /* KYC */
-  .vd-kyc-status { margin-bottom:10px; }
-  .vd-kyc-badge-ok { display:inline-flex; align-items:center; gap:5px; background:#d3ebd8; color:#0a671a; padding:3px 10px; border-radius:99px; font-size:0.78rem; font-weight:700; }
-  .vd-kyc-badge-pending { display:inline-flex; align-items:center; gap:5px; background:#faedcc; color:#a67a22; padding:3px 10px; border-radius:99px; font-size:0.78rem; font-weight:700; }
-  .vd-docs-grid { display:grid; grid-template-columns:1fr 1fr; gap:6px; }
-  .vd-doc-chip { padding:0.45rem 0.8rem; border-radius:8px; font-size:0.76rem; font-weight:700; text-align:center; }
-  .vd-doc-ok { background:#d3ebd8; color:#0a671a; }
-  .vd-doc-missing { background:#fbebe9; color:#8b150e; }
-
-  /* Notes */
-  .vd-note-text { font-size:0.82rem; color:#4a3f35; line-height:1.5; background:#fdf6e4; border:1px solid #faedcc; border-radius:8px; padding:0.5rem 0.75rem; }
-  .vd-no-notes { font-size:0.8rem; color:#a68b66; font-style:italic; }
-
-  /* Status */
-  .vd-status-grid { display:grid; grid-template-columns:1fr 1fr 1fr; gap:7px; }
-  .vd-status-btn { padding:0.55rem; border:1.5px solid #e9d8bf; border-radius:9px; background:#fff; color:#7d6b5d; font-size:0.74rem; font-weight:600; font-family:inherit; cursor:pointer; transition:all 0.15s; }
-  .vd-status-btn:hover:not(.vd-status-active) { background:#fdfbf7; border-color:#e9d8bf; }
-
-  /* Action buttons */
-  .vd-actions { display:grid; grid-template-columns:1fr 1fr; gap:8px; }
-  .vd-action-btn { width:100%; padding:0.65rem; border:none; border-radius:10px; font-size:0.82rem; font-weight:700; font-family:inherit; cursor:pointer; transition:opacity 0.15s; }
-  .vd-action-btn:hover { opacity:0.85; }
-  .vd-btn-blue  { background:#fdfbf7; color:#ae2012; }
-  .vd-btn-green { background:#d3ebd8; color:#0c831f; }
-  .vd-btn-red   { background:#fbebe9; color:#d32f2f; }
-  .vd-btn-gray  { background:#f5ebe0; color:#7d6b5d; }
-  .vd-btn-yellow { background:#faedcc; color:#a67a22; }
-
-  @media (max-width:520px) { .vd-drawer { width:100vw; } .vd-stats-row { grid-template-columns:repeat(2,1fr); } }
-`;

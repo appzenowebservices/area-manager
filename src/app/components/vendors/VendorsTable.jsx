@@ -51,7 +51,11 @@ export default function VendorsTable({ vendors, onView }) {
               </tr>
             ) : (
               vendors.map((vendor) => (
-                <tr key={vendor.id} className="transition-colors hover:bg-secondary-50">
+                <tr
+                  key={vendor.id}
+                  onClick={() => onView(vendor)}
+                  className="cursor-pointer transition-colors hover:bg-secondary-50"
+                >
                   <td className="whitespace-nowrap px-4 py-3">
                     <div className="flex items-center gap-3">
                       <div
@@ -113,7 +117,10 @@ export default function VendorsTable({ vendors, onView }) {
                   </td>
                   <td className="whitespace-nowrap px-4 py-3">
                     <button
-                      onClick={() => onView(vendor)}
+                      onClick={(event) => {
+                        event.stopPropagation();
+                        onView(vendor);
+                      }}
                       className="inline-flex items-center gap-1 rounded-full border-2 border-secondary-900 bg-background-section px-3 py-1.5 text-[11px] font-black text-primary-600 transition-colors hover:bg-accent-400"
                     >
                       <Eye className="h-3.5 w-3.5" /> View
