@@ -311,18 +311,47 @@ export const areaManagerDataRouter = createTRPCRouter({
         const [vendor, config] = await Promise.all([
           db.vendor.findUnique({
             where: { id: input.id },
-            include: { Store: true, documents: true },
+            include: {
+              Store: {
+                include: {
+                  modules: {
+                    include: { module: true },
+                  },
+                },
+              },
+              documents: true,
+            },
           }),
           db.platformConfig.findFirst(),
         ]);
         if (!vendor) throw new TRPCError({ code: "NOT_FOUND" });
 
-        const orders = await db.order.findMany({
-          where: { vendorId: input.id },
-          include: orderInclude,
-          orderBy: { createdAt: "desc" },
-          take: 100,
-        });
+        const [orders, vendorInventory] = await Promise.all([
+          db.order.findMany({
+            where: { vendorId: input.id },
+            include: orderInclude,
+            orderBy: { createdAt: "desc" },
+            take: 100,
+          }),
+          db.inventoryVendor.findMany({
+            where: { vendorId: input.id, isDeleted: { not: true } },
+            orderBy: { createdAt: "desc" },
+            select: {
+              id: true,
+              name: true,
+              price: true,
+              discountPrice: true,
+              stock: true,
+              status: true,
+              images: true,
+              approvalStatus: true,
+              categoryId: true,
+              inventoryId: true,
+              sku: true,
+            },
+          }),
+        ]);
+
         const mappedOrders = orders.map(mapOrder);
         const activeOrders = mappedOrders.filter(
           (order) => order.status !== "Cancelled",
@@ -330,6 +359,30 @@ export const areaManagerDataRouter = createTRPCRouter({
         const weekStart = new Date();
         weekStart.setDate(weekStart.getDate() - 7);
         const commissionPct = Math.round((config?.vendorMargin ?? 0.1) * 100);
+
+        const store = vendor.Store?.[0] ?? null;
+        const modules = (store?.modules ?? [])
+          .map((assignment: any) => assignment.module)
+          .filter(Boolean)
+          .map((module: any) => ({
+            id: module.id,
+            name: module.name,
+            description: module.description ?? "",
+            icon: module.icon ?? null,
+          }));
+
+        const managedCategoryIds = [
+          ...new Set(vendorInventory.map((item) => item.categoryId)),
+        ];
+        const managedCategories = managedCategoryIds.length
+          ? await db.category.findMany({
+              where: { id: { in: managedCategoryIds } },
+              select: { id: true, name: true },
+            })
+          : [];
+        const categoryNameById = new Map(
+          managedCategories.map((category) => [category.id, category.name]),
+        );
 
         return {
           vendor: mapVendor(
@@ -353,15 +406,26 @@ export const areaManagerDataRouter = createTRPCRouter({
             fileUrl: document.fileUrl,
             verified: document.verified === true,
           })),
-          store: vendor.Store?.[0]
+          inventory: vendorInventory.map((item) => ({
+            ...item,
+            categoryName: categoryNameById.get(item.categoryId) ?? null,
+          })),
+          inventoryCount: vendorInventory.length,
+          store: store
             ? {
-                id: vendor.Store[0].id,
-                name: vendor.Store[0].name,
-                mobile: vendor.Store[0].mobile,
-                address: vendor.Store[0].address,
-                ratings: vendor.Store[0].ratings,
-                operatingHours: vendor.Store[0].operating_hours,
-                status: vendor.Store[0].status,
+                id: store.id,
+                name: store.name,
+                mobile: store.mobile,
+                address: store.address,
+                ratings: store.ratings,
+                operatingHours: store.operating_hours,
+                status: store.status,
+                images: store.storeImage,
+                kyc: store.kyc,
+                profileCompletion: store.profile_completion,
+                inventoryCount: store.inventory_count,
+                orderCount: store.order_count,
+                modules,
               }
             : null,
         };

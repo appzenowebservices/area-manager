@@ -189,6 +189,16 @@ export function mapVendor(
     ]
       .filter(Boolean)
       .join(", "),
+    lat:
+      store?.address?.geo?.lat ??
+      vendor.addressLat ??
+      vendor.locationLat ??
+      null,
+    lng:
+      store?.address?.geo?.lng ??
+      vendor.addressLng ??
+      vendor.locationLng ??
+      null,
     category,
     status,
     rating: store?.ratings?.average ?? 0,
