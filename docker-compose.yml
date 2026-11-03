@@ -1,7 +1,7 @@
 services:
-  web_add:
+  area_manager:
     build: .
-    container_name: add-web
+    container_name: add-area-manager
     restart: unless-stopped
     env_file:
       - .env
